@@ -1,0 +1,54 @@
+@import '../../../styles.scss';
+
+.header-div {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+[data-donation-input] {
+  @include centerFlex();
+  flex-direction: column;
+}
+
+[data-header-title] {
+  @include headerTitle();
+}
+
+.buttons {
+  text-align: center;
+  margin-top: 50px;
+  padding-bottom: 15px;
+}
+
+.add-donation-button {
+  height: 30px;
+  margin: 10px;
+  width: 100px;
+  font-size: large;
+  @include buttonStyling();
+}
+
+.donation-value-label {
+  font-weight: 500;
+  min-width: 260px;
+}
+
+.donation-value-form-field {
+  min-width: 100px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.donation-value-ctn {
+  @include centerFlex();
+}
+
+.dropdown__label {
+  font-weight: 500;
+  min-width: 260px;
+}
+
+.dropdown-ctn {
+  display: flex;
+  align-items: center;
+}

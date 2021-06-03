@@ -1,0 +1,55 @@
+@import '../../../styles.scss';
+
+.header-div {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+[data-purchase-input] {
+  @include centerFlex();
+  flex-direction: column;
+}
+
+[data-header-title] {
+  @include headerTitle();
+}
+
+.buttons {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.add-purchase-button {
+  height: 30px;
+  margin: 10px;
+  width: 100px;
+  font-size: large;
+  @include buttonStyling();
+}
+
+.purchase-value-label {
+  font-weight: 500;
+  min-width: 260px;
+}
+
+.purchase-value-form-field {
+  min-width: 100px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.purchase-value-ctn {
+  max-height: 50px;
+  @include centerFlex();
+}
+
+.dropdown__label {
+  font-weight: 500;
+  min-width: 260px;
+}
+
+.dropdown-ctn {
+  max-height: 50px;
+  display: flex;
+  align-items: center;
+}

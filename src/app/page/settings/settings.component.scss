@@ -1,0 +1,67 @@
+@import '../../../styles.scss';
+
+.header-div {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+[data-settings-input] {
+  @include centerFlex();
+  flex-direction: column;
+}
+
+[data-header-title] {
+  font-size: xx-large;
+  padding: 5px;
+}
+
+.buttons {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.apply-button {
+  height: 30px;
+  margin: 10px;
+  width: 100px;
+  font-size: large;
+  @include buttonStyling();
+}
+
+[data-button-export] {
+  height: 30px;
+  margin: 10px;
+  font-size: large;
+  @include buttonStyling();
+}
+
+.reset-button {
+  margin: 15px;
+  font-size: large;
+  @include buttonStyling();
+}
+
+.settings-value-label {
+  font-weight: 500;
+  min-width: 260px;
+}
+
+.settings-value-form-field {
+  min-width: 100px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.settings-value-ctn {
+  @include centerFlex();
+}
+
+.dropdown__label {
+  font-weight: 500;
+  min-width: 260px;
+}
+
+.dropdown-ctn {
+  display: flex;
+  align-items: center;
+}

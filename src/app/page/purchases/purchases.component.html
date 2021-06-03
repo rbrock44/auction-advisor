@@ -1,0 +1,34 @@
+<app-add-person></app-add-person>
+<app-add-product></app-add-product>
+<app-add-purchase></app-add-purchase>
+
+<div data-table-container>
+  <mat-table [dataSource]="this.dataSource" matSort class="mat-elevation-z8">
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+    </ng-container>
+
+    <!-- purchasedBy Column -->
+    <ng-container matColumnDef="purchasedBy">
+      <mat-header-cell *matHeaderCellDef  mat-sort-header>Purchased By</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.purchasedBy}} </mat-cell>
+    </ng-container>
+
+    <!-- product Column -->
+    <ng-container matColumnDef="product">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Product</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.product}} </mat-cell>
+    </ng-container>
+
+    <!-- Amount Column -->
+    <ng-container matColumnDef="amount">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Amount</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.amount}} </mat-cell>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="this.displayColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: this.displayColumns;"></tr>
+  </mat-table>
+</div>

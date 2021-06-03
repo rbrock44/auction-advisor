@@ -1,0 +1,46 @@
+<app-add-person></app-add-person>
+<app-add-product></app-add-product>
+<app-add-donation></app-add-donation>
+
+<div data-table-container>
+  <mat-table [dataSource]="this.dataSource" matSort class="mat-elevation-z8">
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+    </ng-container>
+
+    <!-- productId Column -->
+    <ng-container matColumnDef="product">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Product</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.product}} </mat-cell>
+    </ng-container>
+
+    <!-- donatedBy Column -->
+    <ng-container matColumnDef="donatedBy">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Donated By</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.donatedBy}} </mat-cell>
+    </ng-container>
+
+    <!-- estimatedValue Column -->
+    <ng-container matColumnDef="estimatedValue">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Estimated Value</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.estimatedValue}} </mat-cell>
+    </ng-container>
+
+    <!-- creditTo Column -->
+    <ng-container matColumnDef="creditTo">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Credit To</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.creditTo}} </mat-cell>
+    </ng-container>
+
+    <!-- minSellAmount Column -->
+    <ng-container matColumnDef="minSellAmount">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Min Sell Amount</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.minSellAmount}} </mat-cell>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="this.displayColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: this.displayColumns;"></tr>
+  </mat-table>
+</div>

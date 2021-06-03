@@ -1,0 +1,48 @@
+<div>
+  <div class="header-div">
+    <header data-header-title (click)="switchDisplay()">Add Product</header>
+  </div>
+
+  <div *ngIf="showInput">
+    <div data-product-input>
+      <!-- NAME  -->
+      <div class="product-value-ctn">
+        <div data-name-label class="product-value-label">Name</div>
+        <mat-form-field class="product-value-form-field">
+          <input matInput data-name
+                 type="text"
+                 rows="1"
+                 [formControl]="nameControl"
+          >
+          <mat-error data-basic-error *ngIf="!nameControl.valid">
+            Name is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- DESCRIPTION  -->
+      <div class="product-value-ctn">
+        <div data-description-label class="product-value-label">Description</div>
+        <mat-form-field class="product-value-form-field">
+          <input matInput data-description
+                 type="text"
+                 rows="1"
+                 [formControl]="descriptionControl"
+          >
+          <mat-error data-basic-error *ngIf="!descriptionControl.valid">
+            Description is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <div class="buttons">
+      <button data-button-add-product
+              (click)="addProduct()"
+              [disabled]="!this.productFormGroup.valid"
+              class="add-product">Add Product
+      </button>
+    </div>
+  </div>
+</div>

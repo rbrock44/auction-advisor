@@ -1,0 +1,19 @@
+[data-alert-container] {
+  background-color: antiquewhite;
+  max-width: 600px;
+  border-radius: 10px;
+  position: fixed;
+  bottom: 10px;
+  right: 50px;
+}
+
+[data-a] {
+  font-size: xx-large;
+  padding-right: 5px;
+  padding-left: 5px;
+  cursor: default;
+}
+
+[data-span] {
+  font-size: xx-large;
+}

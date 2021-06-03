@@ -1,0 +1,21 @@
+mat-table {
+  width: 80%
+}
+
+mat-header-cell {
+  justify-content: center;
+}
+
+mat-cell {
+  justify-content: center;
+}
+
+tr {
+  display: flex;
+}
+
+[data-table-container] {
+  padding: 5vw 0 5vw 0;
+  display: flex;
+  justify-content: center;
+}
