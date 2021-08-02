@@ -1,7 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Person} from '../../model/person.model';
 import {SettingsService} from '../../service/settings.service';
-import {MatSort, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
+import {EditPersonComponent} from '../../component/edit-person/edit-person.component';
 
 @Component({
   selector: 'app-people',
@@ -15,15 +16,30 @@ export class PeopleComponent implements OnInit {
   // @ts-ignore
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private settingsService: SettingsService) {
+  constructor(
+    public dialog: MatDialog,
+    private settingsService: SettingsService
+  ) {
   }
 
   ngOnInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.data = this.settingsService.people;
+    if (this.settingsService.canEdit) {
+      this.displayColumns.push('edit');
+    }
     this.settingsService.getPeopleChange().subscribe(people => {
       this.dataSource.data = people;
     });
   }
 
+  openEditDialog(person: Person): void {
+    event.preventDefault();
+
+    const dialogRef = this.dialog.open(EditPersonComponent, {
+      data: {
+        person: person
+      }
+    });
+  }
 }

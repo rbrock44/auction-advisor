@@ -59,6 +59,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   ];
 
   titleControl: FormControl = new FormControl('', [Validators.required]);
+  canEditControl: FormControl = new FormControl('', [Validators.required]);
   colorControl: FormControl = new FormControl('', [Validators.required]);
 
   settingsFormGroup: FormGroup;
@@ -122,6 +123,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
         if (shouldApply) {
           this.settingsService.applySettings(
             this.titleControl.value,
+            this.canEditControl.value
           );
           this.alertService.success(this.APPLY_SETTING_SUCCESS_MESSAGE, Date.now());
         } else {
@@ -155,6 +157,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.titleControl.setValue(this.settingsService.title);
 
     this.colorControl.setValue(this.settingsService.color);
+    this.canEditControl.setValue(this.settingsService.canEdit);
   }
 
   setColor(): void {

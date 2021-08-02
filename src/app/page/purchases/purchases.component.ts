@@ -1,8 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Purchase} from '../../model/purchase.model';
 import {SettingsService} from '../../service/settings.service';
-import {MatSort, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import {PurchaseDisplay} from '../../model/purchase-display.model';
+import {EditPurchaseComponent} from '../../component/edit-purchase/edit-purchase.component';
 
 @Component({
   selector: 'app-purchases',
@@ -16,12 +17,18 @@ export class PurchasesComponent implements OnInit {
   // @ts-ignore
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private settingsService: SettingsService) {
+  constructor(
+    public dialog: MatDialog,
+    private settingsService: SettingsService
+  ) {
   }
 
   ngOnInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.data = this.mapPurchaseToPurchaseDisplay(this.settingsService.purchases);
+    if (this.settingsService.canEdit) {
+      this.displayColumns.push('edit');
+    }
     this.settingsService.getPurchasesChange().subscribe(purchases => {
       this.dataSource.data = this.mapPurchaseToPurchaseDisplay(purchases);
     });
@@ -31,13 +38,18 @@ export class PurchasesComponent implements OnInit {
     let array: PurchaseDisplay[] = [];
 
     purchases.forEach(item => {
-      let newItem: PurchaseDisplay = new PurchaseDisplay();
-      newItem.id = item.id;
-      newItem.amount = item.amount;
-      newItem.purchasedBy = this.settingsService.getPersonInfoById(item.purchasedBy);
-      newItem.product = this.settingsService.getProductInfoById(item.id);
-      array.push(newItem);
+      array.push(this.settingsService.mapPurchaseToPurchaseDisplay(item));
     });
     return array;
+  }
+
+  openEditDialog(purchase: PurchaseDisplay): void {
+    event.preventDefault();
+
+    const dialogRef = this.dialog.open(EditPurchaseComponent, {
+      data: {
+        purchase: purchase
+      }
+    });
   }
 }

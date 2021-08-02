@@ -13,19 +13,29 @@
     <!-- purchasedBy Column -->
     <ng-container matColumnDef="purchasedBy">
       <mat-header-cell *matHeaderCellDef  mat-sort-header>Purchased By</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.purchasedBy}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.purchasedByName}} </mat-cell>
     </ng-container>
 
     <!-- product Column -->
     <ng-container matColumnDef="product">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Product</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.product}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.productName}} </mat-cell>
     </ng-container>
 
     <!-- Amount Column -->
     <ng-container matColumnDef="amount">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Amount</mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.amount}} </mat-cell>
+    </ng-container>
+
+    <!-- edit Column -->
+    <ng-container matColumnDef="edit">
+      <mat-header-cell *matHeaderCellDef>Edit</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <button (click)="openEditDialog(element)" class="edit">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </mat-cell>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="this.displayColumns"></tr>

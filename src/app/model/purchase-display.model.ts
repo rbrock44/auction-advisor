@@ -1,8 +1,10 @@
 export class PurchaseDisplay {
   id: number;
-  purchasedBy: string;
-  product: string;
+  purchasedByName: string;
+  productName: string;
   amount: number;
+  productId: number;
+  purchasedBy: number;
 
   constructor(init?: Partial<PurchaseDisplay>) {
     Object.assign(this, init);

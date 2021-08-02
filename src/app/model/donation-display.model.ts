@@ -1,9 +1,12 @@
 export class DonationDisplay {
   id: number;
-  product: string;
-  donatedBy: string;
+  productName: string;
+  productId: number;
+  donatedBy: number;
+  donatedByName: string;
   estimatedValue: number;
-  creditTo: string;
+  creditTo: number;
+  creditToName: string;
   minSellAmount: number;
 
   constructor(init?: Partial<DonationDisplay>) {

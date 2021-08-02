@@ -40,21 +40,3 @@
   box-sizing: content-box;
   padding: 5px;
 }
-
-::ng-deep
-.mat-form-field {
-  .mat-select {
-    height: 24px;
-    overflow: visible;
-
-    .mat-select-value-text {
-      overflow: visible;
-      display: flex;
-    }
-  }
-
-  .mat-select-value {
-    overflow: visible;
-  }
-}
-

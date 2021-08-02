@@ -30,6 +30,10 @@ body {
   border-style: groove;
 }
 
+@mixin textColor {
+  color: var(--buttonColor);
+}
+
 @mixin headerTitle {
   font-size: xx-large;
   padding: 5px;

@@ -1,0 +1,130 @@
+<div class="header-div">
+  <header data-header-title>Edit Donation</header>
+</div>
+
+<div data-donation-input>
+  <!-- ID  -->
+  <div class="donation-value-ctn" data-donation-id>
+    <div data-id-label class="donation-value-label">Id</div>
+    <p>{{this.donation.id}}</p>
+  </div>
+
+  <!-- PRODUCT  -->
+  <div class="dropdown-ctn">
+    <div data-dropdown-label class="dropdown__label">
+      Product
+    </div>
+    <div class="dropdown__data">
+      <mat-form-field class="dropdown-form-field">
+        <mat-label>Select Value</mat-label>
+        <mat-select [formControl]="productControl">
+          <mat-option
+            *ngFor="let product of this.filteredProducts"
+            data-dropdown-option
+            [value]="product.id"
+          >
+            {{product.name}} - {{product.description}}
+          </mat-option>
+        </mat-select>
+        <mat-error data-basic-error *ngIf="!productControl.valid">
+          Product is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- Donated By  -->
+  <div class="dropdown-ctn">
+    <div data-dropdown-label class="dropdown__label">
+      Donated By
+    </div>
+    <div class="dropdown__data">
+      <mat-form-field class="dropdown-form-field">
+        <mat-label>Select Value</mat-label>
+        <mat-select [formControl]="donatedByControl">
+          <mat-option
+            *ngFor="let person of this.people"
+            data-dropdown-option
+            [value]="person.id"
+            [title]="person.firstName + ' ' + person.lastName"
+            (click)="donatedBySelected()"
+          >
+            {{person.firstName}} {{person.lastName}}
+          </mat-option>
+        </mat-select>
+        <mat-error data-basic-error *ngIf="!donatedByControl.valid">
+          Donated By is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- Credit To  -->
+  <div class="dropdown-ctn">
+    <div data-dropdown-label class="dropdown__label">
+      Account to Credit
+    </div>
+    <div class="dropdown__data">
+      <mat-form-field class="dropdown-form-field">
+        <mat-label>Select Value</mat-label>
+        <mat-select [formControl]="creditToControl">
+          <mat-option
+            *ngFor="let person of this.people"
+            data-dropdown-option
+            [value]="person.id"
+            [title]="person.firstName + ' ' + person.lastName"
+          >
+            {{person.firstName}} {{person.lastName}}
+          </mat-option>
+        </mat-select>
+        <mat-error data-basic-error *ngIf="!creditToControl.valid">
+          Account to Credit is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- ESTIMATION VALUE  -->
+  <div class="donation-value-ctn">
+    <div data-estimated-value-label class="donation-value-label">Estimated Value</div>
+    <mat-form-field class="donation-value-form-field">
+      <input matInput data-estimated-value
+             type="text"
+             rows="1"
+             [formControl]="estimatedValueControl"
+      >
+      <mat-error data-basic-error *ngIf="!estimatedValueControl.valid">
+        Estimated Value is required
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <!-- MIN SELL AMOUNT  -->
+  <div class="donation-value-ctn">
+    <div data-min-amount-label class="donation-value-label">Minimum Sell Amount</div>
+    <mat-form-field class="donation-value-form-field">
+      <input matInput data-min-amount
+             type="text"
+             rows="1"
+             [formControl]="minAmountControl"
+      >
+      <mat-error data-basic-error *ngIf="!minAmountControl.valid">
+        Minimum Sell Amount is required
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+
+</div>
+
+<div class="buttons">
+  <button data-button-save-donation
+          (click)="editDonation()"
+          [disabled]="!this.donationFormGroup.valid"
+          class="save-donation">Save Donation
+  </button>
+  <button data-button-cancel-donation
+          (click)="cancel(false)"
+  >Cancel
+  </button>
+</div>

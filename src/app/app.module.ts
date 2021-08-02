@@ -1,8 +1,7 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
 import {ExcelService} from './service/excel.service';
 import {YesNoDropdownComponent} from './component/yes-no-dropdown/yes-no-dropdown.component';
 import {HeaderComponent} from './component/header/header.component';
@@ -11,6 +10,7 @@ import {ConfirmationPopupComponent} from './component/confirmation-popup/confirm
 import {
   MatDialogModule,
   MatFormFieldModule,
+  MatIconModule,
   MatInputModule,
   MatOptionModule,
   MatSelectModule,
@@ -29,6 +29,10 @@ import {AddPersonComponent} from './component/add-person/add-person.component';
 import {AddProductComponent} from './component/add-product/add-product.component';
 import {AddPurchaseComponent} from './component/add-purchase/add-purchase.component';
 import {SettingsComponent} from './page/settings/settings.component';
+import {EditProductComponent} from './component/edit-product/edit-product.component';
+import {EditPersonComponent} from './component/edit-person/edit-person.component';
+import {EditPurchaseComponent} from './component/edit-purchase/edit-purchase.component';
+import {EditDonationComponent} from './component/edit-donation/edit-donation.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +43,10 @@ import {SettingsComponent} from './page/settings/settings.component';
     AppComponent,
     ConfirmationPopupComponent,
     DonationsComponent,
+    EditDonationComponent,
+    EditPersonComponent,
+    EditProductComponent,
+    EditPurchaseComponent,
     HeaderComponent,
     PeopleComponent,
     ProductsComponent,
@@ -46,7 +54,13 @@ import {SettingsComponent} from './page/settings/settings.component';
     SettingsComponent,
     YesNoDropdownComponent
   ],
-  entryComponents: [ConfirmationPopupComponent],
+  entryComponents: [
+    ConfirmationPopupComponent,
+    EditDonationComponent,
+    EditPersonComponent,
+    EditProductComponent,
+    EditPurchaseComponent,
+  ],
   imports: [
     AlertModule,
     AppRoutingModule,
@@ -56,6 +70,7 @@ import {SettingsComponent} from './page/settings/settings.component';
     FormsModule,
     MatDialogModule,
     MatFormFieldModule,
+    MatIconModule,
     MatInputModule,
     MatOptionModule,
     MatSelectModule,

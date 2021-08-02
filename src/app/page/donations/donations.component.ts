@@ -1,8 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatSort, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import {SettingsService} from '../../service/settings.service';
 import {Donation} from '../../model/donation.model';
 import {DonationDisplay} from '../../model/donation-display.model';
+import {EditDonationComponent} from '../../component/edit-donation/edit-donation.component';
 
 @Component({
   selector: 'app-donations',
@@ -15,12 +16,19 @@ export class DonationsComponent implements OnInit {
 
   // @ts-ignore
   @ViewChild(MatSort) sort: MatSort;
-  constructor(private settingsService: SettingsService) {
+
+  constructor(
+    public dialog: MatDialog,
+    private settingsService: SettingsService
+  ) {
   }
 
   ngOnInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.data = this.mapDonationToDonationDisplay(this.settingsService.donations);
+    if (this.settingsService.canEdit) {
+      this.displayColumns.push('edit');
+    }
     this.settingsService.getDonationsChange().subscribe(donations => {
       this.dataSource.data = this.mapDonationToDonationDisplay(donations);
     });
@@ -30,16 +38,18 @@ export class DonationsComponent implements OnInit {
     let array: DonationDisplay[] = [];
 
     donations.forEach(item => {
-      let newItem: DonationDisplay = new DonationDisplay();
-      newItem.id = item.id;
-      newItem.estimatedValue = item.estimatedValue;
-      newItem.minSellAmount = item.minSellAmount;
-      newItem.product = this.settingsService.getProductInfoById(item.productId);
-      newItem.donatedBy = this.settingsService.getPersonInfoById(item.donatedBy);
-      newItem.creditTo = this.settingsService.getPersonInfoById(item.creditTo);
-      array.push(newItem);
+      array.push(this.settingsService.mapDonationToDonationDisplay(item));
     });
     return array;
   }
 
+  openEditDialog(donation: DonationDisplay): void {
+    event.preventDefault();
+
+    const dialogRef = this.dialog.open(EditDonationComponent, {
+      data: {
+        donation: donation
+      }
+    });
+  }
 }

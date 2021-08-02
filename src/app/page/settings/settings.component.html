@@ -18,6 +18,17 @@
         </mat-error>
       </mat-form-field>
     </div>
+    <!-- CAN EDIT    -->
+    <div class="settings-value-ctn">
+      <app-yes-no-dropdown
+        [control]="canEditControl"
+        [name]="'Can Edit'"
+        [htmlId]="'can-edit-dropdown'"
+        [yesOption]="'True'"
+        [noOption]="'False'"
+      ></app-yes-no-dropdown>
+    </div>
+
     <!-- COLOR  -->
     <div class="dropdown-ctn">
       <div data-dropdown-label class="dropdown__label">
@@ -40,20 +51,40 @@
   </div>
 
   <div class="buttons">
-    <button data-button-apply
-            (click)="applyToSettings()"
-            [disabled]="!this.settingsFormGroup.valid"
-            class="apply-button">Apply
-    </button>
-    <button data-button-reset-everything
-            (click)="resetEverything()"
-            class="reset-button">Reset Everything
-    </button>
     <div>
-      <button data-button-export (click)="this.settingsService.exportScoresToExcel()">
-        Export Scores
+      <button data-button-apply
+              (click)="applyToSettings()"
+              [disabled]="!this.settingsFormGroup.valid"
+              class="apply-button">Apply
       </button>
     </div>
+    <div>
+      <button data-button-reset-everything
+              (click)="resetEverything()"
+              class="reset-button">Reset Everything
+      </button>
+    </div>
+  </div>
 
+  <div class="header-div excel-export">
+    <header data-header-title>Export To Excel</header>
+  </div>
+
+  <div class="buttons">
+    <div>
+      <button data-button-export (click)="this.settingsService.exportToExcelByPurchaser()">
+        By Purchaser
+      </button>
+    </div>
+    <div>
+      <button data-button-export (click)="this.settingsService.exportToExcelByProduct()">
+        By Products
+      </button>
+    </div>
+    <div>
+      <button data-button-export (click)="this.settingsService.exportToExcelTotals()">
+        Totals By Person
+      </button>
+    </div>
   </div>
 </div>
