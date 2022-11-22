@@ -60,9 +60,9 @@ export const COLOR_OPTIONS = [
 export const TITLE_DEFAULT = 'Auction Advisor';
 export const COLOR_DEFAULT = '--blue-color-';
 
-
 export const EDIT_COLUMN = 'edit';
-
+export const EDIT_HEADER = 'Edit';
+export const ID_HEADER = 'Id';
 
 export const PURCHASE_TYPE = 'purchase';
 export const DONATION_TYPE = 'donation';

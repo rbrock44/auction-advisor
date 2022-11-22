@@ -16,13 +16,13 @@ import {
   hideShowElementsOnClick
 } from '../../constants/expectations.spec';
 import {Person} from '../../model/person.model';
+import {HEADER} from '../../constants/constants.spec';
 
 describe('AddPersonComponent', () => {
   let fixture: ComponentFixture<AddPersonComponent>;
   let component;
   let settingsService: SettingsService;
   let alertService: AlertService;
-  const header = '[data-header-title]';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -56,7 +56,7 @@ describe('AddPersonComponent', () => {
   });
 
   it('should contain a title', () => {
-    expectElementToContainContent(fixture, '[data-header-title]', 'Add Person');
+    expectElementToContainContent(fixture, HEADER, 'Add Person');
   });
 
   it('should hide or show add panel', () => {
@@ -66,12 +66,12 @@ describe('AddPersonComponent', () => {
       '.buttons',
     ];
 
-    hideShowElementsOnClick(fixture, elements, header);
+    hideShowElementsOnClick(fixture, elements, HEADER);
   });
 
   describe('with panel shown', () => {
     beforeEach(() => {
-      clickElement(fixture, header);
+      clickElement(fixture, HEADER);
       fixture.detectChanges();
     });
 

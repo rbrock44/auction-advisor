@@ -35,7 +35,9 @@ export class PeopleComponent implements OnInit {
   }
 
   openEditDialog(person: Person): void {
-    event.preventDefault();
+    if (!!event) {
+      event.preventDefault();
+    }
 
     this.dialog.open(EditPersonComponent, {
       data: {

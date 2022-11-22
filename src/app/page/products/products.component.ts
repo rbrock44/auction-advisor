@@ -34,7 +34,9 @@ export class ProductsComponent implements OnInit {
   }
 
   openEditDialog(product: Product): void {
-    event.preventDefault();
+    if (!!event) {
+      event.preventDefault();
+    }
 
     this.dialog.open(EditProductComponent, {
       data: {

@@ -35,7 +35,9 @@ export class DonationsComponent implements OnInit {
   }
 
   openEditDialog(donation: DonationDisplay): void {
-    event.preventDefault();
+    if (!!event) {
+      event.preventDefault();
+    }
 
     this.dialog.open(EditDonationComponent, {
       data: {

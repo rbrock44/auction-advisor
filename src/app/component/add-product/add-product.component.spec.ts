@@ -16,13 +16,13 @@ import {
   hideShowElementsOnClick
 } from '../../constants/expectations.spec';
 import {Product} from '../../model/product.model';
+import {HEADER} from 'src/app/constants/constants.spec';
 
 describe('AddProductComponent', () => {
   let fixture: ComponentFixture<AddProductComponent>;
   let component;
   let settingsService: SettingsService;
   let alertService: AlertService;
-  const header = '[data-header-title]';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -56,7 +56,7 @@ describe('AddProductComponent', () => {
   });
 
   it('should contain a title', () => {
-    expectElementToContainContent(fixture, '[data-header-title]', 'Add Product');
+    expectElementToContainContent(fixture, HEADER, 'Add Product');
   });
 
   it('should hide or show add panel', () => {
@@ -66,12 +66,12 @@ describe('AddProductComponent', () => {
       '.buttons',
     ];
 
-    hideShowElementsOnClick(fixture, elements, header);
+    hideShowElementsOnClick(fixture, elements, HEADER);
   });
 
   describe('with panel shown', () => {
     beforeEach(() => {
-      clickElement(fixture, header);
+      clickElement(fixture, HEADER);
       fixture.detectChanges();
     });
 

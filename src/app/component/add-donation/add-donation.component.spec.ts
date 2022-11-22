@@ -17,7 +17,7 @@ import {
 } from '../../constants/expectations.spec';
 import {MaterialModule} from '../../material.module';
 import {Product} from '../../model/product.model';
-import {PEOPLE_OPTIONS, PRODUCT_OPTIONS} from '../../constants/constants.spec';
+import {HEADER, PEOPLE_OPTIONS, PRODUCT_OPTIONS} from '../../constants/constants.spec';
 import {Donation} from '../../model/donation.model';
 
 describe('AddDonationComponent', () => {
@@ -25,7 +25,6 @@ describe('AddDonationComponent', () => {
   let component;
   let settingsService: SettingsService;
   let alertService: AlertService;
-  const header = '[data-header-title]';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -59,7 +58,7 @@ describe('AddDonationComponent', () => {
   });
 
   it('should contain a title', () => {
-    expectElementToContainContent(fixture, header, 'Add Donation');
+    expectElementToContainContent(fixture, HEADER, 'Add Donation');
   });
 
   it('should hide or show add panel', () => {
@@ -70,12 +69,12 @@ describe('AddDonationComponent', () => {
       '.buttons',
     ];
 
-    hideShowElementsOnClick(fixture, elements, header);
+    hideShowElementsOnClick(fixture, elements, HEADER);
   });
 
   describe('with panel shown', () => {
     beforeEach(() => {
-      clickElement(fixture, header);
+      clickElement(fixture, HEADER);
       fixture.detectChanges();
     });
 

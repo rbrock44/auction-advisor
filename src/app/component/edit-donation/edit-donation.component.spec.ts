@@ -8,7 +8,7 @@ import {
   expectElementToContainContent,
   expectElementToContainContentAtIndex
 } from '../../constants/expectations.spec';
-import {PEOPLE_OPTIONS, PRODUCT_OPTIONS} from '../../constants/constants.spec';
+import {HEADER, PEOPLE_OPTIONS, PRODUCT_OPTIONS} from '../../constants/constants.spec';
 import {Donation} from '../../model/donation.model';
 import {SettingsService} from '../../service/settings.service';
 import {AlertService} from '../../service/alert.service';
@@ -77,7 +77,7 @@ describe('EditDonationComponent', () => {
   });
 
   it('should contain a title', () => {
-    expectElementToContainContent(fixture, '[data-header-title]', 'Edit Donation');
+    expectElementToContainContent(fixture, HEADER, 'Edit Donation');
   });
 
   it('should display id', () => {

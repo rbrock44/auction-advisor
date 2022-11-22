@@ -111,3 +111,9 @@ export function verifyDropdownOptions(fixture: ComponentFixture<any>, options: a
     expectElementToContainContentAtIndex(fixture, 'mat-option', values[index], ind);
   });
 }
+
+export function expectHeaderText(fixture: ComponentFixture<any>, columns: string[]) {
+  columns.forEach((col, index) => {
+    expectElementToContainContentAtIndex(fixture, 'mat-header-cell', col, index);
+  });
+}

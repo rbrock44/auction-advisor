@@ -35,7 +35,9 @@ export class PurchasesComponent implements OnInit {
   }
 
   openEditDialog(purchase: PurchaseDisplay): void {
-    event.preventDefault();
+    if (!!event) {
+      event.preventDefault();
+    }
 
     this.dialog.open(EditPurchaseComponent, {
       data: {

@@ -17,6 +17,7 @@ import {
   expectElementToContainContentAtIndex
 } from '../../constants/expectations.spec';
 import {Person} from '../../model/person.model';
+import {HEADER} from '../../constants/constants.spec';
 
 describe('EditPersonComponent', () => {
   let fixture: ComponentFixture<EditPersonComponent>;
@@ -74,7 +75,7 @@ describe('EditPersonComponent', () => {
   });
 
   it('should contain a title', () => {
-    expectElementToContainContent(fixture, '[data-header-title]', 'Edit Person');
+    expectElementToContainContent(fixture, HEADER, 'Edit Person');
   });
 
   it('should display id', () => {
