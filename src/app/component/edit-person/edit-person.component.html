@@ -59,8 +59,8 @@
 
   <div class="buttons">
     <button data-button-save-person
-            (click)="editProduct()"
-            [disabled]="!this.personFormGroup.valid"
+            (click)="edit()"
+            [disabled]="!this.formGroup.valid"
             class="save-person">Save Person
     </button>
     <button data-button-cancel-person

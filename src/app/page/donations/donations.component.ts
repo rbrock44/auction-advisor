@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import {SettingsService} from '../../service/settings.service';
-import {Donation} from '../../model/donation.model';
 import {DonationDisplay} from '../../model/donation-display.model';
 import {EditDonationComponent} from '../../component/edit-donation/edit-donation.component';
+import {EDIT_COLUMN} from '../../constants/constants';
 
 @Component({
   selector: 'app-donations',
@@ -25,30 +25,21 @@ export class DonationsComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource.sort = this.sort;
-    this.dataSource.data = this.mapDonationToDonationDisplay(this.settingsService.donations);
+    this.dataSource.data = this.settingsService.getDonationDisplay();
     if (this.settingsService.canEdit) {
-      this.displayColumns.push('edit');
+      this.displayColumns.push(EDIT_COLUMN);
     }
-    this.settingsService.getDonationsChange().subscribe(donations => {
-      this.dataSource.data = this.mapDonationToDonationDisplay(donations);
+    this.settingsService.donationsSubject.subscribe(donations => {
+      this.dataSource.data = this.settingsService.getDonationDisplay(donations);
     });
-  }
-
-  mapDonationToDonationDisplay(donations: Donation[]): DonationDisplay[] {
-    let array: DonationDisplay[] = [];
-
-    donations.forEach(item => {
-      array.push(this.settingsService.mapDonationToDonationDisplay(item));
-    });
-    return array;
   }
 
   openEditDialog(donation: DonationDisplay): void {
     event.preventDefault();
 
-    const dialogRef = this.dialog.open(EditDonationComponent, {
+    this.dialog.open(EditDonationComponent, {
       data: {
-        donation: donation
+        donation
       }
     });
   }

@@ -7,16 +7,6 @@ import {YesNoDropdownComponent} from './component/yes-no-dropdown/yes-no-dropdow
 import {HeaderComponent} from './component/header/header.component';
 import {AlertModule} from './component/alert/alert.module';
 import {ConfirmationPopupComponent} from './component/confirmation-popup/confirmation-popup.component';
-import {
-  MatDialogModule,
-  MatFormFieldModule,
-  MatIconModule,
-  MatInputModule,
-  MatOptionModule,
-  MatSelectModule,
-  MatSortModule,
-  MatTableModule
-} from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -33,6 +23,7 @@ import {EditProductComponent} from './component/edit-product/edit-product.compon
 import {EditPersonComponent} from './component/edit-person/edit-person.component';
 import {EditPurchaseComponent} from './component/edit-purchase/edit-purchase.component';
 import {EditDonationComponent} from './component/edit-donation/edit-donation.component';
+import {MaterialModule} from './material.module';
 
 @NgModule({
   declarations: [
@@ -68,14 +59,7 @@ import {EditDonationComponent} from './component/edit-donation/edit-donation.com
     BrowserModule,
     CommonModule,
     FormsModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatSortModule,
-    MatTableModule,
+    MaterialModule,
     ReactiveFormsModule
   ],
   providers: [

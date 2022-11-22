@@ -1,16 +1,37 @@
-import { TestBed, async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AppComponent } from './app.component';
+import {async, TestBed} from '@angular/core/testing';
+import {RouterTestingModule} from '@angular/router/testing';
+import {AppComponent} from './app.component';
+import {HeaderComponent} from './component/header/header.component';
+import {AlertComponent} from './component/alert/alert.component';
+import {MaterialModule} from './material.module';
+import {AlertService} from './service/alert.service';
+import {CommonModule} from '@angular/common';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        CommonModule,
+        FormsModule,
+        MaterialModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
       ],
       declarations: [
-        AppComponent
+        AlertComponent,
+        AppComponent,
+        HeaderComponent
       ],
+      providers: [
+        AlertService,
+      ],
+      schemas: [
+        NO_ERRORS_SCHEMA
+      ]
     }).compileComponents();
   }));
 
@@ -24,12 +45,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app.title).toEqual('auction-advisor');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('auction-advisor app is running!');
   });
 });

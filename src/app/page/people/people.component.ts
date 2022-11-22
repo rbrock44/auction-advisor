@@ -3,6 +3,7 @@ import {Person} from '../../model/person.model';
 import {SettingsService} from '../../service/settings.service';
 import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import {EditPersonComponent} from '../../component/edit-person/edit-person.component';
+import {EDIT_COLUMN} from '../../constants/constants';
 
 @Component({
   selector: 'app-people',
@@ -26,9 +27,9 @@ export class PeopleComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.dataSource.data = this.settingsService.people;
     if (this.settingsService.canEdit) {
-      this.displayColumns.push('edit');
+      this.displayColumns.push(EDIT_COLUMN);
     }
-    this.settingsService.getPeopleChange().subscribe(people => {
+    this.settingsService.peopleSubject.subscribe(people => {
       this.dataSource.data = people;
     });
   }
@@ -36,9 +37,9 @@ export class PeopleComponent implements OnInit {
   openEditDialog(person: Person): void {
     event.preventDefault();
 
-    const dialogRef = this.dialog.open(EditPersonComponent, {
+    this.dialog.open(EditPersonComponent, {
       data: {
-        person: person
+        person
       }
     });
   }

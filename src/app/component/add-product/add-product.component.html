@@ -39,8 +39,8 @@
 
     <div class="buttons">
       <button data-button-add-product
-              (click)="addProduct()"
-              [disabled]="!this.productFormGroup.valid"
+              (click)="add()"
+              [disabled]="!this.formGroup.valid"
               class="add-product">Add Product
       </button>
     </div>

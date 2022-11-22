@@ -47,8 +47,8 @@
 
     <div class="buttons">
       <button data-button-save-product
-              (click)="editProduct()"
-              [disabled]="!this.productFormGroup.valid"
+              (click)="edit()"
+              [disabled]="!this.formGroup.valid"
               class="save-product">Save Product
       </button>
       <button data-button-cancel-product

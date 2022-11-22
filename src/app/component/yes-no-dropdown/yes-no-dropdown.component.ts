@@ -37,12 +37,8 @@ export class YesNoDropdownComponent {
   @Input() noOption: string = 'No';
   @Output() changeEvent: EventEmitter<void> = new EventEmitter<void>();
 
-
   get className(): string {
     return this.htmlId + '-option';
-  }
-
-  constructor() {
   }
 
   onChange(): void {

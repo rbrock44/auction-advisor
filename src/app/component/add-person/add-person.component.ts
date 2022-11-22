@@ -3,56 +3,46 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Person} from '../../model/person.model';
 import {SettingsService} from '../../service/settings.service';
 import {AlertService} from '../../service/alert.service';
+import {Add} from '../../abstract/add';
+import {addedSuccessfully, clearFormGroup} from '../../constants/constants';
 
 @Component({
   selector: 'app-add-person',
   templateUrl: './add-person.component.html',
   styleUrls: ['./add-person.component.scss']
 })
-export class AddPersonComponent implements OnInit {
+export class AddPersonComponent extends Add implements OnInit {
   firstNameControl: FormControl = new FormControl('', [Validators.required]);
   lastNameControl: FormControl = new FormControl('', [Validators.required]);
   emailControl: FormControl = new FormControl('', [Validators.required]);
-
-  personFormGroup: FormGroup;
-
-  showInput: boolean = false;
 
   constructor(
     private alertService: AlertService,
     private settingsService: SettingsService
   ) {
+    super();
   }
 
   ngOnInit() {
-    this.personFormGroup = new FormGroup({
+    this.formGroup = new FormGroup({
       firstName: this.firstNameControl,
       lastName: this.lastNameControl,
       email: this.emailControl,
     });
   }
 
-  addPerson(): void {
+  add(): void {
     const person: Person = new Person();
     person.email = this.emailControl.value;
     person.firstName = this.firstNameControl.value;
     person.lastName = this.lastNameControl.value;
 
-    this.settingsService.addPerson(person);
+    this.settingsService.add(person);
     this.clearFormControl();
-    this.alertService.success(person.firstName + ' ' + person.lastName + ' added successfully', Date.now());
-  }
-
-  switchDisplay(): void {
-    this.showInput = !this.showInput;
+    this.alertService.success(addedSuccessfully(person.name()));
   }
 
   clearFormControl(): void {
-    this.lastNameControl.setValue('');
-    this.firstNameControl.setValue('');
-    this.emailControl.setValue('');
-    this.lastNameControl.markAsUntouched();
-    this.firstNameControl.markAsUntouched();
-    this.emailControl.markAsUntouched();
+    clearFormGroup(this.formGroup);
   }
 }

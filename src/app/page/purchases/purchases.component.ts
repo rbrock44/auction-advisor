@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Purchase} from '../../model/purchase.model';
 import {SettingsService} from '../../service/settings.service';
 import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import {PurchaseDisplay} from '../../model/purchase-display.model';
 import {EditPurchaseComponent} from '../../component/edit-purchase/edit-purchase.component';
+import {EDIT_COLUMN} from '../../constants/constants';
 
 @Component({
   selector: 'app-purchases',
@@ -25,30 +25,21 @@ export class PurchasesComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource.sort = this.sort;
-    this.dataSource.data = this.mapPurchaseToPurchaseDisplay(this.settingsService.purchases);
+    this.dataSource.data = this.settingsService.getPurchaseDisplay();
     if (this.settingsService.canEdit) {
-      this.displayColumns.push('edit');
+      this.displayColumns.push(EDIT_COLUMN);
     }
-    this.settingsService.getPurchasesChange().subscribe(purchases => {
-      this.dataSource.data = this.mapPurchaseToPurchaseDisplay(purchases);
+    this.settingsService.purchasesSubject.subscribe(purchases => {
+      this.dataSource.data = this.settingsService.getPurchaseDisplay(purchases);
     });
-  }
-
-  mapPurchaseToPurchaseDisplay(purchases: Purchase[]): PurchaseDisplay[] {
-    let array: PurchaseDisplay[] = [];
-
-    purchases.forEach(item => {
-      array.push(this.settingsService.mapPurchaseToPurchaseDisplay(item));
-    });
-    return array;
   }
 
   openEditDialog(purchase: PurchaseDisplay): void {
     event.preventDefault();
 
-    const dialogRef = this.dialog.open(EditPurchaseComponent, {
+    this.dialog.open(EditPurchaseComponent, {
       data: {
-        purchase: purchase
+        purchase
       }
     });
   }

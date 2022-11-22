@@ -1,33 +1,30 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {AlertService} from '../../service/alert.service';
 import {SettingsService} from '../../service/settings.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Person} from '../../model/person.model';
+import {Edit} from '../../abstract/edit';
+import {clearFormGroup} from '../../constants/constants';
 
 @Component({
   selector: 'app-edit-person',
   templateUrl: './edit-person.component.html',
   styleUrls: ['./edit-person.component.scss']
 })
-export class EditPersonComponent implements OnInit {
+export class EditPersonComponent extends Edit {
   person: Person;
   firstNameControl: FormControl = new FormControl('', [Validators.required]);
   lastNameControl: FormControl = new FormControl('', [Validators.required]);
   emailControl: FormControl = new FormControl('', [Validators.required]);
 
-  personFormGroup: FormGroup;
-
-  ngOnInit() {
-  }
-
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<EditPersonComponent>,
+    public settingsService: SettingsService,
     private alertService: AlertService,
-    private settingsService: SettingsService
   ) {
-    dialogRef.disableClose = true;
+    super(dialogRef);
     if (data) {
       this.person = data.person;
     }
@@ -36,34 +33,25 @@ export class EditPersonComponent implements OnInit {
     this.lastNameControl = new FormControl(this.person.lastName, [Validators.required]);
     this.emailControl = new FormControl(this.person.email, [Validators.required]);
 
-    this.personFormGroup = new FormGroup({
+    this.formGroup = new FormGroup({
       firstName: this.firstNameControl,
       lastName: this.lastNameControl,
       email: this.emailControl
     });
   }
 
-  editProduct(): void {
+  edit(): void {
     this.person.firstName = this.firstNameControl.value;
     this.person.lastName = this.lastNameControl.value;
     this.person.email = this.emailControl.value;
 
-    this.settingsService.editPerson(this.person);
+    this.settingsService.edit(this.person);
     this.clearFormControl();
-    this.alertService.success(this.person.firstName + ' ' + this.person.lastName + ' edited successfully', Date.now());
+    this.alertService.success(this.person.name() + ' edited successfully');
     this.cancel(true);
   }
 
   clearFormControl(): void {
-    this.firstNameControl.setValue('');
-    this.lastNameControl.setValue('');
-    this.emailControl.setValue('');
-    this.firstNameControl.markAsUntouched();
-    this.lastNameControl.markAsUntouched();
-    this.emailControl.markAsUntouched();
-  }
-
-  cancel(success: boolean): void {
-    this.dialogRef.close(success);
+    clearFormGroup(this.formGroup);
   }
 }

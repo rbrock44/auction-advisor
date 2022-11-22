@@ -16,7 +16,7 @@
             <mat-label>Select Value</mat-label>
             <mat-select [formControl]="productControl">
               <mat-option
-                *ngFor="let product of this.getFilteredProducts()"
+                *ngFor="let product of this.filterProducts()"
                 data-dropdown-option
                 [value]="product.id"
                 (click)="applyMinSellAmount()"
@@ -41,12 +41,12 @@
             <mat-label>Select Value</mat-label>
             <mat-select [formControl]="purchaserControl">
               <mat-option
-                *ngFor="let person of this.people"
+                *ngFor="let person of this.settingsService.people"
                 data-dropdown-option
                 [value]="person.id"
-                [title]="person.firstName + ' ' + person.lastName"
+                [title]="person.name()"
               >
-                {{person.firstName}} {{person.lastName}}
+                {{person.name()}}
               </mat-option>
             </mat-select>
             <mat-error data-basic-error *ngIf="!purchaserControl.valid">
@@ -76,8 +76,8 @@
 
     <div class="buttons">
       <button data-button-add-purchase
-              (click)="addPurchase()"
-              [disabled]="!purchaseFormGroup.valid"
+              (click)="add()"
+              [disabled]="!formGroup.valid"
               class="add-purchase">Add Purchase
       </button>
     </div>

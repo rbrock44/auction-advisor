@@ -54,8 +54,8 @@
 
     <div class="buttons">
       <button data-button-add-person
-              (click)="addPerson()"
-              [disabled]="!this.personFormGroup.valid"
+              (click)="add()"
+              [disabled]="!this.formGroup.valid"
               class="add-person">Add Person
       </button>
     </div>

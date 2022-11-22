@@ -1,6 +1,6 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import * as _ from 'lodash';
-import {Observable, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
 import {ExcelService} from './excel.service';
 import {Person} from '../model/person.model';
 import {Donation} from '../model/donation.model';
@@ -9,15 +9,16 @@ import {Purchase} from '../model/purchase.model';
 import {LocalStorageSaveItem} from '../model/local-storage-save-item.model';
 import {DonationDisplay} from '../model/donation-display.model';
 import {PurchaseDisplay} from '../model/purchase-display.model';
+import {COLOR_DEFAULT, DONATION_TYPE, PERSON_TYPE, PRODUCT_TYPE, PURCHASE_TYPE, TITLE_DEFAULT} from '../constants/constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SettingsService implements OnDestroy {
-  private peopleSubject: Subject<Person[]> = new Subject<Person[]>();
-  private donationsSubject: Subject<Donation[]> = new Subject<Donation[]>();
-  private productsSubject: Subject<Product[]> = new Subject<Product[]>();
-  private purchasesSubject: Subject<Purchase[]> = new Subject<Purchase[]>();
+  peopleSubject: Subject<Person[]> = new Subject<Person[]>();
+  donationsSubject: Subject<Donation[]> = new Subject<Donation[]>();
+  productsSubject: Subject<Product[]> = new Subject<Product[]>();
+  purchasesSubject: Subject<Purchase[]> = new Subject<Purchase[]>();
   // tslint:disable-next-line:variable-name
   private _settingsResetSubject: Subject<boolean> = new Subject<boolean>();
 
@@ -27,11 +28,8 @@ export class SettingsService implements OnDestroy {
   donations: Donation[];
   purchases: Purchase[];
   products: Product[];
+  filteredProducts: Product[];
   color: string;
-
-
-  TITLE_DEFAULT = 'Auction Advisor';
-  COLOR_DEFAULT = '--blue-color-';
 
   constructor(private excelService: ExcelService) {
     this.readFromLocalStorage();
@@ -41,47 +39,49 @@ export class SettingsService implements OnDestroy {
     this.saveToLocalStorage();
   }
 
-  getPeopleChange(): Observable<Person[]> {
-    return this.peopleSubject;
+  filterProducts(): void {
+    this.filteredProducts = [];
+    this.products.forEach(item => {
+      if (!this.hasDonation(item.id)) {
+        this.filteredProducts.push(item);
+      }
+    });
   }
 
-  getDonationsChange(): Observable<Donation[]> {
-    return this.donationsSubject;
+  hasDonation(productId: number): boolean {
+    return !!this.donations.find(x => x.productId === productId);
   }
 
-  getPurchasesChange(): Observable<Purchase[]> {
-    return this.purchasesSubject;
+  hasPurchase(productId: number): boolean {
+    return !!this.purchases.find(x => x.productId === productId);
   }
 
-  getProductsChange(): Observable<Product[]> {
-    return this.productsSubject;
-  }
+  add(item: any): void {
+    const value: string = typeof (item);
+    switch (value) {
+      case PURCHASE_TYPE:
+        item.id = this.getNextId(this.purchases);
+        this.purchases.push(item);
+        this.purchasesSubject.next(this.purchases);
+        break;
+      case DONATION_TYPE:
+        item.id = this.getNextId(this.donations);
+        this.donations.push(item);
+        this.donationsSubject.next(this.donations);
+        break;
+      case PRODUCT_TYPE:
+        item.id = this.getNextId(this.products);
+        this.products.push(item);
+        this.filterProducts();
+        this.productsSubject.next(this.products);
+        break;
+      case PERSON_TYPE:
+        item.id = this.getNextId(this.people);
+        this.people.push(item);
+        this.peopleSubject.next(this.people);
+        break;
+    }
 
-  public addPerson(person: Person): void {
-    person.id = this.findHighestId(this.people);
-    this.people.push(person);
-    this.peopleSubject.next(this.people);
-    this.saveToLocalStorage();
-  }
-
-  public addDonation(donation: Donation): void {
-    donation.id = this.findHighestId(this.donations);
-    this.donations.push(donation);
-    this.donationsSubject.next(this.donations);
-    this.saveToLocalStorage();
-  }
-
-  public addProduct(product: Product): void {
-    product.id = this.findHighestId(this.products);
-    this.products.push(product);
-    this.productsSubject.next(this.products);
-    this.saveToLocalStorage();
-  }
-
-  public addPurchase(purchase: Purchase): void {
-    purchase.id = this.findHighestId(this.purchases);
-    this.purchases.push(purchase);
-    this.purchasesSubject.next(this.purchases);
     this.saveToLocalStorage();
   }
 
@@ -102,12 +102,12 @@ export class SettingsService implements OnDestroy {
     let person: Person = this.people.find(x => x.id === id);
 
     if (person) {
-      return person.firstName + ' ' + person.lastName;
+      return person.name();
     }
     return info;
   }
 
-  private findHighestId(array: any[]): number {
+  private getNextId(array: any[]): number {
     if (array === null || array === undefined || array.length === 0) {
       return 0;
     } else {
@@ -120,10 +120,6 @@ export class SettingsService implements OnDestroy {
 
       return ++id;
     }
-  }
-
-  get settingsReset(): Observable<boolean> {
-    return this._settingsResetSubject;
   }
 
   setColor(value: string): void {
@@ -145,12 +141,11 @@ export class SettingsService implements OnDestroy {
     this.saveToLocalStorage();
   }
 
-  //#region Reset Methods
   resetEverything(): void {
     window.localStorage.clear();
 
-    this.title = _.cloneDeep(this.TITLE_DEFAULT);
-    this.setColor(_.cloneDeep(this.COLOR_DEFAULT));
+    this.title = _.cloneDeep(TITLE_DEFAULT);
+    this.setColor(_.cloneDeep(COLOR_DEFAULT));
     this.purchases = [];
     this.people = [];
     this.donations = [];
@@ -161,164 +156,88 @@ export class SettingsService implements OnDestroy {
     this._settingsResetSubject.next(true);
   }
 
-  //#endregion
-
-  //#region String Concatenation Methods
   public makeExportTitle(value: string): string {
     return this.title + '_' + value;
   }
 
-  //#endregion
-
-  //#region EXPORT TO EXCEL METHODS
   public exportToExcelByProduct(): void {
-    const productName: string = 'Product Name';
-    const productDesc: string = 'Product Description';
-    const donatedBy: string = 'Donated By';
-    const creditTo: string = 'Credit To';
-    const purchasedBy: string = 'Purchased By';
-    const purchasedAmount: string = 'Purchased Amount';
-
-    let dataArray: any = [];
-
-    this.products.forEach(product => {
-      let data: any = {};
-      let donation: Donation = this.donations.find(x => x.productId === product.id);
-      let purchase: Purchase = this.purchases.find(x => x.productId === product.id);
-      data[productName] = product.name;
-      data[productDesc] = product.description;
-      data[donatedBy] = donation !== undefined ? this.getPersonInfoById(donation.donatedBy) : '';
-      data[creditTo] = donation !== undefined ? this.getPersonInfoById(donation.creditTo) : '';
-      data[purchasedBy] = purchase !== undefined ? this.getPersonInfoById(purchase.purchasedBy) : '';
-      data[purchasedAmount] = purchase.amount;
-
-      dataArray.push(data);
-    });
-
-    this.excelService.exportAsExcelFile(dataArray, this.makeExportTitle('ByProduct'));
-
-    // This helped
-    // https://medium.com/@madhavmahesh/exporting-an-excel-file-in-angular-927756ac9857
+    this.excelService.exportToExcelByProduct(
+      this.makeExportTitle('ByProduct'),
+      this.products,
+      this.donations,
+      this.purchases,
+      this.getPersonInfoById
+    );
   }
 
   public exportToExcelByPurchaser(): void {
-    const purchaser: string = 'Purchaser';
-    const productName: string = 'Product Name';
-    const productDescription: string = 'Product Description';
-    const amount: string = 'Amount Purchased';
-    let dataArray: any = [];
-
-    this.people.forEach(person => {
-      const name = this.getPersonInfoById(person.id);
-
-      this.purchases.filter(x => x.purchasedBy === person.id).forEach(purchase => {
-        let data: any = {};
-        let product: Product = this.products.find(x => x.id === purchase.productId);
-        data[purchaser] = name;
-        data[productName] = product !== undefined ? product.name : '';
-        data[productDescription] = product !== undefined ? product.description : '';
-        data[amount] = purchase.amount;
-
-        dataArray.push(data);
-      });
-    });
-
-    this.excelService.exportAsExcelFile(dataArray, this.makeExportTitle('ByPurchaser'));
-
-    // This helped
-    // https://medium.com/@madhavmahesh/exporting-an-excel-file-in-angular-927756ac9857
+    this.excelService.exportToExcelByPurchaser(
+      this.makeExportTitle('ByPurchaser'),
+      this.products,
+      this.people,
+      this.purchases,
+      this.getPersonInfoById
+    );
   }
 
   public exportToExcelTotals(): void {
-    const personTitle: string = 'Person';
-    const amountPurchased: string = 'Amount Purchased';
-    const itemsPurchasedTitle: string = 'Number Of Items Purchased';
-    const itemsCreditedTitle: string = 'Number Of Items Credited';
-    const creditTotal: string = 'Amount to Credit Account';
-    let dataArray: any = [];
-
-    this.people.forEach(person => {
-      const name = this.getPersonInfoById(person.id);
-      const purchases = this.purchases.filter(x => x.purchasedBy === person.id);
-      const credits = this.donations.filter(x => x.creditTo === person.id)
-        .filter(y => this.purchases.findIndex(c => c.productId === y.productId) > -1);
-      let totalPurchased: number = 0;
-      const itemsPurchased: number = purchases.length;
-      const itemsCredited: number = credits.length;
-      let totalCredit: number = 0;
-
-      purchases.forEach(purchase => {
-        totalPurchased += +purchase.amount;
-      });
-
-      credits.forEach(donation => {
-        const purchase = this.purchases.find(x => x.productId === donation.productId);
-        totalCredit += +purchase.amount;
-      });
-
-      let data: any = {};
-      data[personTitle] = name;
-      data[amountPurchased] = '$' + totalPurchased;
-      data[itemsPurchasedTitle] = itemsPurchased;
-      data[creditTotal] = '$' + totalCredit;
-      data[itemsCreditedTitle] = itemsCredited;
-
-      dataArray.push(data);
-    });
-
-    this.excelService.exportAsExcelFile(dataArray, this.makeExportTitle('TotalsByPerson'));
-
-    // This helped
-    // https://medium.com/@madhavmahesh/exporting-an-excel-file-in-angular-927756ac9857
+    this.excelService.exportToExcelTotals(
+      this.makeExportTitle('TotalsByPerson'),
+      this.people,
+      this.donations,
+      this.purchases,
+      this.getPersonInfoById
+    );
   }
 
-  //#endregion
-
-  //#region EDIT TYPES
-  public editPurchase(purchase: Purchase): void {
-    let index = this.purchases.indexOf(this.purchases.find(x => x.id === purchase.id));
-    if (index >= 0) {
-      this.purchases[index] = purchase;
+  public edit(item: any): void {
+    let index = -1;
+    const value: string = typeof (item);
+    switch (value) {
+      case PURCHASE_TYPE:
+        index = this.purchases.indexOf(this.purchases.find(x => x.id === item.id));
+        break;
+      case DONATION_TYPE:
+        index = this.donations.indexOf(this.donations.find(x => x.id === item.id));
+        break;
+      case PRODUCT_TYPE:
+        index = this.products.indexOf(this.products.find(x => x.id === item.id));
+        break;
+      case PERSON_TYPE:
+        index = this.people.indexOf(this.people.find(x => x.id === item.id));
+        break;
     }
+
+    if (index >= 0) {
+      switch (value) {
+        case PURCHASE_TYPE:
+          this.purchases[index] = item;
+          break;
+        case DONATION_TYPE:
+          this.donations[index] = item;
+          break;
+        case PRODUCT_TYPE:
+          this.products[index] = item;
+          break;
+        case PERSON_TYPE:
+          this.people[index] = item;
+          break;
+      }
+    }
+
     this.saveToLocalStorage();
   }
 
-  public editDonation(donation: Donation): void {
-    let index = this.donations.indexOf(this.donations.find(x => x.id === donation.id));
-    if (index >= 0) {
-      this.donations[index] = donation;
-    }
-    this.saveToLocalStorage();
-  }
-
-  public editProduct(product: Product): void {
-    let index = this.products.indexOf(this.products.find(x => x.id === product.id));
-    if (index >= 0) {
-      this.products[index] = product;
-    }
-    this.saveToLocalStorage();
-  }
-
-  public editPerson(person: Person): void {
-    let index = this.people.indexOf(this.people.find(x => x.id === person.id));
-    if (index >= 0) {
-      this.people[index] = person;
-    }
-    this.saveToLocalStorage();
-  }
-
-  //#endregion
-
-  //#region Get From Local Storage
   private readFromLocalStorage(): void {
-    this.title = this.getItemOrDefault('auction-title', this.TITLE_DEFAULT);
+    this.title = this.getItemOrDefault('auction-title', TITLE_DEFAULT);
     this.canEdit = this.getBoolean(this.getItemOrDefault('can-edit', 'false'));
-    this.setColor(this.getItemOrDefault('auction-color', this.COLOR_DEFAULT));
+    this.setColor(this.getItemOrDefault('auction-color', COLOR_DEFAULT));
 
     this.people = this.getJsonItemArray('people');
     this.donations = this.getJsonItemArray('donations');
     this.products = this.getJsonItemArray('products');
     this.purchases = this.getJsonItemArray('purchases');
+    this.filterProducts();
 
     this.peopleSubject.next(this.people);
     this.donationsSubject.next(this.donations);
@@ -341,11 +260,7 @@ export class SettingsService implements OnDestroy {
   }
 
   private isNullOrUndefined(str: string): boolean {
-    if (str == null || str === undefined || str === 'undefined' || str === 'null') {
-      return true;
-    } else {
-      return false;
-    }
+    return str == null || str === 'undefined' || str === 'null';
   }
 
   private getItemOrDefault(key: string, defaultValue: string): string {
@@ -358,9 +273,6 @@ export class SettingsService implements OnDestroy {
     return !this.isNullOrUndefined(item) ? JSON.parse(item) : [];
   }
 
-  //#endregion
-
-  //#region Save to Local Storage
   private saveToLocalStorage(): void {
     let items: LocalStorageSaveItem[] = [
       new LocalStorageSaveItem({
@@ -402,36 +314,19 @@ export class SettingsService implements OnDestroy {
     window.localStorage.setItem(key, value);
   }
 
-  //#endregion
-
-  //#region Mapping Objects to Display Objects
-  public mapDonationToDonationDisplay(donation: Donation): DonationDisplay {
-    let newItem: DonationDisplay = new DonationDisplay({
-      id: donation.id,
-      estimatedValue: donation.estimatedValue,
-      minSellAmount: donation.minSellAmount,
-      productName: this.getProductInfoById(donation.productId),
-      donatedByName: this.getPersonInfoById(donation.donatedBy),
-      creditToName: this.getPersonInfoById(donation.creditTo),
-      creditTo: donation.creditTo,
-      donatedBy: donation.donatedBy,
-      productId: donation.productId
-    });
-
-    return newItem;
+  public getDonationDisplay(donations: Donation[] = this.donations): DonationDisplay[] {
+    return DonationDisplay.mapFromDonations(
+      donations,
+      this.getProductInfoById,
+      this.getPersonInfoById
+    );
   }
 
-  public mapPurchaseToPurchaseDisplay(purchase: Purchase): PurchaseDisplay {
-    let newItem: PurchaseDisplay = new PurchaseDisplay({
-      id: purchase.id,
-      amount: purchase.amount,
-      purchasedByName: this.getPersonInfoById(purchase.purchasedBy),
-      productName: this.getProductInfoById(purchase.productId),
-      productId: purchase.productId,
-      purchasedBy: purchase.purchasedBy
-    });
-    return newItem;
+  public getPurchaseDisplay(purchases: Purchase[] = this.purchases): PurchaseDisplay[] {
+    return PurchaseDisplay.mapFromPurchase(
+      purchases,
+      this.getProductInfoById,
+      this.getPersonInfoById
+    );
   }
-
-  //#endregion
 }

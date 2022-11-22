@@ -4,6 +4,15 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material';
 import {ConfirmationPopupComponent} from '../../component/confirmation-popup/confirmation-popup.component';
 import {AlertService} from '../../service/alert.service';
+import {
+  APPLY_SETTING_MESSAGE,
+  APPLY_SETTING_SUCCESS_MESSAGE,
+  COLOR_OPTIONS,
+  RESET_EVERYTHING_MESSAGE,
+  RESET_EVERYTHING_SUCCESS_MESSAGE,
+  RESET_SCORES_MESSAGE,
+  RESET_SCORES_SUCCESS_MESSAGE
+} from '../../constants/constants';
 
 @Component({
   selector: 'app-settings',
@@ -11,52 +20,7 @@ import {AlertService} from '../../service/alert.service';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit, OnDestroy {
-  colors = [
-    {
-      name: 'Black',
-      value: '--black-color-'
-    },
-    {
-      name: 'Blue',
-      value: '--blue-color-'
-    },
-    {
-      name: 'Gray',
-      value: '--gray-color-'
-    },
-    {
-      name: 'Gray Dark',
-      value: '--gray-dark-color-'
-    },
-    {
-      name: 'Green',
-      value: '--green-color-'
-    },
-    {
-      name: 'Orange',
-      value: '--orange-color-'
-    },
-    {
-      name: 'Pink',
-      value: '--pink-color-'
-    },
-    {
-      name: 'Purple',
-      value: '--purple-color-'
-    },
-    {
-      name: 'Red',
-      value: '--red-color-'
-    },
-    {
-      name: 'Yellow',
-      value: '--yellow-color-'
-    },
-    {
-      name: 'White',
-      value: '--white-color-'
-    }
-  ];
+  colors = COLOR_OPTIONS;
 
   titleControl: FormControl = new FormControl('', [Validators.required]);
   canEditControl: FormControl = new FormControl('', [Validators.required]);
@@ -64,17 +28,11 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   settingsFormGroup: FormGroup;
 
-  RESET_EVERYTHING_MESSAGE: string = 'This will reset everything to the default settings.';
-  RESET_SCORES_MESSAGE: string = 'This will reset the scores only.';
-  APPLY_SETTING_MESSAGE: string = 'Applying settings changes will reset scores.';
-  RESET_SCORES_SUCCESS_MESSAGE: string = 'Scores reset successfully.';
-  RESET_EVERYTHING_SUCCESS_MESSAGE: string = 'Settings and scores reset successfully.';
-  APPLY_SETTING_SUCCESS_MESSAGE: string = 'Settings applied successfully.';
-  ACTION_CANCELLED_MESSAGE: string = 'Action Cancelled.';
-
-  constructor(public dialog: MatDialog,
-              private alertService: AlertService,
-              public settingsService: SettingsService) {
+  constructor(
+    public dialog: MatDialog,
+    private alertService: AlertService,
+    public settingsService: SettingsService
+  ) {
   }
 
   ngOnInit() {
@@ -90,34 +48,22 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   resetEverything(): void {
-    const dialogRef = this.dialog.open(ConfirmationPopupComponent, {
-      data: {
-        label: this.RESET_EVERYTHING_MESSAGE
-      },
-      id: 'confirmation-modal',
-      width: '35vw'
-    });
+    const dialogRef = this.getConfirmationPopup(RESET_EVERYTHING_MESSAGE);
     if (dialogRef) {
       dialogRef.afterClosed().subscribe(shouldReset => {
         if (shouldReset) {
           this.settingsService.resetEverything();
           this.applySettingsValuesToFormControls();
-          this.alertService.success(this.RESET_EVERYTHING_SUCCESS_MESSAGE, Date.now());
+          this.alertService.success(RESET_EVERYTHING_SUCCESS_MESSAGE);
         } else {
-          this.alertService.warn(this.ACTION_CANCELLED_MESSAGE, Date.now());
+          this.alertService.actionCancelled();
         }
       });
     }
   }
 
   applyToSettings(): void {
-    const dialogRef = this.dialog.open(ConfirmationPopupComponent, {
-      data: {
-        label: this.APPLY_SETTING_MESSAGE
-      },
-      id: 'confirmation-modal',
-      width: '35vw'
-    });
+    const dialogRef = this.getConfirmationPopup(APPLY_SETTING_MESSAGE);
     if (dialogRef) {
       dialogRef.afterClosed().subscribe(shouldApply => {
         if (shouldApply) {
@@ -125,37 +71,29 @@ export class SettingsComponent implements OnInit, OnDestroy {
             this.titleControl.value,
             this.canEditControl.value
           );
-          this.alertService.success(this.APPLY_SETTING_SUCCESS_MESSAGE, Date.now());
+          this.alertService.success(APPLY_SETTING_SUCCESS_MESSAGE);
         } else {
-          this.alertService.warn(this.ACTION_CANCELLED_MESSAGE, Date.now());
+          this.alertService.actionCancelled();
         }
       });
     }
   }
 
   resetOnlyScores(): void {
-    const dialogRef = this.dialog.open(ConfirmationPopupComponent, {
-      data: {
-        label: this.RESET_SCORES_MESSAGE
-      },
-      id: 'confirmation-modal',
-      width: '35vw'
-    });
+    const dialogRef = this.getConfirmationPopup(RESET_SCORES_MESSAGE);
     if (dialogRef) {
       dialogRef.afterClosed().subscribe(shouldReset => {
         if (shouldReset) {
-          this.alertService.success(this.RESET_SCORES_SUCCESS_MESSAGE, Date.now());
+          this.alertService.success(RESET_SCORES_SUCCESS_MESSAGE);
         } else {
-          this.alertService.warn(this.ACTION_CANCELLED_MESSAGE, Date.now());
+          this.alertService.actionCancelled();
         }
       });
     }
   }
 
   applySettingsValuesToFormControls(): void {
-
     this.titleControl.setValue(this.settingsService.title);
-
     this.colorControl.setValue(this.settingsService.color);
     this.canEditControl.setValue(this.settingsService.canEdit);
   }
@@ -166,5 +104,15 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   getBackgroundColor(value: string): string {
     return 'var(' + value + 40 + ')';
+  }
+
+  private getConfirmationPopup(label: string): any {
+    return this.dialog.open(ConfirmationPopupComponent, {
+      data: {
+        label
+      },
+      id: 'confirmation-modal',
+      width: '35vw'
+    });
   }
 }

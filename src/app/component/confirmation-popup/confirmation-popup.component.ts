@@ -1,5 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {PERFORM_THIS_ACTION} from '../../constants/constants';
 
 @Component({
   selector: 'app-confirmation-popup',
@@ -7,7 +8,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
     <div data-border-div>
       <div data-popup-ctn>
         <div data-question-label class="confirm-label">{{label}}</div>
-        <div data-perform-action class="confirm-label">{{PERFORM_THIS_ACTION}}</div>
+        <div data-perform-action class="confirm-label">{{performAction}}</div>
         <div class="button-div">
           <button data-confirm-button mat-stroked-button
                   type="button"
@@ -24,12 +25,13 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
   styleUrls: ['./confirmation-popup.component.scss']
 })
 export class ConfirmationPopupComponent implements OnInit {
-  PERFORM_THIS_ACTION: string = 'Are you sure you want to perform this action?';
-
+  performAction = PERFORM_THIS_ACTION;
   label: string;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-              public dialogRef: MatDialogRef<ConfirmationPopupComponent>) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<ConfirmationPopupComponent>
+  ) {
     this.dialogRef.disableClose = true;
   }
 
@@ -42,5 +44,4 @@ export class ConfirmationPopupComponent implements OnInit {
   closeDialog(shouldPerformAction: boolean): void {
     this.dialogRef.close(shouldPerformAction);
   }
-
 }

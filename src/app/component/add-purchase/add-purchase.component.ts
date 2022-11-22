@@ -4,65 +4,39 @@ import {Purchase} from '../../model/purchase.model';
 import {AlertService} from '../../service/alert.service';
 import {SettingsService} from '../../service/settings.service';
 import {Product} from '../../model/product.model';
-import {Person} from '../../model/person.model';
 import {Donation} from '../../model/donation.model';
+import {Add} from '../../abstract/add';
+import {clearFormGroup} from '../../constants/constants';
 
 @Component({
   selector: 'app-add-purchase',
   templateUrl: './add-purchase.component.html',
   styleUrls: ['./add-purchase.component.scss']
 })
-export class AddPurchaseComponent implements OnInit {
+export class AddPurchaseComponent extends Add implements OnInit {
   productControl: FormControl = new FormControl('', [Validators.required]);
   purchaserControl: FormControl = new FormControl('', [Validators.required]);
   amountControl: FormControl = new FormControl('', [Validators.required, Validators.pattern('^(0|[1-9][0-9]*)$'), Validators.min(0)]);
-  products: Product[] = [];
-  people: Person[] = [];
-  donations: Donation[] = [];
-  purchases: Purchase[] = [];
 
-
-  purchaseFormGroup: FormGroup;
-
-  showInput: boolean = false;
   constructor(
     private alertService: AlertService,
-    private settingsService: SettingsService
+    public settingsService: SettingsService
   ) {
+    super();
   }
 
   ngOnInit() {
-    this.purchaseFormGroup = new FormGroup({
+    this.formGroup = new FormGroup({
       productId: this.productControl,
       purchasedBy: this.purchaserControl,
       amount: this.amountControl,
-    });
-
-    this.people = this.settingsService.people;
-    this.products = this.settingsService.products;
-    this.purchases = this.settingsService.purchases;
-    this.donations = this.settingsService.donations;
-    this.settingsService.getPeopleChange().subscribe(people => {
-      this.people = people;
-    });
-
-    this.settingsService.getProductsChange().subscribe(products => {
-      this.products = products;
-    });
-
-    this.settingsService.getDonationsChange().subscribe(donations => {
-      this.donations = donations;
-    });
-
-    this.settingsService.getPurchasesChange().subscribe(purchases => {
-      this.purchases = purchases;
     });
   }
 
   applyMinSellAmount(): void {
     const productId = this.productControl.value;
     let amount = 0;
-    let donation: Donation = this.donations.find(x => x.productId === productId);
+    let donation: Donation = this.settingsService.donations.find(x => x.productId === productId);
     if (donation) {
       amount = donation.minSellAmount;
     }
@@ -70,14 +44,10 @@ export class AddPurchaseComponent implements OnInit {
     this.resetAmountControl(true, amount);
   }
 
-  switchDisplay(): void {
-    this.showInput = !this.showInput;
-  }
-
-  getFilteredProducts(): Product[] {
+  filterProducts(): Product[] {
     let filteredProducts: Product[] = [];
-    this.products.forEach(item => {
-      if (this.hasDonation(item.id) && !this.hasPurchase(item.id)) {
+    this.settingsService.products.forEach(item => {
+      if (this.settingsService.hasDonation(item.id) && !this.settingsService.hasPurchase(item.id)) {
         filteredProducts.push(item);
       }
     });
@@ -85,45 +55,20 @@ export class AddPurchaseComponent implements OnInit {
     return filteredProducts;
   }
 
-  hasDonation(productId: number): boolean {
-    let found = false;
-    let donation: Donation = this.donations.find(x => x.productId === productId);
-    if (donation) {
-      return true;
-    }
-
-    return found;
-  }
-
-  hasPurchase(productId: number): boolean {
-    let found = false;
-    let purchase: Purchase = this.purchases.find(x => x.productId === productId);
-    if (purchase) {
-      return true;
-    }
-
-    return found;
-  }
-
-  addPurchase(): void {
+  add(): void {
     const purchase: Purchase = new Purchase();
     purchase.amount = this.amountControl.value;
     purchase.productId = this.productControl.value;
     purchase.purchasedBy = this.purchaserControl.value;
 
-    this.settingsService.addPurchase(purchase);
+    this.settingsService.add(purchase);
     this.clearFormControl();
-    this.alertService.success('Purchase added successfully.', Date.now());
+    this.alertService.success('Purchase added successfully');
   }
 
   clearFormControl(): void {
     this.resetAmountControl(false);
-    this.productControl.setValue('');
-    this.purchaserControl.setValue('');
-    this.amountControl.setValue('');
-    this.productControl.markAsUntouched();
-    this.purchaserControl.markAsUntouched();
-    this.amountControl.markAsUntouched();
+    clearFormGroup(this.formGroup);
   }
 
   resetAmountControl(customAmount: boolean, value: number = 0): void {
@@ -133,7 +78,7 @@ export class AddPurchaseComponent implements OnInit {
     } else {
       this.amountControl = new FormControl(this.amountControl.value, [Validators.required, Validators.pattern('^(0|[1-9][0-9]*)$')]);
     }
-    this.purchaseFormGroup.removeControl('amount');
-    this.purchaseFormGroup.addControl('amount', this.amountControl);
+    this.formGroup.removeControl('amount');
+    this.formGroup.addControl('amount', this.amountControl);
   }
 }

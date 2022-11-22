@@ -7,4 +7,8 @@ export class Person {
   constructor(init?: Partial<Person>) {
     Object.assign(this, init);
   }
+
+  name(): string {
+    return `${this.firstName} ${this.lastName}`;
+  }
 }

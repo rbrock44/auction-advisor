@@ -3,6 +3,7 @@ import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import {Product} from '../../model/product.model';
 import {SettingsService} from '../../service/settings.service';
 import {EditProductComponent} from '../../component/edit-product/edit-product.component';
+import {EDIT_COLUMN} from '../../constants/constants';
 
 @Component({
   selector: 'app-products',
@@ -25,9 +26,9 @@ export class ProductsComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.dataSource.data = this.settingsService.products;
     if (this.settingsService.canEdit) {
-      this.displayColumns.push('edit');
+      this.displayColumns.push(EDIT_COLUMN);
     }
-    this.settingsService.getProductsChange().subscribe(products => {
+    this.settingsService.productsSubject.subscribe(products => {
       this.dataSource.data = products;
     });
   }
@@ -35,11 +36,10 @@ export class ProductsComponent implements OnInit {
   openEditDialog(product: Product): void {
     event.preventDefault();
 
-    const dialogRef = this.dialog.open(EditProductComponent, {
+    this.dialog.open(EditProductComponent, {
       data: {
-        product: product
+        product
       }
     });
   }
-
 }

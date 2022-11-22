@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {Alert, AlertType} from '../model/alert.model';
 import {filter} from 'rxjs/operators';
+import {ACTION_CANCELLED_MESSAGE} from '../constants/constants';
 
 @Injectable({providedIn: 'root'})
 export class AlertService {
@@ -12,7 +13,7 @@ export class AlertService {
     return this.subject.asObservable().pipe(filter(x => x && x.id === id));
   }
 
-  success(message: string, options?: any): void {
+  success(message: string, options: any = Date.now()): void {
     this.alert(new Alert({...options, type: AlertType.Success, message}));
   }
 
@@ -26,6 +27,10 @@ export class AlertService {
 
   warn(message: string, options?: any): void {
     this.alert(new Alert({...options, type: AlertType.Warning, message}));
+  }
+
+  actionCancelled(): void {
+    this.warn(ACTION_CANCELLED_MESSAGE, Date.now());
   }
 
   alert(alert: Alert): void {
