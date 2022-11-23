@@ -76,7 +76,7 @@ describe('PurchasesComponent', () => {
     component.ngOnInit();
     fixture.detectChanges();
 
-    expect(dataSpy).toHaveBeenCalledTimes(2);
+    expect(dataSpy).toHaveBeenCalledTimes(3);
     expect(dataSpy).toHaveBeenCalledWith(PURCHASE_OPTIONS);
     expect(component.dataSource.data).toEqual(PURCHASE_DISPLAY_OPTIONS);
   });

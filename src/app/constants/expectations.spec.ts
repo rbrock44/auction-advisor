@@ -18,6 +18,7 @@ export function expectElementToContainContentAtIndex(
   content: string,
   index: number
 ) {
+  expectElementPresent(fixture, cssSelector, `Element (${cssSelector}) cannot contain content if not present`);
   const element = fixture.debugElement.queryAll(By.css(cssSelector));
   const value = element[index].nativeElement.textContent;
   expect(value.indexOf(content) >= 0).toBeTruthy(`${cssSelector} did not contain ${content} at ${index}`);
@@ -104,10 +105,11 @@ export function hideShowElementsOnClick(fixture: ComponentFixture<any>, elements
 }
 
 export function verifyDropdownOptions(fixture: ComponentFixture<any>, options: any[], values: string[], index = 0) {
-  clickElementAtIndex(fixture, '.mat-select', index);
+  const element = fixture.debugElement.queryAll(By.css('mat-select'))[index];
+  element.triggerEventHandler('click', null);
   fixture.detectChanges();
   options.forEach((value, ind) => {
-    const element = fixture.debugElement.queryAll(By.css('mat-form-field'));
+    // const element = fixture.debugElement.queryAll(By.css('mat-form-field'));
     expectElementToContainContentAtIndex(fixture, 'mat-option', values[index], ind);
   });
 }
