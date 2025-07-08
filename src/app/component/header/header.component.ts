@@ -51,7 +51,7 @@ export class HeaderComponent {
 
   show(index: number): void {
     const urlParam = Pages[index];
-    if (urlParam !== 'Home') {
+    if (urlParam !== 'Products') {
       const queryParams = new URLSearchParams()
       queryParams.set('page', urlParam);
       this.location.replaceState(`${location.pathname}?${queryParams.toString()}`);
