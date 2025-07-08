@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import { Pages } from '../../constants/constants';
 import { Location } from '@angular/common';
+import { SettingsService } from '../../services/settings.service';
 
 @Component({
   selector: 'app-header',

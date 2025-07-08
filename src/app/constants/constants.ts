@@ -82,3 +82,11 @@ export function clearFormGroup(group: FormGroup) {
     group.get(key).markAsUntouched();
   });
 }
+
+export enum Pages {
+ Products,
+ People,
+ Purchases,
+ Donations,
+ Settings
+}

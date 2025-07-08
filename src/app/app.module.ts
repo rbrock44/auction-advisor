@@ -24,7 +24,7 @@ import {EditPersonComponent} from './component/edit-person/edit-person.component
 import {EditPurchaseComponent} from './component/edit-purchase/edit-purchase.component';
 import {EditDonationComponent} from './component/edit-donation/edit-donation.component';
 import {MaterialModule} from './material.module';
-import { MainComponent } from './pages/main/main.component';
+import { MainComponent } from './page/main/main.component';
 
 @NgModule({
   declarations: [
