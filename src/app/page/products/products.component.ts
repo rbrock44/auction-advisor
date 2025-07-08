@@ -31,6 +31,13 @@ export class ProductsComponent implements OnInit {
     this.settingsService.productsSubject.subscribe(products => {
       this.dataSource.data = products;
     });
+
+    const queryParams = new URLSearchParams(window.location.search);
+    const pageParam = queryParams.get('page');
+
+    if (pageParam) {
+      this.settingsService.setShowWithUrlParam(pageParam);
+    }
   }
 
   openEditDialog(product: Product): void {
