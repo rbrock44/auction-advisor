@@ -9,7 +9,7 @@ import {Purchase} from '../model/purchase.model';
 import {LocalStorageSaveItem} from '../model/local-storage-save-item.model';
 import {DonationDisplay} from '../model/donation-display.model';
 import {PurchaseDisplay} from '../model/purchase-display.model';
-import {COLOR_DEFAULT, DONATION_TYPE, PERSON_TYPE, PRODUCT_TYPE, PURCHASE_TYPE, TITLE_DEFAULT} from '../constants/constants';
+import {COLOR_DEFAULT, DONATION_TYPE, PERSON_TYPE, PRODUCT_TYPE, PURCHASE_TYPE, TITLE_DEFAULT, Pages} from '../constants/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -31,12 +31,30 @@ export class SettingsService implements OnDestroy {
   filteredProducts: Product[];
   color: string;
 
+  // this show array controls which page is showed at a time
+  // 1st: Products -> Home
+  // 2nd: People
+  // 3rd: Purchases
+  // 4th: Donations
+  // 5th: Settings
+  show = [true, false, false, false, false];
+
   constructor(private excelService: ExcelService) {
     this.readFromLocalStorage();
   }
 
   ngOnDestroy(): void {
     this.saveToLocalStorage();
+  }
+
+  setShow(index: number): void {
+    this.show = [false, false, false, false, false];
+    this.show[index] = true;
+  }
+
+  setShowWithUrlParam(param: string): void {
+    const index = Pages[param];
+    this.setShow(index);
   }
 
   filterProducts(): void {
