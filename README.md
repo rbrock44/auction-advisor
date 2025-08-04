@@ -90,7 +90,7 @@ Buttons - Description
 - Add Donation
   - To add a Purchase, a product, a person (donated by), a person (to credit the donation to), an estimated value and minimum sale amount is required
 - View Donations
-- 
+  
 ---
 
 ## 🛠 Technologies
