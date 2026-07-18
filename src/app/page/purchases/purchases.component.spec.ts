@@ -8,7 +8,7 @@ import {AddPersonComponent} from '../../component/add-person/add-person.componen
 import {AlertService} from '../../service/alert.service';
 import {SettingsService} from '../../service/settings.service';
 import {ExcelService} from '../../service/excel.service';
-import {MatDialog, MatDialogRef} from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import {AddPurchaseComponent} from '../../component/add-purchase/add-purchase.component';
 import {AddProductComponent} from '../../component/add-product/add-product.component';
 import {EditPurchaseComponent} from '../../component/edit-purchase/edit-purchase.component';
@@ -119,7 +119,7 @@ describe('PurchasesComponent', () => {
 
     const spy = spyOn(dialog, 'open');
 
-    clickElement(fixture, 'button');
+    clickElement(fixture, 'button.edit');
     fixture.detectChanges();
 
     expect(spy).toHaveBeenCalledWith(EditPurchaseComponent, {

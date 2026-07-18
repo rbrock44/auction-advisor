@@ -8,7 +8,7 @@ import {AddPersonComponent} from '../../component/add-person/add-person.componen
 import {AlertService} from '../../service/alert.service';
 import {SettingsService} from '../../service/settings.service';
 import {ExcelService} from '../../service/excel.service';
-import {MatDialog, MatDialogRef} from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import {EditPersonComponent} from '../../component/edit-person/edit-person.component';
 import {PEOPLE_OPTIONS} from '../../constants/constants.spec';
 import {EDIT_HEADER, ID_HEADER} from '../../constants/constants';
@@ -109,7 +109,7 @@ describe('PeopleComponent', () => {
 
     const spy = spyOn(dialog, 'open');
 
-    clickElement(fixture, 'button');
+    clickElement(fixture, 'button.edit');
     fixture.detectChanges();
 
     expect(spy).toHaveBeenCalledWith(EditPersonComponent, {

@@ -12,7 +12,7 @@ import {HEADER, PEOPLE_OPTIONS, PRODUCT_OPTIONS} from '../../constants/constants
 import {Donation} from '../../model/donation.model';
 import {SettingsService} from '../../service/settings.service';
 import {AlertService} from '../../service/alert.service';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {MaterialModule} from '../../material.module';
 import {CommonModule} from '@angular/common';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';

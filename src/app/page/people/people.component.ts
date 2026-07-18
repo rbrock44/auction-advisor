@@ -1,7 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Person} from '../../model/person.model';
 import {SettingsService} from '../../service/settings.service';
-import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import {EditPersonComponent} from '../../component/edit-person/edit-person.component';
 import {EDIT_COLUMN} from '../../constants/constants';
 

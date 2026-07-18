@@ -1,5 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import {SettingsService} from '../../service/settings.service';
 import {DonationDisplay} from '../../model/donation-display.model';
 import {EditDonationComponent} from '../../component/edit-donation/edit-donation.component';

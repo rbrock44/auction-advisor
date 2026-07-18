@@ -11,7 +11,7 @@ import {AddProductComponent} from '../../component/add-product/add-product.compo
 import {AlertService} from '../../service/alert.service';
 import {SettingsService} from '../../service/settings.service';
 import {ExcelService} from '../../service/excel.service';
-import {MatDialog, MatDialogRef} from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import {DONATION_DISPLAY_OPTIONS} from '../../constants/constants.spec';
 import {EDIT_HEADER, ID_HEADER} from '../../constants/constants';
 import {clickElement, expectElementToContainContentAtIndex, expectHeaderText} from '../../constants/expectations.spec';
@@ -123,7 +123,7 @@ describe('DonationsComponent', () => {
 
     const spy = spyOn(dialog, 'open');
 
-    clickElement(fixture, 'button');
+    clickElement(fixture, 'button.edit');
     fixture.detectChanges();
 
     expect(spy).toHaveBeenCalledWith(EditDonationComponent, {

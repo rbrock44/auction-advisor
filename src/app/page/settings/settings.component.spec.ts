@@ -7,7 +7,7 @@ import {MaterialModule} from '../../material.module';
 import {AlertService} from '../../service/alert.service';
 import {SettingsService} from '../../service/settings.service';
 import {ExcelService} from '../../service/excel.service';
-import {MatDialogRef} from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import {YesNoDropdownComponent} from '../../component/yes-no-dropdown/yes-no-dropdown.component';
 import {
   expectElementPresent,

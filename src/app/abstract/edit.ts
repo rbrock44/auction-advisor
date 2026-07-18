@@ -1,5 +1,5 @@
 import {FormGroup} from '@angular/forms';
-import {MatDialogRef} from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 
 export abstract class Edit {
   formGroup: FormGroup;
