@@ -19,7 +19,6 @@ export class SettingsService implements OnDestroy {
   donationsSubject: Subject<Donation[]> = new Subject<Donation[]>();
   productsSubject: Subject<Product[]> = new Subject<Product[]>();
   purchasesSubject: Subject<Purchase[]> = new Subject<Purchase[]>();
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _settingsResetSubject: Subject<boolean> = new Subject<boolean>();
 
   title: string;
