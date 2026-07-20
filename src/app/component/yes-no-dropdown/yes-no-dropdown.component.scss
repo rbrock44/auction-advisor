@@ -19,21 +19,23 @@
   white-space: pre-wrap;
 }
 
-::ng-deep .mat-option {
+::ng-deep .mat-mdc-option {
   white-space: pre-wrap !important;
   text-indent: 0;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of option that may no longer apply for the MDC version. */
 ::ng-deep .mat-option-text {
   line-height: 1.5em !important;
   padding: 8px;
   box-sizing: content-box;
 }
 
-::ng-deep .mat-select {
+::ng-deep .mat-mdc-select {
   overflow: visible;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version. */
 ::ng-deep .mat-select-value-text {
   word-wrap: break-word !important;
   white-space: pre-wrap !important;
