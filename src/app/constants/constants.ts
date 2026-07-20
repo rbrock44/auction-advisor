@@ -1,4 +1,4 @@
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 
 export const RESET_EVERYTHING_MESSAGE: string = 'This will reset everything to the default settings.';
 export const RESET_SCORES_MESSAGE: string = 'This will reset the scores only.';
@@ -76,7 +76,7 @@ export function addedSuccessfully(value: string): string {
   return `${value} added successfully`;
 }
 
-export function clearFormGroup(group: FormGroup) {
+export function clearFormGroup(group: UntypedFormGroup) {
   Object.keys(group.controls).forEach(key => {
     group.get(key).setValue('');
     group.get(key).markAsUntouched();

@@ -1,8 +1,8 @@
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
 export abstract class Edit {
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
 
   protected constructor(
     public dialogRef: MatDialogRef<any>,

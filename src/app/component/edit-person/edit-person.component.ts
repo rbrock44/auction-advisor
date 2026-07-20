@@ -2,7 +2,7 @@ import {Component, Inject} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {AlertService} from '../../service/alert.service';
 import {SettingsService} from '../../service/settings.service';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Person} from '../../model/person.model';
 import {Edit} from '../../abstract/edit';
 import {clearFormGroup} from '../../constants/constants';
@@ -14,9 +14,9 @@ import {clearFormGroup} from '../../constants/constants';
 })
 export class EditPersonComponent extends Edit {
   person: Person;
-  firstNameControl: FormControl = new FormControl('', [Validators.required]);
-  lastNameControl: FormControl = new FormControl('', [Validators.required]);
-  emailControl: FormControl = new FormControl('', [Validators.required]);
+  firstNameControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
+  lastNameControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
+  emailControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -29,11 +29,11 @@ export class EditPersonComponent extends Edit {
       this.person = data.person;
     }
 
-    this.firstNameControl = new FormControl(this.person.firstName, [Validators.required]);
-    this.lastNameControl = new FormControl(this.person.lastName, [Validators.required]);
-    this.emailControl = new FormControl(this.person.email, [Validators.required]);
+    this.firstNameControl = new UntypedFormControl(this.person.firstName, [Validators.required]);
+    this.lastNameControl = new UntypedFormControl(this.person.lastName, [Validators.required]);
+    this.emailControl = new UntypedFormControl(this.person.email, [Validators.required]);
 
-    this.formGroup = new FormGroup({
+    this.formGroup = new UntypedFormGroup({
       firstName: this.firstNameControl,
       lastName: this.lastNameControl,
       email: this.emailControl

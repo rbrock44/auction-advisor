@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Person} from '../../model/person.model';
 import {SettingsService} from '../../service/settings.service';
 import {AlertService} from '../../service/alert.service';
@@ -12,9 +12,9 @@ import {addedSuccessfully, clearFormGroup} from '../../constants/constants';
   styleUrls: ['./add-person.component.scss']
 })
 export class AddPersonComponent extends Add implements OnInit {
-  firstNameControl: FormControl = new FormControl('', [Validators.required]);
-  lastNameControl: FormControl = new FormControl('', [Validators.required]);
-  emailControl: FormControl = new FormControl('', [Validators.required]);
+  firstNameControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
+  lastNameControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
+  emailControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
 
   constructor(
     private alertService: AlertService,
@@ -24,7 +24,7 @@ export class AddPersonComponent extends Add implements OnInit {
   }
 
   ngOnInit() {
-    this.formGroup = new FormGroup({
+    this.formGroup = new UntypedFormGroup({
       firstName: this.firstNameControl,
       lastName: this.lastNameControl,
       email: this.emailControl,

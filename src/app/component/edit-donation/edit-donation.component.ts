@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {AlertService} from '../../service/alert.service';
 import {SettingsService} from '../../service/settings.service';
@@ -14,11 +14,11 @@ import {clearFormGroup} from '../../constants/constants';
 })
 export class EditDonationComponent extends Edit {
   donation: Donation = new Donation();
-  productControl: FormControl = new FormControl('', [Validators.required]);
-  donatedByControl: FormControl = new FormControl('', [Validators.required]);
-  creditToControl: FormControl = new FormControl('', [Validators.required]);
-  minAmountControl: FormControl = new FormControl('', [Validators.required, Validators.pattern('^(0|[1-9][0-9]*)$')]);
-  estimatedValueControl: FormControl = new FormControl('', [Validators.required, Validators.pattern('^(0|[1-9][0-9]*)$')]);
+  productControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
+  donatedByControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
+  creditToControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
+  minAmountControl: UntypedFormControl = new UntypedFormControl('', [Validators.required, Validators.pattern('^(0|[1-9][0-9]*)$')]);
+  estimatedValueControl: UntypedFormControl = new UntypedFormControl('', [Validators.required, Validators.pattern('^(0|[1-9][0-9]*)$')]);
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -37,7 +37,7 @@ export class EditDonationComponent extends Edit {
     this.minAmountControl.setValue(this.donation.minSellAmount);
     this.estimatedValueControl.setValue(this.donation.estimatedValue);
 
-    this.formGroup = new FormGroup({
+    this.formGroup = new UntypedFormGroup({
       donatedBy: this.donatedByControl,
       productId: this.productControl,
       estimatedValue: this.estimatedValueControl,

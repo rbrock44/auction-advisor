@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Purchase} from '../../model/purchase.model';
 import {AlertService} from '../../service/alert.service';
 import {SettingsService} from '../../service/settings.service';
@@ -14,9 +14,9 @@ import {clearFormGroup} from '../../constants/constants';
   styleUrls: ['./add-purchase.component.scss']
 })
 export class AddPurchaseComponent extends Add implements OnInit {
-  productControl: FormControl = new FormControl('', [Validators.required]);
-  purchaserControl: FormControl = new FormControl('', [Validators.required]);
-  amountControl: FormControl = new FormControl('', [Validators.required, Validators.pattern('^(0|[1-9][0-9]*)$'), Validators.min(0)]);
+  productControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
+  purchaserControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
+  amountControl: UntypedFormControl = new UntypedFormControl('', [Validators.required, Validators.pattern('^(0|[1-9][0-9]*)$'), Validators.min(0)]);
 
   constructor(
     private alertService: AlertService,
@@ -26,7 +26,7 @@ export class AddPurchaseComponent extends Add implements OnInit {
   }
 
   ngOnInit() {
-    this.formGroup = new FormGroup({
+    this.formGroup = new UntypedFormGroup({
       productId: this.productControl,
       purchasedBy: this.purchaserControl,
       amount: this.amountControl,
@@ -74,9 +74,9 @@ export class AddPurchaseComponent extends Add implements OnInit {
   resetAmountControl(customAmount: boolean, value: number = 0): void {
     if (customAmount) {
       this.amountControl =
-        new FormControl(this.amountControl.value, [Validators.required, Validators.min(value), Validators.pattern('^(0|[1-9][0-9]*)$')]);
+        new UntypedFormControl(this.amountControl.value, [Validators.required, Validators.min(value), Validators.pattern('^(0|[1-9][0-9]*)$')]);
     } else {
-      this.amountControl = new FormControl(this.amountControl.value, [Validators.required, Validators.pattern('^(0|[1-9][0-9]*)$')]);
+      this.amountControl = new UntypedFormControl(this.amountControl.value, [Validators.required, Validators.pattern('^(0|[1-9][0-9]*)$')]);
     }
     this.formGroup.removeControl('amount');
     this.formGroup.addControl('amount', this.amountControl);

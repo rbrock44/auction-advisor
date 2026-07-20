@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SettingsService} from '../../service/settings.service';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import {ConfirmationPopupComponent} from '../../component/confirmation-popup/confirmation-popup.component';
 import {AlertService} from '../../service/alert.service';
@@ -22,11 +22,11 @@ import {
 export class SettingsComponent implements OnInit, OnDestroy {
   colors = COLOR_OPTIONS;
 
-  titleControl: FormControl = new FormControl('', [Validators.required]);
-  canEditControl: FormControl = new FormControl('', [Validators.required]);
-  colorControl: FormControl = new FormControl('', [Validators.required]);
+  titleControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
+  canEditControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
+  colorControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
 
-  settingsFormGroup: FormGroup;
+  settingsFormGroup: UntypedFormGroup;
 
   constructor(
     public dialog: MatDialog,
@@ -36,7 +36,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.settingsFormGroup = new FormGroup({
+    this.settingsFormGroup = new UntypedFormGroup({
       title: this.titleControl,
     });
 

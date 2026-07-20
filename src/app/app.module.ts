@@ -27,46 +27,39 @@ import {MaterialModule} from './material.module';
 import { MainComponent } from './page/main/main.component';
 
 @NgModule({
-  declarations: [
-    AddDonationComponent,
-    AddPersonComponent,
-    AddProductComponent,
-    AddPurchaseComponent,
-    AppComponent,
-    ConfirmationPopupComponent,
-    DonationsComponent,
-    EditDonationComponent,
-    EditPersonComponent,
-    EditProductComponent,
-    EditPurchaseComponent,
-    HeaderComponent,
-    MainComponent,
-    PeopleComponent,
-    ProductsComponent,
-    PurchasesComponent,
-    SettingsComponent,
-    YesNoDropdownComponent
-  ],
-  entryComponents: [
-    ConfirmationPopupComponent,
-    EditDonationComponent,
-    EditPersonComponent,
-    EditProductComponent,
-    EditPurchaseComponent,
-  ],
-  imports: [
-    AlertModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    BrowserModule,
-    CommonModule,
-    FormsModule,
-    MaterialModule,
-    ReactiveFormsModule
-  ],
-  providers: [
-    ExcelService,
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AddDonationComponent,
+        AddPersonComponent,
+        AddProductComponent,
+        AddPurchaseComponent,
+        AppComponent,
+        ConfirmationPopupComponent,
+        DonationsComponent,
+        EditDonationComponent,
+        EditPersonComponent,
+        EditProductComponent,
+        EditPurchaseComponent,
+        HeaderComponent,
+        MainComponent,
+        PeopleComponent,
+        ProductsComponent,
+        PurchasesComponent,
+        SettingsComponent,
+        YesNoDropdownComponent
+    ],
+    imports: [
+        AlertModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        BrowserModule,
+        CommonModule,
+        FormsModule,
+        MaterialModule,
+        ReactiveFormsModule
+    ],
+    providers: [
+        ExcelService,
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

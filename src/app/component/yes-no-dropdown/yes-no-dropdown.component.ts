@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-yes-no-dropdown',
@@ -30,7 +30,7 @@ import {FormControl} from '@angular/forms';
   styleUrls: ['./yes-no-dropdown.component.scss']
 })
 export class YesNoDropdownComponent {
-  @Input() control: FormControl;
+  @Input() control: UntypedFormControl;
   @Input() name: string;
   @Input() htmlId: string;
   @Input() yesOption: string = 'Yes';

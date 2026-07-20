@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Product} from '../../model/product.model';
 import {SettingsService} from '../../service/settings.service';
 import {AlertService} from '../../service/alert.service';
@@ -12,8 +12,8 @@ import {clearFormGroup} from '../../constants/constants';
   styleUrls: ['./add-product.component.scss']
 })
 export class AddProductComponent extends Add implements OnInit {
-  nameControl: FormControl = new FormControl('', [Validators.required]);
-  descriptionControl: FormControl = new FormControl('', [Validators.required]);
+  nameControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
+  descriptionControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
 
   constructor(
     private alertService: AlertService,
@@ -23,7 +23,7 @@ export class AddProductComponent extends Add implements OnInit {
   }
 
   ngOnInit() {
-    this.formGroup = new FormGroup({
+    this.formGroup = new UntypedFormGroup({
       name: this.nameControl,
       description: this.descriptionControl,
     });

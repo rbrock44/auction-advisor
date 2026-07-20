@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Product} from '../../model/product.model';
 import {SettingsService} from '../../service/settings.service';
 import {AlertService} from '../../service/alert.service';
@@ -14,8 +14,8 @@ import {clearFormGroup} from '../../constants/constants';
 })
 export class EditProductComponent extends Edit {
   product: Product = new Product();
-  nameControl: FormControl;
-  descriptionControl: FormControl;
+  nameControl: UntypedFormControl;
+  descriptionControl: UntypedFormControl;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -28,10 +28,10 @@ export class EditProductComponent extends Edit {
       this.product = data.product;
     }
 
-    this.nameControl = new FormControl(this.product.name, [Validators.required]);
-    this.descriptionControl = new FormControl(this.product.description, [Validators.required]);
+    this.nameControl = new UntypedFormControl(this.product.name, [Validators.required]);
+    this.descriptionControl = new UntypedFormControl(this.product.description, [Validators.required]);
 
-    this.formGroup = new FormGroup({
+    this.formGroup = new UntypedFormGroup({
       name: this.nameControl,
       description: this.descriptionControl,
     });

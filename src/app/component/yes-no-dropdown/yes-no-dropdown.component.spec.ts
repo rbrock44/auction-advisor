@@ -3,7 +3,7 @@ import {YesNoDropdownComponent} from './yes-no-dropdown.component';
 import {MaterialModule} from '../../material.module';
 import {CommonModule} from '@angular/common';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {UntypedFormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {expectElementToContainContent} from '../../constants/expectations.spec';
 
 describe('YesNoDropdownComponent', () => {
@@ -13,7 +13,7 @@ describe('YesNoDropdownComponent', () => {
   let yesOption = 'yes';
   let noOption = 'no';
   let htmlId = 'htmlId';
-  let control = new FormControl('');
+  let control = new UntypedFormControl('');
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

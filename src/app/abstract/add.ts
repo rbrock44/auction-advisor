@@ -1,7 +1,7 @@
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 
 export abstract class Add {
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   showInput: boolean = false;
 
   abstract clearFormControl(): void;
