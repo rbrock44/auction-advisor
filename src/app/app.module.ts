@@ -2,7 +2,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {ExcelService} from './service/excel.service';
 import {YesNoDropdownComponent} from './component/yes-no-dropdown/yes-no-dropdown.component';
 import {HeaderComponent} from './component/header/header.component';
 import {AlertModule} from './component/alert/alert.module';
@@ -56,9 +55,6 @@ import { MainComponent } from './page/main/main.component';
         FormsModule,
         MaterialModule,
         ReactiveFormsModule
-    ],
-    providers: [
-        ExcelService,
     ],
     bootstrap: [AppComponent]
 })

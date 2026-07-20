@@ -12,7 +12,7 @@ import {UntypedFormControl} from '@angular/forms';
         <mat-form-field class="dropdown-form-field">
           <mat-label>Select Value</mat-label>
           <mat-select [formControl]="control" (selectionChange)="onChange()"
-                      [id]="htmlId">
+            [id]="htmlId">
             <mat-option data-dropdown-option [value]="true" [ngClass]="className">
               {{yesOption}}
             </mat-option>
@@ -20,13 +20,15 @@ import {UntypedFormControl} from '@angular/forms';
               {{noOption}}
             </mat-option>
           </mat-select>
-          <mat-error data-basic-error *ngIf="!control.valid">
-            {{name}} is required
-          </mat-error>
+          @if (!control.valid) {
+            <mat-error data-basic-error>
+              {{name}} is required
+            </mat-error>
+          }
         </mat-form-field>
       </div>
     </div>
-  `,
+    `,
     styleUrls: ['./yes-no-dropdown.component.scss'],
     standalone: false
 })

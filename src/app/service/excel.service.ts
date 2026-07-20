@@ -7,7 +7,9 @@ import {Donation} from '../model/donation.model';
 import {Purchase} from '../model/purchase.model';
 import {Person} from '../model/person.model';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ExcelService {
   public exportToExcelTotals(
     title: string,

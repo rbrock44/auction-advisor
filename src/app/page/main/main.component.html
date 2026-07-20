@@ -1,7 +1,17 @@
 <div>
-  <app-products *ngIf="this.service.show[0]"></app-products>
-  <app-people *ngIf="this.service.show[1]"></app-people>
-  <app-purchases *ngIf="this.service.show[2]"></app-purchases>
-  <app-donations *ngIf="this.service.show[3]"></app-donations>
-  <app-settings *ngIf="this.service.show[4]"></app-settings>
+  @if (this.service.show[0]) {
+    <app-products></app-products>
+  }
+  @if (this.service.show[1]) {
+    <app-people></app-people>
+  }
+  @if (this.service.show[2]) {
+    <app-purchases></app-purchases>
+  }
+  @if (this.service.show[3]) {
+    <app-donations></app-donations>
+  }
+  @if (this.service.show[4]) {
+    <app-settings></app-settings>
+  }
 </div>

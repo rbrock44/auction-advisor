@@ -7,11 +7,13 @@ import {AlertService} from '../../service/alert.service';
 @Component({
     selector: 'app-alert',
     template: `
-    <div *ngFor="let alert of alerts" class="{{cssClass(alert)}}" data-alert-container>
-      <a class="close" (click)="removeAlert(alert)" data-a>&times;</a>
-      <span [innerHTML]="alert.message" data-span></span>
-    </div>
-  `,
+    @for (alert of alerts; track alert) {
+      <div class="{{cssClass(alert)}}" data-alert-container>
+        <a class="close" (click)="removeAlert(alert)" data-a>&times;</a>
+        <span [innerHTML]="alert.message" data-span></span>
+      </div>
+    }
+    `,
     styleUrls: ['./alert.component.scss'],
     standalone: false
 })
