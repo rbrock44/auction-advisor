@@ -7,9 +7,10 @@ import {Add} from '../../abstract/add';
 import {addedSuccessfully, clearFormGroup} from '../../constants/constants';
 
 @Component({
-  selector: 'app-add-person',
-  templateUrl: './add-person.component.html',
-  styleUrls: ['./add-person.component.scss']
+    selector: 'app-add-person',
+    templateUrl: './add-person.component.html',
+    styleUrls: ['./add-person.component.scss'],
+    standalone: false
 })
 export class AddPersonComponent extends Add implements OnInit {
   firstNameControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);

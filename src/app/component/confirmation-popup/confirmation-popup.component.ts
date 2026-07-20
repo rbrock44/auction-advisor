@@ -3,8 +3,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {PERFORM_THIS_ACTION} from '../../constants/constants';
 
 @Component({
-  selector: 'app-confirmation-popup',
-  template: `
+    selector: 'app-confirmation-popup',
+    template: `
     <div data-border-div>
       <div data-popup-ctn>
         <div data-question-label class="confirm-label">{{label}}</div>
@@ -22,7 +22,8 @@ import {PERFORM_THIS_ACTION} from '../../constants/constants';
       </div>
     </div>
   `,
-  styleUrls: ['./confirmation-popup.component.scss']
+    styleUrls: ['./confirmation-popup.component.scss'],
+    standalone: false
 })
 export class ConfirmationPopupComponent implements OnInit {
   performAction = PERFORM_THIS_ACTION;

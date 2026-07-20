@@ -8,9 +8,10 @@ import {EditProductComponent} from '../../component/edit-product/edit-product.co
 import {EDIT_COLUMN} from '../../constants/constants';
 
 @Component({
-  selector: 'app-products',
-  templateUrl: './products.component.html',
-  styleUrls: ['./products.component.scss']
+    selector: 'app-products',
+    templateUrl: './products.component.html',
+    styleUrls: ['./products.component.scss'],
+    standalone: false
 })
 export class ProductsComponent implements OnInit {
   dataSource = new MatTableDataSource<Product>();

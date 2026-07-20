@@ -8,9 +8,10 @@ import {EditPersonComponent} from '../../component/edit-person/edit-person.compo
 import {EDIT_COLUMN} from '../../constants/constants';
 
 @Component({
-  selector: 'app-people',
-  templateUrl: './people.component.html',
-  styleUrls: ['./people.component.scss']
+    selector: 'app-people',
+    templateUrl: './people.component.html',
+    styleUrls: ['./people.component.scss'],
+    standalone: false
 })
 export class PeopleComponent implements OnInit {
   dataSource = new MatTableDataSource<Person>();

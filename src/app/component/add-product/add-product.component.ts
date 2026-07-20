@@ -7,9 +7,10 @@ import {Add} from '../../abstract/add';
 import {clearFormGroup} from '../../constants/constants';
 
 @Component({
-  selector: 'app-add-product',
-  templateUrl: './add-product.component.html',
-  styleUrls: ['./add-product.component.scss']
+    selector: 'app-add-product',
+    templateUrl: './add-product.component.html',
+    styleUrls: ['./add-product.component.scss'],
+    standalone: false
 })
 export class AddProductComponent extends Add implements OnInit {
   nameControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);

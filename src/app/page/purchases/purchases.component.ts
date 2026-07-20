@@ -8,9 +8,10 @@ import {EditPurchaseComponent} from '../../component/edit-purchase/edit-purchase
 import {EDIT_COLUMN} from '../../constants/constants';
 
 @Component({
-  selector: 'app-purchases',
-  templateUrl: './purchases.component.html',
-  styleUrls: ['./purchases.component.scss']
+    selector: 'app-purchases',
+    templateUrl: './purchases.component.html',
+    styleUrls: ['./purchases.component.scss'],
+    standalone: false
 })
 export class PurchasesComponent implements OnInit {
   dataSource = new MatTableDataSource<PurchaseDisplay>();

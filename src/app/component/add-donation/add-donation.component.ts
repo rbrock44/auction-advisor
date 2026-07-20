@@ -7,9 +7,10 @@ import {Add} from '../../abstract/add';
 import {clearFormGroup} from '../../constants/constants';
 
 @Component({
-  selector: 'app-add-donation',
-  templateUrl: './add-donation.component.html',
-  styleUrls: ['./add-donation.component.scss']
+    selector: 'app-add-donation',
+    templateUrl: './add-donation.component.html',
+    styleUrls: ['./add-donation.component.scss'],
+    standalone: false
 })
 export class AddDonationComponent extends Add implements OnInit {
   productControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);

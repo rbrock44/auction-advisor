@@ -8,9 +8,10 @@ import {EditDonationComponent} from '../../component/edit-donation/edit-donation
 import {EDIT_COLUMN} from '../../constants/constants';
 
 @Component({
-  selector: 'app-donations',
-  templateUrl: './donations.component.html',
-  styleUrls: ['./donations.component.scss']
+    selector: 'app-donations',
+    templateUrl: './donations.component.html',
+    styleUrls: ['./donations.component.scss'],
+    standalone: false
 })
 export class DonationsComponent implements OnInit {
   dataSource = new MatTableDataSource<DonationDisplay>();

@@ -9,9 +9,10 @@ import {Edit} from '../../abstract/edit';
 import {clearFormGroup} from '../../constants/constants';
 
 @Component({
-  selector: 'app-edit-purchase',
-  templateUrl: './edit-purchase.component.html',
-  styleUrls: ['./edit-purchase.component.scss']
+    selector: 'app-edit-purchase',
+    templateUrl: './edit-purchase.component.html',
+    styleUrls: ['./edit-purchase.component.scss'],
+    standalone: false
 })
 export class EditPurchaseComponent extends Edit {
   purchase: Purchase = new Purchase();

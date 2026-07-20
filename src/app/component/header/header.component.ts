@@ -4,8 +4,8 @@ import { Location } from '@angular/common';
 import { SettingsService } from '../../service/settings.service';
 
 @Component({
-  selector: 'app-header',
-  template: `
+    selector: 'app-header',
+    template: `
     <div>
       <div class="nav-bar-bar">
         <nav mat-tab-nav-bar>
@@ -40,7 +40,8 @@ import { SettingsService } from '../../service/settings.service';
       </div>
     </div>
   `,
-  styleUrls: ['./header.component.scss']
+    styleUrls: ['./header.component.scss'],
+    standalone: false
 })
 export class HeaderComponent {
   constructor(

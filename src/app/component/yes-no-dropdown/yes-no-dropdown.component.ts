@@ -2,8 +2,8 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {UntypedFormControl} from '@angular/forms';
 
 @Component({
-  selector: 'app-yes-no-dropdown',
-  template: `
+    selector: 'app-yes-no-dropdown',
+    template: `
     <div class="dropdown-ctn">
       <div data-dropdown-label class="dropdown__label">
         {{name}}
@@ -27,7 +27,8 @@ import {UntypedFormControl} from '@angular/forms';
       </div>
     </div>
   `,
-  styleUrls: ['./yes-no-dropdown.component.scss']
+    styleUrls: ['./yes-no-dropdown.component.scss'],
+    standalone: false
 })
 export class YesNoDropdownComponent {
   @Input() control: UntypedFormControl;

@@ -8,9 +8,10 @@ import {Edit} from '../../abstract/edit';
 import {clearFormGroup} from '../../constants/constants';
 
 @Component({
-  selector: 'app-edit-person',
-  templateUrl: './edit-person.component.html',
-  styleUrls: ['./edit-person.component.scss']
+    selector: 'app-edit-person',
+    templateUrl: './edit-person.component.html',
+    styleUrls: ['./edit-person.component.scss'],
+    standalone: false
 })
 export class EditPersonComponent extends Edit {
   person: Person;

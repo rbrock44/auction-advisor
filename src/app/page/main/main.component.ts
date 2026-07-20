@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { SettingsService } from '../../service/settings.service';
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss']
+    selector: 'app-main',
+    templateUrl: './main.component.html',
+    styleUrls: ['./main.component.scss'],
+    standalone: false
 })
 export class MainComponent {
   constructor(

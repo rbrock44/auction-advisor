@@ -8,9 +8,10 @@ import {Edit} from '../../abstract/edit';
 import {clearFormGroup} from '../../constants/constants';
 
 @Component({
-  selector: 'app-edit-donation',
-  templateUrl: './edit-donation.component.html',
-  styleUrls: ['./edit-donation.component.scss']
+    selector: 'app-edit-donation',
+    templateUrl: './edit-donation.component.html',
+    styleUrls: ['./edit-donation.component.scss'],
+    standalone: false
 })
 export class EditDonationComponent extends Edit {
   donation: Donation = new Donation();
