@@ -56,8 +56,8 @@ describe('DonationsComponent', () => {
       ],
     }).compileComponents();
 
-    dialog = TestBed.get(MatDialog);
-    settingService = TestBed.get(SettingsService);
+    dialog = TestBed.inject(MatDialog);
+    settingService = TestBed.inject(SettingsService);
     dataSpy = spyOn(settingService, 'getDonationDisplay').and.returnValue(DONATION_DISPLAY_OPTIONS);
     fixture = TestBed.createComponent(DonationsComponent);
     component = fixture.debugElement.componentInstance;

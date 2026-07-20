@@ -47,8 +47,8 @@ describe('AddDonationComponent', () => {
   }));
 
   beforeEach(() => {
-    settingsService = TestBed.get(SettingsService);
-    alertService = TestBed.get(AlertService);
+    settingsService = TestBed.inject(SettingsService);
+    alertService = TestBed.inject(AlertService);
     fixture = TestBed.createComponent(AddDonationComponent);
     component = fixture.debugElement.componentInstance;
   });

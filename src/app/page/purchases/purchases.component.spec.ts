@@ -56,8 +56,8 @@ describe('PurchasesComponent', () => {
       ],
     }).compileComponents();
 
-    dialog = TestBed.get(MatDialog);
-    settingService = TestBed.get(SettingsService);
+    dialog = TestBed.inject(MatDialog);
+    settingService = TestBed.inject(SettingsService);
     dataSpy = spyOn(settingService, 'getPurchaseDisplay').and.returnValue(PURCHASE_DISPLAY_OPTIONS);
     fixture = TestBed.createComponent(PurchasesComponent);
     component = fixture.debugElement.componentInstance;

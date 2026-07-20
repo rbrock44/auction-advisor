@@ -46,8 +46,8 @@ describe('AddPurchaseComponent', () => {
   }));
 
   beforeEach(() => {
-    settingsService = TestBed.get(SettingsService);
-    alertService = TestBed.get(AlertService);
+    settingsService = TestBed.inject(SettingsService);
+    alertService = TestBed.inject(AlertService);
     fixture = TestBed.createComponent(AddPurchaseComponent);
     component = fixture.debugElement.componentInstance;
   });

@@ -26,7 +26,7 @@ describe('HeaderComponent', () => {
       ],
     }).compileComponents();
 
-    router = TestBed.get(Router);
+    router = TestBed.inject(Router);
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.debugElement.componentInstance;
   }));

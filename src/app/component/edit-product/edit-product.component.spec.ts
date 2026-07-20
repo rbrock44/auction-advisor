@@ -62,8 +62,8 @@ describe('EditProductComponent', () => {
       ],
     }).compileComponents();
 
-    settingsService = TestBed.get(SettingsService);
-    alertService = TestBed.get(AlertService);
+    settingsService = TestBed.inject(SettingsService);
+    alertService = TestBed.inject(AlertService);
     fixture = TestBed.createComponent(EditProductComponent);
     component = fixture.debugElement.componentInstance;
     fixture.detectChanges();

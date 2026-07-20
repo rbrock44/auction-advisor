@@ -65,8 +65,8 @@ describe('EditDonationComponent', () => {
       ],
     }).compileComponents();
 
-    settingsService = TestBed.get(SettingsService);
-    alertService = TestBed.get(AlertService);
+    settingsService = TestBed.inject(SettingsService);
+    alertService = TestBed.inject(AlertService);
     fixture = TestBed.createComponent(EditDonationComponent);
     component = fixture.debugElement.componentInstance;
     fixture.detectChanges();

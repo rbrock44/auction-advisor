@@ -50,8 +50,8 @@ describe('PeopleComponent', () => {
       ],
     }).compileComponents();
 
-    dialog = TestBed.get(MatDialog);
-    settingService = TestBed.get(SettingsService);
+    dialog = TestBed.inject(MatDialog);
+    settingService = TestBed.inject(SettingsService);
     fixture = TestBed.createComponent(PeopleComponent);
     component = fixture.debugElement.componentInstance;
     fixture.detectChanges();
