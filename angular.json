@@ -66,18 +66,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "auction-advisor:build"
+            "buildTarget": "auction-advisor:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "auction-advisor:build:production"
+              "buildTarget": "auction-advisor:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "auction-advisor:build"
+            "buildTarget": "auction-advisor:build"
           }
         },
         "test": {
