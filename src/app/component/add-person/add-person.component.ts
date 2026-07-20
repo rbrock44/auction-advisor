@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Person} from '../../model/person.model';
 import {SettingsService} from '../../service/settings.service';
@@ -10,6 +10,7 @@ import {addedSuccessfully, clearFormGroup} from '../../constants/constants';
     selector: 'app-add-person',
     templateUrl: './add-person.component.html',
     styleUrls: ['./add-person.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AddPersonComponent extends Add implements OnInit {

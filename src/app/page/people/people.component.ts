@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 import {Person} from '../../model/person.model';
 import {SettingsService} from '../../service/settings.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,6 +11,7 @@ import {EDIT_COLUMN} from '../../constants/constants';
     selector: 'app-people',
     templateUrl: './people.component.html',
     styleUrls: ['./people.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PeopleComponent implements OnInit {

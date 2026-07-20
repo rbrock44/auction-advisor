@@ -1,4 +1,4 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, ChangeDetectionStrategy} from '@angular/core';
 import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Product} from '../../model/product.model';
 import {SettingsService} from '../../service/settings.service';
@@ -11,6 +11,7 @@ import {clearFormGroup} from '../../constants/constants';
     selector: 'app-edit-product',
     templateUrl: './edit-product.component.html',
     styleUrls: ['./edit-product.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class EditProductComponent extends Edit {

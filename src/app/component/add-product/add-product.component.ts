@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Product} from '../../model/product.model';
 import {SettingsService} from '../../service/settings.service';
@@ -10,6 +10,7 @@ import {clearFormGroup} from '../../constants/constants';
     selector: 'app-add-product',
     templateUrl: './add-product.component.html',
     styleUrls: ['./add-product.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AddProductComponent extends Add implements OnInit {

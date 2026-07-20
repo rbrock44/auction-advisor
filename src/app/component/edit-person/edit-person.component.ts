@@ -1,4 +1,4 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, ChangeDetectionStrategy} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {AlertService} from '../../service/alert.service';
 import {SettingsService} from '../../service/settings.service';
@@ -11,6 +11,7 @@ import {clearFormGroup} from '../../constants/constants';
     selector: 'app-edit-person',
     templateUrl: './edit-person.component.html',
     styleUrls: ['./edit-person.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class EditPersonComponent extends Edit {

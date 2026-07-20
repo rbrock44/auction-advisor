@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ChangeDetectionStrategy} from '@angular/core';
 import { Pages } from '../../constants/constants';
 import { Location } from '@angular/common';
 import { SettingsService } from '../../service/settings.service';
@@ -41,6 +41,7 @@ import { SettingsService } from '../../service/settings.service';
     </div>
   `,
     styleUrls: ['./header.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class HeaderComponent {

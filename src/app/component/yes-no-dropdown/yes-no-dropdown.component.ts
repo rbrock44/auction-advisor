@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ChangeDetectionStrategy} from '@angular/core';
 import {UntypedFormControl} from '@angular/forms';
 
 @Component({
@@ -30,6 +30,7 @@ import {UntypedFormControl} from '@angular/forms';
     </div>
     `,
     styleUrls: ['./yes-no-dropdown.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class YesNoDropdownComponent {

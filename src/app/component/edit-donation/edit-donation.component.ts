@@ -1,4 +1,4 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, ChangeDetectionStrategy} from '@angular/core';
 import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {AlertService} from '../../service/alert.service';
@@ -11,6 +11,7 @@ import {clearFormGroup} from '../../constants/constants';
     selector: 'app-edit-donation',
     templateUrl: './edit-donation.component.html',
     styleUrls: ['./edit-donation.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class EditDonationComponent extends Edit {

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Purchase} from '../../model/purchase.model';
 import {AlertService} from '../../service/alert.service';
@@ -12,6 +12,7 @@ import {clearFormGroup} from '../../constants/constants';
     selector: 'app-add-purchase',
     templateUrl: './add-purchase.component.html',
     styleUrls: ['./add-purchase.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AddPurchaseComponent extends Add implements OnInit {

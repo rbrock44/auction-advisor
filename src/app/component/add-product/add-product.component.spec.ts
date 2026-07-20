@@ -16,7 +16,7 @@ import {
   hideShowElementsOnClick
 } from '../../constants/expectations.spec';
 import {Product} from '../../model/product.model';
-import {HEADER} from 'src/app/constants/constants.spec';
+import {HEADER} from '../../constants/constants.spec';
 
 describe('AddProductComponent', () => {
   let fixture: ComponentFixture<AddProductComponent>;
