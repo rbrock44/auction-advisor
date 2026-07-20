@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
 import {EditDonationComponent} from './edit-donation.component';
 import {
   clickElement,
@@ -33,7 +33,7 @@ describe('EditDonationComponent', () => {
     id: 0
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         CommonModule,

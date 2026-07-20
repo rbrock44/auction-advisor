@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
 import {EditPersonComponent} from './edit-person.component';
 import {SettingsService} from '../../service/settings.service';
 import {AlertService} from '../../service/alert.service';
@@ -31,7 +31,7 @@ describe('EditPersonComponent', () => {
     email: 'email',
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         CommonModule,

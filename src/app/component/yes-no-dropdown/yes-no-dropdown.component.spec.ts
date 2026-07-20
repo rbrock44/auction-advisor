@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
 import {YesNoDropdownComponent} from './yes-no-dropdown.component';
 import {MaterialModule} from '../../material.module';
 import {CommonModule} from '@angular/common';
@@ -15,7 +15,7 @@ describe('YesNoDropdownComponent', () => {
   let htmlId = 'htmlId';
   let control = new UntypedFormControl('');
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         CommonModule,
