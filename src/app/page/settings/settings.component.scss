@@ -58,6 +58,7 @@
 
 .settings-value-ctn {
   @include centerFlex();
+  margin-bottom: 16px;
 }
 
 .dropdown__label {

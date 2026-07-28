@@ -1,0 +1,41 @@
+<header class="app-header">
+  <div class="app-header__inner">
+    <div class="brand">
+      <span class="brand__mark" aria-hidden="true">{{ service.title.charAt(0) }}</span>
+      <span class="brand__name">{{ service.title }}</span>
+    </div>
+
+    <nav class="primary-nav" aria-label="Primary">
+      <button type="button"
+              class="nav-bar-link"
+              [class.active]="service.show[0]"
+              [attr.aria-current]="service.show[0] ? 'page' : null"
+              (click)="show(0)"
+              data-products-nav>Products</button>
+      <button type="button"
+              class="nav-bar-link"
+              [class.active]="service.show[1]"
+              [attr.aria-current]="service.show[1] ? 'page' : null"
+              (click)="show(1)"
+              data-people-nav>People</button>
+      <button type="button"
+              class="nav-bar-link"
+              [class.active]="service.show[2]"
+              [attr.aria-current]="service.show[2] ? 'page' : null"
+              (click)="show(2)"
+              data-purchases-nav>Purchases</button>
+      <button type="button"
+              class="nav-bar-link"
+              [class.active]="service.show[3]"
+              [attr.aria-current]="service.show[3] ? 'page' : null"
+              (click)="show(3)"
+              data-donations-nav>Donations</button>
+      <button type="button"
+              class="nav-bar-link"
+              [class.active]="service.show[4]"
+              [attr.aria-current]="service.show[4] ? 'page' : null"
+              (click)="show(4)"
+              data-settings-nav>Settings</button>
+    </nav>
+  </div>
+</header>

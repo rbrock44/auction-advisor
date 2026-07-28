@@ -39,8 +39,8 @@
 }
 
 .purchase-value-ctn {
-  max-height: 50px;
   @include centerFlex();
+  margin-bottom: 16px;
 }
 
 .dropdown__label {
@@ -49,7 +49,7 @@
 }
 
 .dropdown-ctn {
-  max-height: 50px;
   display: flex;
   align-items: center;
+  margin-bottom: 16px;
 }

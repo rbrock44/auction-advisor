@@ -41,7 +41,7 @@
 
 .product-value-ctn {
   @include centerFlex();
-  max-height: 50px;
+  margin-bottom: 16px;
 }
 
 .dropdown__label {
