@@ -1,0 +1,73 @@
+<section class="add-bar" [class.add-bar--open]="!!open" [attr.data-open]="open">
+  <div class="add-bar__inner">
+    <p class="add-bar__eyebrow">Add to the auction</p>
+
+    <div class="type-list" role="group" aria-label="Choose what to add">
+      @for (type of records; track type) {
+        <button type="button"
+                class="type"
+                [class.type--active]="open === type"
+                [attr.aria-expanded]="open === type"
+                aria-controls="add-panel"
+                [attr.data-add]="type"
+                (click)="toggle(type)">
+          <span class="type__badge" aria-hidden="true"><mat-icon>add</mat-icon></span>
+          <span class="type__label">{{ label(type) }}</span>
+        </button>
+      }
+
+      <span class="type-list__split" aria-hidden="true"></span>
+
+      @for (type of transactions; track type) {
+        <button type="button"
+                class="type"
+                [class.type--active]="open === type"
+                [attr.aria-expanded]="open === type"
+                aria-controls="add-panel"
+                [attr.data-add]="type"
+                (click)="toggle(type)">
+          <span class="type__badge" aria-hidden="true"><mat-icon>add</mat-icon></span>
+          <span class="type__label">{{ label(type) }}</span>
+        </button>
+      }
+    </div>
+  </div>
+
+  @if (open) {
+    <div class="panel" id="add-panel">
+      <div class="panel__inner">
+        <div class="panel__head">
+          <h2 class="panel__title" data-add-title>{{ title }}</h2>
+          <button type="button"
+                  class="panel__close"
+                  (click)="close()"
+                  aria-label="Close"
+                  data-add-close>
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+
+        @if (setupNote) {
+          <p class="panel__note" data-add-note>{{ setupNote }}</p>
+        }
+
+        <div class="panel__form">
+          @switch (open) {
+            @case ('person') {
+              <app-add-person [embedded]="true"></app-add-person>
+            }
+            @case ('product') {
+              <app-add-product [embedded]="true"></app-add-product>
+            }
+            @case ('donation') {
+              <app-add-donation [embedded]="true"></app-add-donation>
+            }
+            @case ('purchase') {
+              <app-add-purchase [embedded]="true"></app-add-purchase>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  }
+</section>

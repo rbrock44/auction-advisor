@@ -9,6 +9,7 @@ export const APPLY_SETTING_SUCCESS_MESSAGE: string = 'Settings applied successfu
 export const ACTION_CANCELLED_MESSAGE: string = 'Action Cancelled.';
 
 export const PERFORM_THIS_ACTION: string = 'Are you sure you want to perform this action?';
+export const EXPORT_CONFIRM_MESSAGE: string = 'This will download the auction\'s records as an Excel workbook.';
 
 export const COLOR_OPTIONS = [
   {
@@ -83,6 +84,8 @@ export function clearFormGroup(group: UntypedFormGroup) {
   });
 }
 
+// Export isn't a page you navigate to — it's an action you trigger from the
+// header, so it has no slot here.
 export enum Pages {
  Products,
  People,

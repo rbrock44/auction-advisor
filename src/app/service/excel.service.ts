@@ -7,17 +7,42 @@ import {Donation} from '../model/donation.model';
 import {Purchase} from '../model/purchase.model';
 import {Person} from '../model/person.model';
 
+const TOTALS_SHEET: string = 'Totals By Person';
+const BY_PRODUCT_SHEET: string = 'By Product';
+const BY_PURCHASER_SHEET: string = 'By Purchaser';
+
 @Injectable({
   providedIn: 'root'
 })
 export class ExcelService {
-  public exportToExcelTotals(
+  public exportAllToExcel(
     title: string,
     people: Person[],
+    products: Product[],
     donations: Donation[],
     purchases: Purchase[],
     personInfo: (value: number) => string
   ): void {
+    const workbook: XLSX.WorkBook = {
+      Sheets: {
+        [TOTALS_SHEET]: XLSX.utils.json_to_sheet(this.buildTotalsRows(people, donations, purchases, personInfo)),
+        [BY_PRODUCT_SHEET]: XLSX.utils.json_to_sheet(this.buildByProductRows(products, donations, purchases, personInfo)),
+        [BY_PURCHASER_SHEET]: XLSX.utils.json_to_sheet(this.buildByPurchaserRows(products, people, purchases, personInfo))
+      },
+      SheetNames: [TOTALS_SHEET, BY_PRODUCT_SHEET, BY_PURCHASER_SHEET]
+    };
+
+    const excelBuffer: any = XLSX.write(workbook, {bookType: 'xlsx', type: 'array'});
+
+    this.saveAsExcelFile(excelBuffer, title);
+  }
+
+  private buildTotalsRows(
+    people: Person[],
+    donations: Donation[],
+    purchases: Purchase[],
+    personInfo: (value: number) => string
+  ): any[] {
     const personTitle: string = 'Person';
     const amountPurchased: string = 'Amount Purchased';
     const itemsPurchasedTitle: string = 'Number Of Items Purchased';
@@ -54,19 +79,15 @@ export class ExcelService {
       dataArray.push(data);
     });
 
-    this.exportAsExcelFile(dataArray, title);
-
-    // This helped
-    // https://medium.com/@madhavmahesh/exporting-an-excel-file-in-angular-927756ac9857
+    return dataArray;
   }
 
-  public exportToExcelByProduct(
-    title: string,
+  private buildByProductRows(
     products: Product[],
     donations: Donation[],
     purchases: Purchase[],
     personInfo: (value: number) => string
-  ): void {
+  ): any[] {
     const productName: string = 'Product Name';
     const productDesc: string = 'Product Description';
     const donatedBy: string = 'Donated By';
@@ -90,18 +111,15 @@ export class ExcelService {
       dataArray.push(data);
     });
 
-    this.exportAsExcelFile(dataArray, title);
-    // This helped
-    // https://medium.com/@madhavmahesh/exporting-an-excel-file-in-angular-927756ac9857
+    return dataArray;
   }
 
-  public exportToExcelByPurchaser(
-    title: string,
+  private buildByPurchaserRows(
     products: Product[],
     people: Person[],
     purchases: Purchase[],
     personInfo: (value: number) => string
-  ): void {
+  ): any[] {
     const purchaser: string = 'Purchaser';
     const productName: string = 'Product Name';
     const productDescription: string = 'Product Description';
@@ -123,19 +141,7 @@ export class ExcelService {
       });
     });
 
-    this.exportAsExcelFile(dataArray, title);
-
-    // This helped
-    // https://medium.com/@madhavmahesh/exporting-an-excel-file-in-angular-927756ac9857
-  }
-
-  public exportAsExcelFile(json: any[], excelFileName: string): void {
-    const data: string = 'data';
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
-    const workbook: XLSX.WorkBook = {Sheets: {data: worksheet}, SheetNames: [data]};
-    const excelBuffer: any = XLSX.write(workbook, {bookType: 'xlsx', type: 'array'});
-
-    this.saveAsExcelFile(excelBuffer, excelFileName);
+    return dataArray;
   }
 
   private saveAsExcelFile(buffer: any, fileName: string): void {

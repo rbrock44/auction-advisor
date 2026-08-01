@@ -1,18 +1,19 @@
 import {Component, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged, takeUntil} from 'rxjs/operators';
 import {SettingsService} from '../../service/settings.service';
-import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
+import {UntypedFormControl, Validators} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import {ConfirmationPopupComponent} from '../../component/confirmation-popup/confirmation-popup.component';
 import {AlertService} from '../../service/alert.service';
 import {
-  APPLY_SETTING_MESSAGE,
-  APPLY_SETTING_SUCCESS_MESSAGE,
-  COLOR_OPTIONS,
   RESET_EVERYTHING_MESSAGE,
   RESET_EVERYTHING_SUCCESS_MESSAGE,
   RESET_SCORES_MESSAGE,
   RESET_SCORES_SUCCESS_MESSAGE
 } from '../../constants/constants';
+
+type SaveStatus = 'idle' | 'saving' | 'saved';
 
 @Component({
     selector: 'app-settings',
@@ -22,13 +23,13 @@ import {
     standalone: false
 })
 export class SettingsComponent implements OnInit, OnDestroy {
-  colors = COLOR_OPTIONS;
-
   titleControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
   canEditControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
-  colorControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
+  exportHasPopupControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
 
-  settingsFormGroup: UntypedFormGroup;
+  status: SaveStatus = 'idle';
+
+  private readonly destroy: Subject<void> = new Subject<void>();
 
   constructor(
     public dialog: MatDialog,
@@ -38,14 +39,32 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.settingsFormGroup = new UntypedFormGroup({
-      title: this.titleControl,
-    });
-
     this.applySettingsValuesToFormControls();
+
+    // Show the pending state as soon as a key lands, so the status never
+    // claims "Saved" while an edit is still in flight.
+    this.titleControl.valueChanges
+      .pipe(takeUntil(this.destroy))
+      .subscribe(() => this.status = 'saving');
+
+    // Let typing settle so a title is written once instead of once per key.
+    this.titleControl.valueChanges
+      .pipe(debounceTime(500), distinctUntilChanged(), takeUntil(this.destroy))
+      .subscribe(() => this.save());
+
+    // Picking from a dropdown is already a finished decision.
+    this.canEditControl.valueChanges
+      .pipe(distinctUntilChanged(), takeUntil(this.destroy))
+      .subscribe(() => this.save());
+
+    this.exportHasPopupControl.valueChanges
+      .pipe(distinctUntilChanged(), takeUntil(this.destroy))
+      .subscribe(() => this.save());
   }
 
   ngOnDestroy(): void {
+    this.destroy.next();
+    this.destroy.complete();
     this.settingsService.ngOnDestroy();
   }
 
@@ -56,24 +75,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
         if (shouldReset) {
           this.settingsService.resetEverything();
           this.applySettingsValuesToFormControls();
+          this.status = 'idle';
           this.alertService.success(RESET_EVERYTHING_SUCCESS_MESSAGE);
-        } else {
-          this.alertService.actionCancelled();
-        }
-      });
-    }
-  }
-
-  applyToSettings(): void {
-    const dialogRef = this.getConfirmationPopup(APPLY_SETTING_MESSAGE);
-    if (dialogRef) {
-      dialogRef.afterClosed().subscribe(shouldApply => {
-        if (shouldApply) {
-          this.settingsService.applySettings(
-            this.titleControl.value,
-            this.canEditControl.value
-          );
-          this.alertService.success(APPLY_SETTING_SUCCESS_MESSAGE);
         } else {
           this.alertService.actionCancelled();
         }
@@ -94,18 +97,25 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Seeding the form is not an edit, so it must not trigger a save.
   applySettingsValuesToFormControls(): void {
-    this.titleControl.setValue(this.settingsService.title);
-    this.colorControl.setValue(this.settingsService.color);
-    this.canEditControl.setValue(this.settingsService.canEdit);
+    this.titleControl.setValue(this.settingsService.title, {emitEvent: false});
+    this.canEditControl.setValue(this.settingsService.canEdit, {emitEvent: false});
+    this.exportHasPopupControl.setValue(this.settingsService.exportHasPopup, {emitEvent: false});
   }
 
-  setColor(): void {
-    this.settingsService.setColor(this.colorControl.value);
-  }
+  private save(): void {
+    if (!this.titleControl.valid) {
+      this.status = 'idle';
+      return;
+    }
 
-  getBackgroundColor(value: string): string {
-    return 'var(' + value + 40 + ')';
+    this.settingsService.applySettings(
+      this.titleControl.value,
+      this.canEditControl.value,
+      this.exportHasPopupControl.value
+    );
+    this.status = 'saved';
   }
 
   private getConfirmationPopup(label: string): any {

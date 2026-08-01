@@ -8,34 +8,19 @@
     <nav class="primary-nav" aria-label="Primary">
       <button type="button"
               class="nav-bar-link"
-              [class.active]="service.show[0]"
-              [attr.aria-current]="service.show[0] ? 'page' : null"
-              (click)="show(0)"
-              data-products-nav>Products</button>
+              [disabled]="nothingToExport"
+              [attr.title]="nothingToExport ? 'Add products and people first' : null"
+              (click)="exportAll()"
+              data-header-export>Export</button>
       <button type="button"
-              class="nav-bar-link"
-              [class.active]="service.show[1]"
-              [attr.aria-current]="service.show[1] ? 'page' : null"
-              (click)="show(1)"
-              data-people-nav>People</button>
-      <button type="button"
-              class="nav-bar-link"
-              [class.active]="service.show[2]"
-              [attr.aria-current]="service.show[2] ? 'page' : null"
-              (click)="show(2)"
-              data-purchases-nav>Purchases</button>
-      <button type="button"
-              class="nav-bar-link"
-              [class.active]="service.show[3]"
-              [attr.aria-current]="service.show[3] ? 'page' : null"
-              (click)="show(3)"
-              data-donations-nav>Donations</button>
-      <button type="button"
-              class="nav-bar-link"
+              class="nav-bar-link nav-bar-link--icon"
               [class.active]="service.show[4]"
               [attr.aria-current]="service.show[4] ? 'page' : null"
               (click)="show(4)"
-              data-settings-nav>Settings</button>
+              aria-label="Settings"
+              data-settings-nav>
+        <mat-icon aria-hidden="true">settings</mat-icon>
+      </button>
     </nav>
   </div>
 </header>

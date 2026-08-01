@@ -1,72 +1,90 @@
 @import '../../../styles.scss';
 
-.header-div {
-  text-align: center;
-  margin-bottom: 30px;
+.page {
+  @include pageShell();
 }
 
-.excel-export {
-  margin-top: 5vh;
+.page__head {
+  margin-bottom: 28px;
+}
+
+.page__title {
+  @include pageTitle();
+}
+
+.page__lede {
+  @include pageLede();
 }
 
 [data-settings-input] {
-  @include centerFlex();
-  flex-direction: column;
+  @include entryFormGrid();
 }
 
-[data-header-title] {
-  font-size: xx-large;
-  padding: 5px;
-}
-
-.buttons {
-  text-align: center;
-  margin-top: 50px;
-}
-
-.apply-button {
-  height: 30px;
-  margin: 10px;
-  width: 100px;
-  font-size: large;
-  @include buttonStyling();
-}
-
-[data-button-export] {
-  height: 30px;
-  margin: 10px;
-  font-size: large;
-  @include buttonStyling();
-}
-
-.reset-button {
-  margin: 15px;
-  font-size: large;
-  @include buttonStyling();
-}
-
-.settings-value-label {
-  font-weight: 500;
-  min-width: 260px;
-}
-
-.settings-value-form-field {
-  min-width: 100px;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-}
-
-.settings-value-ctn {
-  @include centerFlex();
-  margin-bottom: 16px;
-}
-
-.dropdown__label {
-  font-weight: 500;
-  min-width: 260px;
-}
-
+.settings-value-ctn,
 .dropdown-ctn {
-  display: flex;
-  align-items: center;
+  @include entryFormField();
+}
+
+.settings-value-label,
+.dropdown__label {
+  @include entryFormLabel();
+}
+
+.settings-value-form-field,
+.dropdown-form-field,
+.dropdown__data {
+  @include entryFormControl();
+}
+
+// Holds its height whether or not it has something to say, so the page below
+// does not shift as the status changes.
+.status {
+  margin: 4px 0 0;
+  min-height: 20px;
+  font-size: 13px;
+  color: #6b665e;
+}
+
+.danger {
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid #e3e1db;
+  max-width: 1080px;
+}
+
+.danger__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e1c19;
+}
+
+.danger__detail {
+  margin: 6px 0 16px;
+  max-width: 60ch;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #6b665e;
+}
+
+// Resetting wipes every record, so it must not look like a routine action.
+.reset-button {
+  height: 34px;
+  padding: 0 18px;
+  font-size: large;
+  cursor: pointer;
+  color: #c62f18;
+  background: transparent;
+  border: 1px solid #e2a99f;
+  border-radius: 3px;
+
+  &:hover {
+    background: rgba(198, 47, 24, 0.07);
+    border-color: #c62f18;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #c62f18;
+    outline-offset: 2px;
+  }
 }

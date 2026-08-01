@@ -5,51 +5,39 @@
   margin-bottom: 30px;
 }
 
-[data-product-input] {
-  @include centerFlex();
-  flex-direction: column;
-}
-
 [data-header-title] {
   @include headerTitle();
 }
 
-.buttons {
-  text-align: center;
-  margin-top: 50px;
-  padding-bottom: 15px;
+[data-product-input] {
+  @include entryFormGrid();
 }
 
-.add-product-button {
-  height: 30px;
-  margin: 10px;
-  width: 100px;
+.product-value-ctn {
+  @include entryFormField();
+}
+
+.product-value-label {
+  @include entryFormLabel();
+}
+
+.product-value-form-field {
+  @include entryFormControl();
+}
+
+.buttons {
+  @include entryFormButtons();
+}
+
+.add-product {
+  height: 34px;
+  min-width: 120px;
+  padding: 0 18px;
   font-size: large;
   @include buttonStyling();
 }
 
-.product-value-label {
-  font-weight: 500;
-  min-width: 260px;
-}
-
-.product-value-form-field {
-  min-width: 100px;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-}
-
-.product-value-ctn {
-  @include centerFlex();
-  margin-bottom: 16px;
-}
-
-.dropdown__label {
-  font-weight: 500;
-  min-width: 260px;
-}
-
-.dropdown-ctn {
-  display: flex;
-  align-items: center;
+// The add bar supplies its own title and close control.
+.is-embedded .header-div {
+  display: none;
 }

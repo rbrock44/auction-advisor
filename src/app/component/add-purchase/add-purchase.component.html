@@ -1,9 +1,9 @@
-<div>
+<div [class.is-embedded]="embedded">
   <div class="header-div">
     <header data-header-title (click)="switchDisplay()">Add Purchase</header>
   </div>
 
-  @if (showInput) {
+  @if (embedded || showInput) {
     <div>
       <div data-purchase-input>
         <!-- PRODUCT  -->

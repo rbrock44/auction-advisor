@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core';
 import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Person} from '../../model/person.model';
 import {SettingsService} from '../../service/settings.service';
@@ -14,6 +14,10 @@ import {addedSuccessfully, clearFormGroup} from '../../constants/constants';
     standalone: false
 })
 export class AddPersonComponent extends Add implements OnInit {
+  // Set when the form is hosted by the add bar, which supplies its own title
+  // and keeps the panel open.
+  @Input() embedded: boolean = false;
+
   firstNameControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
   lastNameControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
   emailControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);

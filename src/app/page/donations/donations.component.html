@@ -1,9 +1,5 @@
-<app-add-person></app-add-person>
-<app-add-product></app-add-product>
-<app-add-donation></app-add-donation>
-
 <div data-table-container>
-  <mat-table [dataSource]="this.dataSource" matSort class="mat-elevation-z8">
+  <mat-table [dataSource]="this.dataSource" matSort>
     <!-- ID Column -->
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>

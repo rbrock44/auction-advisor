@@ -5,51 +5,43 @@
   margin-bottom: 30px;
 }
 
-[data-purchase-input] {
-  @include centerFlex();
-  flex-direction: column;
-}
-
 [data-header-title] {
   @include headerTitle();
 }
 
-.buttons {
-  text-align: center;
-  margin-top: 50px;
+[data-purchase-input] {
+  @include entryFormGrid();
 }
 
-.add-purchase-button {
-  height: 30px;
-  margin: 10px;
-  width: 100px;
+.purchase-value-ctn,
+.dropdown-ctn {
+  @include entryFormField();
+}
+
+.purchase-value-label,
+.dropdown__label {
+  @include entryFormLabel();
+}
+
+.purchase-value-form-field,
+.dropdown-form-field,
+.dropdown__data {
+  @include entryFormControl();
+}
+
+.buttons {
+  @include entryFormButtons();
+}
+
+.add-purchase {
+  height: 34px;
+  min-width: 120px;
+  padding: 0 18px;
   font-size: large;
   @include buttonStyling();
 }
 
-.purchase-value-label {
-  font-weight: 500;
-  min-width: 260px;
-}
-
-.purchase-value-form-field {
-  min-width: 100px;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-}
-
-.purchase-value-ctn {
-  @include centerFlex();
-  margin-bottom: 16px;
-}
-
-.dropdown__label {
-  font-weight: 500;
-  min-width: 260px;
-}
-
-.dropdown-ctn {
-  display: flex;
-  align-items: center;
-  margin-bottom: 16px;
+// The add bar supplies its own title and close control.
+.is-embedded .header-div {
+  display: none;
 }

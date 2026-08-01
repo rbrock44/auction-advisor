@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core';
 import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Product} from '../../model/product.model';
 import {SettingsService} from '../../service/settings.service';
@@ -14,6 +14,10 @@ import {clearFormGroup} from '../../constants/constants';
     standalone: false
 })
 export class AddProductComponent extends Add implements OnInit {
+  // Set when the form is hosted by the add bar, which supplies its own title
+  // and keeps the panel open.
+  @Input() embedded: boolean = false;
+
   nameControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
   descriptionControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
 

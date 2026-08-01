@@ -4,6 +4,8 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {YesNoDropdownComponent} from './component/yes-no-dropdown/yes-no-dropdown.component';
 import {HeaderComponent} from './component/header/header.component';
+import {AddBarComponent} from './component/add-bar/add-bar.component';
+import {ViewBarComponent} from './component/view-bar/view-bar.component';
 import {AlertModule} from './component/alert/alert.module';
 import {ConfirmationPopupComponent} from './component/confirmation-popup/confirmation-popup.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -27,6 +29,7 @@ import { MainComponent } from './page/main/main.component';
 
 @NgModule({
     declarations: [
+        AddBarComponent,
         AddDonationComponent,
         AddPersonComponent,
         AddProductComponent,
@@ -39,6 +42,7 @@ import { MainComponent } from './page/main/main.component';
         EditProductComponent,
         EditPurchaseComponent,
         HeaderComponent,
+        ViewBarComponent,
         MainComponent,
         PeopleComponent,
         ProductsComponent,

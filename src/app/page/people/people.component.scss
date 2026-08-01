@@ -1,29 +1,41 @@
+@import '../../../styles.scss';
 
-/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
-mat-table {
-  width: 80%
-}
-
-mat-header-cell {
-  justify-content: center;
-}
-
-mat-cell {
-  justify-content: center;
+[data-table-container] {
+  @include dataTableShell();
 }
 
 tr {
   display: flex;
 }
 
-[data-table-container] {
-  padding: 5vw 0 5vw 0;
-  display: flex;
-  justify-content: center;
+mat-table {
+  @include dataTable();
+}
+
+tr[mat-header-row] {
+  @include dataTableHeaderRow();
+}
+
+tr[mat-row] {
+  @include dataTableBodyRow();
+}
+
+mat-header-cell {
+  @include dataTableHeaderCell();
+}
+
+mat-cell {
+  @include dataTableCell();
+}
+
+mat-header-cell:first-child {
+  @include dataTableIdWidth();
+}
+
+mat-cell:first-child {
+  @include dataTableIdValue();
 }
 
 .edit {
-  background: transparent;
-  border: none;
-  cursor: pointer;
+  @include dataTableEditButton();
 }

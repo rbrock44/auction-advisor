@@ -5,51 +5,39 @@
   margin-bottom: 30px;
 }
 
-[data-person-input] {
-  @include centerFlex();
-  flex-direction: column;
-}
-
 [data-header-title] {
   @include headerTitle();
 }
 
-.buttons {
-  text-align: center;
-  margin-top: 50px;
-  padding-bottom: 15px;
+[data-person-input] {
+  @include entryFormGrid();
 }
 
-.add-person-button {
-  height: 30px;
-  margin: 10px;
-  width: 100px;
+.person-value-ctn {
+  @include entryFormField();
+}
+
+.person-value-label {
+  @include entryFormLabel();
+}
+
+.person-value-form-field {
+  @include entryFormControl();
+}
+
+.buttons {
+  @include entryFormButtons();
+}
+
+.add-person {
+  height: 34px;
+  min-width: 120px;
+  padding: 0 18px;
   font-size: large;
   @include buttonStyling();
 }
 
-.person-value-label {
-  font-weight: 500;
-  min-width: 260px;
-}
-
-.person-value-form-field {
-  min-width: 100px;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-}
-
-.person-value-ctn {
-  @include centerFlex();
-  margin-bottom: 16px;
-}
-
-.dropdown__label {
-  font-weight: 500;
-  min-width: 260px;
-}
-
-.dropdown-ctn {
-  display: flex;
-  align-items: center;
+// The add bar supplies its own title and close control.
+.is-embedded .header-div {
+  display: none;
 }

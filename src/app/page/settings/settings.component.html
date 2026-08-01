@@ -1,6 +1,7 @@
-<div>
-  <div class="header-div">
-    <header data-header-title>Settings</header>
+<section class="page">
+  <div class="page__head">
+    <h1 class="page__title" data-header-title>Settings</h1>
+    <p class="page__lede">Changes save as you make them.</p>
   </div>
 
   <div data-settings-input>
@@ -20,75 +21,49 @@
           }
         </mat-form-field>
       </div>
+
       <!-- CAN EDIT    -->
       <div class="settings-value-ctn">
         <app-yes-no-dropdown
           [control]="canEditControl"
-          [name]="'Can Edit'"
+          [name]="'Allow editing'"
           [htmlId]="'can-edit-dropdown'"
-          [yesOption]="'True'"
-          [noOption]="'False'"
+          [yesOption]="'Yes'"
+          [noOption]="'No'"
         ></app-yes-no-dropdown>
       </div>
 
-      <!-- COLOR  -->
-      <div class="dropdown-ctn">
-        <div data-dropdown-label class="dropdown__label">
-          Color - *Applies Immediately
-        </div>
-        <div class="dropdown__data">
-          <mat-form-field class="dropdown-form-field">
-            <mat-label>Select Value</mat-label>
-            <mat-select [formControl]="colorControl" (selectionChange)="setColor()"
-              [ngStyle]="{'background-color': getBackgroundColor(this.colorControl.value)}">
-              @for (color of this.colors; track color) {
-                <mat-option data-dropdown-option [value]="color.value"
-                  [ngStyle]="{'background-color': getBackgroundColor(color.value)}"
-                  >
-                  {{color.name}}
-                </mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-        </div>
+      <!-- EXPORT CONFIRMATION -->
+      <div class="settings-value-ctn">
+        <app-yes-no-dropdown
+          [control]="exportHasPopupControl"
+          [name]="'Confirm before exporting'"
+          [htmlId]="'export-has-popup-dropdown'"
+          [yesOption]="'Yes'"
+          [noOption]="'No'"
+        ></app-yes-no-dropdown>
       </div>
     </div>
 
-    <div class="buttons">
-      <div>
-        <button data-button-apply
-          (click)="applyToSettings()"
-          [disabled]="!this.settingsFormGroup.valid"
-          class="apply-button">Apply
-        </button>
-      </div>
-      <div>
-        <button data-button-reset-everything
-          (click)="resetEverything()"
-          class="reset-button">Reset Everything
-        </button>
-      </div>
-    </div>
+    <p class="status" data-save-status aria-live="polite">
+      @switch (status) {
+        @case ('saving') {
+          Saving…
+        }
+        @case ('saved') {
+          Saved
+        }
+      }
+    </p>
 
-    <div class="header-div excel-export">
-      <header data-header-title>Export To Excel</header>
+    <div class="danger">
+      <h2 class="danger__title">Reset</h2>
+      <p class="danger__detail">
+        Deletes every product, person, donation, and purchase, and puts the title back to its default.
+      </p>
+      <button data-button-reset-everything
+        (click)="resetEverything()"
+        class="reset-button">Reset Everything
+      </button>
     </div>
-
-    <div class="buttons">
-      <div>
-        <button data-button-export (click)="this.settingsService.exportToExcelByPurchaser()">
-          By Purchaser
-        </button>
-      </div>
-      <div>
-        <button data-button-export (click)="this.settingsService.exportToExcelByProduct()">
-          By Products
-        </button>
-      </div>
-      <div>
-        <button data-button-export (click)="this.settingsService.exportToExcelTotals()">
-          Totals By Person
-        </button>
-      </div>
-    </div>
-  </div>
+  </section>

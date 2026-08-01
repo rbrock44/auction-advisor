@@ -1,22 +1,16 @@
-.dropdown-ctn {
-  display: flex;
-  align-items: center;
-}
+@import '../../../styles.scss';
 
-.dropdown {
-  display: flex;
-  align-items: center;
+.dropdown-ctn {
+  @include entryFormField();
 }
 
 .dropdown__label {
-  font-weight: 500;
-  min-width: 260px;
+  @include entryFormLabel();
 }
 
-.dropdown-form-field {
-  min-width: 100px;
-  word-wrap: break-word;
-  white-space: pre-wrap;
+.dropdown-form-field,
+.dropdown__data {
+  @include entryFormControl();
 }
 
 ::ng-deep .mat-mdc-option {

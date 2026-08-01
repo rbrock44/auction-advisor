@@ -1,0 +1,139 @@
+:host {
+  display: block;
+}
+
+.view-bar {
+  background: #f5f4f0;
+  border-bottom: 1px solid #e3e1db;
+}
+
+.view-bar__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.view-bar__eyebrow {
+  margin: 0;
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6b665e;
+}
+
+.type-list {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.type {
+  flex: 0 0 auto;
+  appearance: none;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  cursor: pointer;
+  font: inherit;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 6px;
+  color: #6b665e;
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+
+  // Same category colours as the add bar, so teal always means Person,
+  // purple always means Product, wherever you see the chip.
+  &[data-view='person'] {
+    --chip: var(--blue-color);
+    --chip-rgb: var(--blue-color-rgb);
+  }
+
+  &[data-view='product'] {
+    --chip: var(--purple-color);
+    --chip-rgb: var(--purple-color-rgb);
+  }
+
+  &[data-view='donation'] {
+    --chip: var(--green-color);
+    --chip-rgb: var(--green-color-rgb);
+  }
+
+  &[data-view='purchase'] {
+    --chip: var(--orange-color);
+    --chip-rgb: var(--orange-color-rgb);
+  }
+
+  &:hover {
+    color: #1e1c19;
+    background: rgba(var(--chip-rgb), 0.08);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--chip);
+    outline-offset: 2px;
+  }
+}
+
+// A tinted wash reads as "you are here" — deliberately different from the add
+// bar's white-and-border treatment, which reads as "this panel is open."
+.type--active {
+  color: #1e1c19;
+  font-weight: 600;
+  background: rgba(var(--chip-rgb), 0.14);
+  border-color: rgba(var(--chip-rgb), 0.4);
+}
+
+.type__badge {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--chip);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+  }
+}
+
+.type__label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .type {
+    transition: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .view-bar__inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 10px 16px;
+  }
+}

@@ -1,0 +1,19 @@
+<nav class="view-bar" aria-label="Browse the auction">
+  <div class="view-bar__inner">
+    <p class="view-bar__eyebrow">Browse the auction</p>
+
+    <div class="type-list" role="group" aria-label="Choose what to view">
+      @for (type of types; track type) {
+        <button type="button"
+                class="type"
+                [class.type--active]="isActive(type)"
+                [attr.aria-current]="isActive(type) ? 'page' : null"
+                [attr.data-view]="type"
+                (click)="show(type)">
+          <span class="type__badge" aria-hidden="true"><mat-icon>{{ icon(type) }}</mat-icon></span>
+          <span class="type__label">{{ label(type) }}</span>
+        </button>
+      }
+    </div>
+  </div>
+</nav>

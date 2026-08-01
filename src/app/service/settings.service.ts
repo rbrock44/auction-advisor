@@ -19,10 +19,15 @@ export class SettingsService implements OnDestroy {
   donationsSubject: Subject<Donation[]> = new Subject<Donation[]>();
   productsSubject: Subject<Product[]> = new Subject<Product[]>();
   purchasesSubject: Subject<Purchase[]> = new Subject<Purchase[]>();
+  // Emits whenever navigating to Settings, or triggering an export, should
+  // dismiss any open overlay (currently just the add bar's panel) — neither
+  // is an auction record, so there's nothing there to keep adding to.
+  closeOverlaysSubject: Subject<void> = new Subject<void>();
   private _settingsResetSubject: Subject<boolean> = new Subject<boolean>();
 
   title: string;
   canEdit: boolean;
+  exportHasPopup: boolean;
   people: Person[];
   donations: Donation[];
   purchases: Purchase[];
@@ -30,7 +35,8 @@ export class SettingsService implements OnDestroy {
   filteredProducts: Product[];
   color: string;
 
-  // this show array controls which page is showed at a time
+  // this show array controls which page is showed at a time,
+  // in the same order as the Pages enum:
   // 1st: Products -> Home
   // 2nd: People
   // 3rd: Purchases
@@ -47,8 +53,12 @@ export class SettingsService implements OnDestroy {
   }
 
   setShow(index: number): void {
-    this.show = [false, false, false, false, false];
+    this.show = this.show.map(() => false);
     this.show[index] = true;
+
+    if (index === Pages.Settings) {
+      this.closeOverlaysSubject.next();
+    }
   }
 
   setShowWithUrlParam(param: string): void {
@@ -151,10 +161,12 @@ export class SettingsService implements OnDestroy {
 
   applySettings(
     title: string,
-    canEdit: boolean
+    canEdit: boolean,
+    exportHasPopup: boolean
   ) {
     this.title = title;
     this.canEdit = canEdit;
+    this.exportHasPopup = exportHasPopup;
     this.saveToLocalStorage();
   }
 
@@ -177,30 +189,11 @@ export class SettingsService implements OnDestroy {
     return this.title + '_' + value;
   }
 
-  public exportToExcelByProduct(): void {
-    this.excelService.exportToExcelByProduct(
-      this.makeExportTitle('ByProduct'),
-      this.products,
-      this.donations,
-      this.purchases,
-      this.getPersonInfoById
-    );
-  }
-
-  public exportToExcelByPurchaser(): void {
-    this.excelService.exportToExcelByPurchaser(
-      this.makeExportTitle('ByPurchaser'),
-      this.products,
+  public exportAll(): void {
+    this.excelService.exportAllToExcel(
+      this.makeExportTitle('Auction'),
       this.people,
-      this.purchases,
-      this.getPersonInfoById
-    );
-  }
-
-  public exportToExcelTotals(): void {
-    this.excelService.exportToExcelTotals(
-      this.makeExportTitle('TotalsByPerson'),
-      this.people,
+      this.products,
       this.donations,
       this.purchases,
       this.getPersonInfoById
@@ -248,6 +241,7 @@ export class SettingsService implements OnDestroy {
   private readFromLocalStorage(): void {
     this.title = this.getItemOrDefault('auction-title', TITLE_DEFAULT);
     this.canEdit = this.getBoolean(this.getItemOrDefault('can-edit', 'false'));
+    this.exportHasPopup = this.getBoolean(this.getItemOrDefault('export-has-popup', 'false'));
     this.setColor(this.getItemOrDefault('auction-color', COLOR_DEFAULT));
 
     this.people = this.getJsonItemArray('people');
@@ -303,6 +297,10 @@ export class SettingsService implements OnDestroy {
       new LocalStorageSaveItem({
         key: 'can-edit',
         value: this.canEdit + ''
+      }),
+      new LocalStorageSaveItem({
+        key: 'export-has-popup',
+        value: this.exportHasPopup + ''
       }),
       new LocalStorageSaveItem({
         key: 'people',

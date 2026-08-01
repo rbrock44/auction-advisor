@@ -1,9 +1,9 @@
-<div>
+<div [class.is-embedded]="embedded">
   <div class="header-div">
     <header data-header-title (click)="switchDisplay()">Add Donation</header>
   </div>
 
-  @if (showInput) {
+  @if (embedded || showInput) {
     <div>
       <div data-donation-input>
         <!-- PRODUCT  -->
@@ -124,7 +124,7 @@
             <button data-button-add-donation
               (click)="add()"
               [disabled]="!formGroup.valid"
-              class="add-purchase">Add Donation
+              class="add-donation">Add Donation
             </button>
           </div>
         </div>

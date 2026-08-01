@@ -40,6 +40,185 @@ body {
   cursor: pointer;
 }
 
+// Pages share the header's container so their content lines up with the
+// masthead and the add bar above them.
+@mixin pageShell {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 8px 24px 40px;
+}
+
+@mixin pageTitle {
+  margin: 0;
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-size: 28px;
+  letter-spacing: 0.01em;
+  color: #1e1c19;
+
+  @media (max-width: 720px) {
+    font-size: 23px;
+  }
+}
+
+@mixin pageLede {
+  margin: 6px 0 0;
+  max-width: 60ch;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #6b665e;
+}
+
+@mixin pageNote {
+  margin: 0 0 24px;
+  padding: 10px 14px;
+  max-width: 1080px;
+  border-left: 2px solid var(--buttonColor);
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 0 5px 5px 0;
+  font-size: 14px;
+  color: #1e1c19;
+}
+
+// Entry forms fit a whole record on one screen so it can be filled without
+// scrolling. Columns grow with the viewport; the label sits on its field
+// rather than in a fixed gutter beside it.
+@mixin entryFormGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: 24px;
+  row-gap: 8px;
+  max-width: 1080px;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@mixin entryFormField {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+@mixin entryFormLabel {
+  margin-bottom: 2px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b665e;
+}
+
+@mixin entryFormControl {
+  width: 100%;
+}
+
+@mixin entryFormButtons {
+  margin-top: 16px;
+  text-align: left;
+}
+
+// Every list page (Products, People, Purchases, Donations) shares one table
+// look: a flat bordered card in the page's own container, a quiet uppercase
+// header row, hairline row dividers, and a hover highlight. The id column is
+// always first and always short, so it gets a fixed narrow width; every other
+// column shares the remaining space equally.
+@mixin dataTableShell {
+  @include pageShell();
+}
+
+@mixin dataTable {
+  width: 100%;
+  border: 1px solid #e3e1db;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+@mixin dataTableHeaderRow {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background: #f5f4f0;
+  border-bottom: 1px solid #e3e1db;
+}
+
+@mixin dataTableBodyRow {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 1px solid #ece9e2;
+  transition: background-color 0.12s ease;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: #faf9f7;
+  }
+}
+
+@mixin dataTableHeaderCell {
+  justify-content: flex-start;
+  padding: 12px 8px;
+  @include entryFormLabel();
+  margin-bottom: 0;
+}
+
+@mixin dataTableCell {
+  justify-content: flex-start;
+  padding: 12px 8px;
+  font-size: 14px;
+  color: #1e1c19;
+}
+
+@mixin dataTableIdWidth {
+  flex: 0 0 64px;
+}
+
+@mixin dataTableIdValue {
+  @include dataTableIdWidth();
+  color: #a19c8f;
+  font-variant-numeric: tabular-nums;
+}
+
+@mixin dataTableEditButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #6b665e;
+  transition: background-color 0.12s ease, color 0.12s ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.06);
+    color: #1e1c19;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--buttonColor);
+    outline-offset: 2px;
+  }
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+  }
+}
+
 $target-colors: (
   blue-color: #236367,
   white-color: #fff,
