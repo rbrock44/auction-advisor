@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://auction-advisor.ryan-brock.com/sitemap.xml
