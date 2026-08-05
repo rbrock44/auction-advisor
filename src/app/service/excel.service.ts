@@ -106,7 +106,7 @@ export class ExcelService {
       data[donatedBy] = donation !== undefined ? personInfo(donation.donatedBy) : '';
       data[creditTo] = donation !== undefined ? personInfo(donation.creditTo) : '';
       data[purchasedBy] = purchase !== undefined ? personInfo(purchase.purchasedBy) : '';
-      data[purchasedAmount] = purchase.amount;
+      data[purchasedAmount] = purchase !== undefined ? purchase.amount : '';
 
       dataArray.push(data);
     });

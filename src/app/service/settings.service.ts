@@ -9,7 +9,7 @@ import {Purchase} from '../model/purchase.model';
 import {LocalStorageSaveItem} from '../model/local-storage-save-item.model';
 import {DonationDisplay} from '../model/donation-display.model';
 import {PurchaseDisplay} from '../model/purchase-display.model';
-import {COLOR_DEFAULT, DONATION_TYPE, PERSON_TYPE, PRODUCT_TYPE, PURCHASE_TYPE, TITLE_DEFAULT, Pages} from '../constants/constants';
+import {COLOR_DEFAULT, TITLE_DEFAULT, Pages} from '../constants/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -84,29 +84,23 @@ export class SettingsService implements OnDestroy {
   }
 
   add(item: any): void {
-    const value: string = typeof (item);
-    switch (value) {
-      case PURCHASE_TYPE:
-        item.id = this.getNextId(this.purchases);
-        this.purchases.push(item);
-        this.purchasesSubject.next(this.purchases);
-        break;
-      case DONATION_TYPE:
-        item.id = this.getNextId(this.donations);
-        this.donations.push(item);
-        this.donationsSubject.next(this.donations);
-        break;
-      case PRODUCT_TYPE:
-        item.id = this.getNextId(this.products);
-        this.products.push(item);
-        this.filterProducts();
-        this.productsSubject.next(this.products);
-        break;
-      case PERSON_TYPE:
-        item.id = this.getNextId(this.people);
-        this.people.push(item);
-        this.peopleSubject.next(this.people);
-        break;
+    if (item instanceof Purchase) {
+      item.id = this.getNextId(this.purchases);
+      this.purchases.push(item);
+      this.purchasesSubject.next(this.purchases);
+    } else if (item instanceof Donation) {
+      item.id = this.getNextId(this.donations);
+      this.donations.push(item);
+      this.donationsSubject.next(this.donations);
+    } else if (item instanceof Product) {
+      item.id = this.getNextId(this.products);
+      this.products.push(item);
+      this.filterProducts();
+      this.productsSubject.next(this.products);
+    } else if (item instanceof Person) {
+      item.id = this.getNextId(this.people);
+      this.people.push(item);
+      this.peopleSubject.next(this.people);
     }
 
     this.saveToLocalStorage();
@@ -201,37 +195,30 @@ export class SettingsService implements OnDestroy {
   }
 
   public edit(item: any): void {
-    let index = -1;
-    const value: string = typeof (item);
-    switch (value) {
-      case PURCHASE_TYPE:
-        index = this.purchases.indexOf(this.purchases.find(x => x.id === item.id));
-        break;
-      case DONATION_TYPE:
-        index = this.donations.indexOf(this.donations.find(x => x.id === item.id));
-        break;
-      case PRODUCT_TYPE:
-        index = this.products.indexOf(this.products.find(x => x.id === item.id));
-        break;
-      case PERSON_TYPE:
-        index = this.people.indexOf(this.people.find(x => x.id === item.id));
-        break;
-    }
-
-    if (index >= 0) {
-      switch (value) {
-        case PURCHASE_TYPE:
-          this.purchases[index] = item;
-          break;
-        case DONATION_TYPE:
-          this.donations[index] = item;
-          break;
-        case PRODUCT_TYPE:
-          this.products[index] = item;
-          break;
-        case PERSON_TYPE:
-          this.people[index] = item;
-          break;
+    if (item instanceof Purchase) {
+      const index = this.purchases.findIndex(x => x.id === item.id);
+      if (index >= 0) {
+        this.purchases[index] = item;
+        this.purchasesSubject.next(this.purchases);
+      }
+    } else if (item instanceof Donation) {
+      const index = this.donations.findIndex(x => x.id === item.id);
+      if (index >= 0) {
+        this.donations[index] = item;
+        this.donationsSubject.next(this.donations);
+      }
+    } else if (item instanceof Product) {
+      const index = this.products.findIndex(x => x.id === item.id);
+      if (index >= 0) {
+        this.products[index] = item;
+        this.filterProducts();
+        this.productsSubject.next(this.products);
+      }
+    } else if (item instanceof Person) {
+      const index = this.people.findIndex(x => x.id === item.id);
+      if (index >= 0) {
+        this.people[index] = item;
+        this.peopleSubject.next(this.people);
       }
     }
 
