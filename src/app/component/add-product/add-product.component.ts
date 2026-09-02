@@ -1,17 +1,19 @@
 import {Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core';
-import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {Product} from '../../model/product.model';
 import {SettingsService} from '../../service/settings.service';
 import {AlertService} from '../../service/alert.service';
 import {Add} from '../../abstract/add';
 import {clearFormGroup} from '../../constants/constants';
+import { MatFormField, MatError } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 
 @Component({
     selector: 'app-add-product',
     templateUrl: './add-product.component.html',
     styleUrls: ['./add-product.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatFormField, MatInput, FormsModule, ReactiveFormsModule, MatError]
 })
 export class AddProductComponent extends Add implements OnInit {
   // Set when the form is hosted by the add bar, which supplies its own title

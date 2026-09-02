@@ -10,16 +10,14 @@ describe('AlertComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
+    imports: [
+        RouterTestingModule,
         AlertComponent
-      ],
-      providers: [
+    ],
+    providers: [
         AlertService,
-      ]
-    }).compileComponents();
+    ]
+}).compileComponents();
 
     service = TestBed.inject(AlertService);
     fixture = TestBed.createComponent(AlertComponent);

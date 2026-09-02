@@ -3,7 +3,6 @@ import {of} from 'rxjs';
 import {HeaderComponent} from './header.component';
 import {expectElementPresent, expectElementToContainContent, clickElement} from '../../constants/expectations.spec';
 import {RouterTestingModule} from '@angular/router/testing';
-import {MaterialModule} from '../../material.module';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {SettingsService} from '../../service/settings.service';
 import {ConfirmationPopupComponent} from '../confirmation-popup/confirmation-popup.component';
@@ -20,25 +19,22 @@ describe('HeaderComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
+    imports: [
         RouterTestingModule,
-        MaterialModule
-      ],
-      declarations: [
         HeaderComponent
-      ],
-      providers: [
+    ],
+    providers: [
         {
-          provide: MatDialogRef,
-          useValue: {
-            close() {
-            },
-            open() {
+            provide: MatDialogRef,
+            useValue: {
+                close() {
+                },
+                open() {
+                }
             }
-          }
         }
-      ]
-    }).compileComponents();
+    ]
+}).compileComponents();
 
     dialog = TestBed.inject(MatDialog);
     settingsService = TestBed.inject(SettingsService);

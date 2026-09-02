@@ -1,18 +1,19 @@
 import {Component, OnInit, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, MatSortHeader } from '@angular/material/sort';
+import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 import {Product} from '../../model/product.model';
 import {SettingsService} from '../../service/settings.service';
 import {EditProductComponent} from '../../component/edit-product/edit-product.component';
 import {EDIT_COLUMN} from '../../constants/constants';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
     selector: 'app-products',
     templateUrl: './products.component.html',
     styleUrls: ['./products.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatIcon, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow]
 })
 export class ProductsComponent implements OnInit {
   dataSource = new MatTableDataSource<Product>();

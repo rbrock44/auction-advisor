@@ -5,7 +5,6 @@ import {AlertService} from '../../service/alert.service';
 import {CommonModule} from '@angular/common';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MaterialModule} from '../../material.module';
 import {ExcelService} from '../../service/excel.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
@@ -33,35 +32,32 @@ describe('EditPersonComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
+    imports: [
         CommonModule,
         NoopAnimationsModule,
         FormsModule,
-        MaterialModule,
-        ReactiveFormsModule
-      ],
-      declarations: [
+        ReactiveFormsModule,
         EditPersonComponent
-      ],
-      providers: [
+    ],
+    providers: [
         AlertService,
         SettingsService,
         ExcelService,
         {
-          provide: MAT_DIALOG_DATA,
-          useValue: {
-            person
-          }
+            provide: MAT_DIALOG_DATA,
+            useValue: {
+                person
+            }
         },
         {
-          provide: MatDialogRef,
-          useValue: {
-            close() {
+            provide: MatDialogRef,
+            useValue: {
+                close() {
+                }
             }
-          }
         }
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     settingsService = TestBed.inject(SettingsService);
     alertService = TestBed.inject(AlertService);

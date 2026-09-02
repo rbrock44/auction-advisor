@@ -1,17 +1,21 @@
 import {Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core';
-import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {Donation} from '../../model/donation.model';
 import {AlertService} from '../../service/alert.service';
 import {SettingsService} from '../../service/settings.service';
 import {Add} from '../../abstract/add';
 import {clearFormGroup} from '../../constants/constants';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatInput } from '@angular/material/input';
 
 @Component({
     selector: 'app-add-donation',
     templateUrl: './add-donation.component.html',
     styleUrls: ['./add-donation.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatFormField, MatLabel, MatSelect, FormsModule, ReactiveFormsModule, MatOption, MatError, MatInput]
 })
 export class AddDonationComponent extends Add implements OnInit {
   // Set when the form is hosted by the add bar, which supplies its own title

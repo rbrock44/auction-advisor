@@ -1,6 +1,5 @@
 import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
 import {RouterTestingModule} from '@angular/router/testing';
-import {MaterialModule} from '../../material.module';
 import {ViewBarComponent} from './view-bar.component';
 import {SettingsService} from '../../service/settings.service';
 import {ExcelService} from '../../service/excel.service';
@@ -17,18 +16,15 @@ describe('ViewBarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
+    imports: [
         RouterTestingModule,
-        MaterialModule
-      ],
-      declarations: [
         ViewBarComponent
-      ],
-      providers: [
+    ],
+    providers: [
         SettingsService,
         ExcelService
-      ]
-    }).compileComponents();
+    ]
+}).compileComponents();
 
     settingsService = TestBed.inject(SettingsService);
     fixture = TestBed.createComponent(ViewBarComponent);

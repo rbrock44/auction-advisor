@@ -3,7 +3,6 @@ import {SettingsComponent} from './settings.component';
 import {CommonModule} from '@angular/common';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MaterialModule} from '../../material.module';
 import {AlertService} from '../../service/alert.service';
 import {SettingsService} from '../../service/settings.service';
 import {ExcelService} from '../../service/excel.service';
@@ -25,32 +24,29 @@ describe('SettingsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
+    imports: [
         CommonModule,
         NoopAnimationsModule,
         FormsModule,
-        MaterialModule,
-        ReactiveFormsModule
-      ],
-      declarations: [
+        ReactiveFormsModule,
         SettingsComponent,
         YesNoDropdownComponent
-      ],
-      providers: [
+    ],
+    providers: [
         AlertService,
         SettingsService,
         ExcelService,
         {
-          provide: MatDialogRef,
-          useValue: {
-            close() {
-            },
-            open() {
+            provide: MatDialogRef,
+            useValue: {
+                close() {
+                },
+                open() {
+                }
             }
-          }
         }
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     settingsService = TestBed.inject(SettingsService);
     fixture = TestBed.createComponent(SettingsComponent);

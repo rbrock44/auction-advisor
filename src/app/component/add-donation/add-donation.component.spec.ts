@@ -15,7 +15,6 @@ import {
   expectElementToContainContentAtIndex,
   hideShowElementsOnClick
 } from '../../constants/expectations.spec';
-import {MaterialModule} from '../../material.module';
 import {Product} from '../../model/product.model';
 import {HEADER, PEOPLE_OPTIONS, PRODUCT_OPTIONS} from '../../constants/constants.spec';
 import {Donation} from '../../model/donation.model';
@@ -28,22 +27,19 @@ describe('AddDonationComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
+    imports: [
         CommonModule,
         NoopAnimationsModule,
         FormsModule,
-        MaterialModule,
-        ReactiveFormsModule
-      ],
-      declarations: [
-        AddDonationComponent,
-      ],
-      providers: [
+        ReactiveFormsModule,
+        AddDonationComponent
+    ],
+    providers: [
         AlertService,
         SettingsService,
         ExcelService
-      ]
-    }).compileComponents();
+    ]
+}).compileComponents();
   }));
 
   beforeEach(() => {

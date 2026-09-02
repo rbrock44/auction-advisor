@@ -2,6 +2,7 @@ import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {Location} from '@angular/common';
 import {Pages} from '../../constants/constants';
 import {SettingsService} from '../../service/settings.service';
+import { MatIcon } from '@angular/material/icon';
 
 export type ViewType = 'product' | 'person' | 'purchase' | 'donation';
 
@@ -10,7 +11,7 @@ export type ViewType = 'product' | 'person' | 'purchase' | 'donation';
     templateUrl: './view-bar.component.html',
     styleUrls: ['./view-bar.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatIcon]
 })
 export class ViewBarComponent {
   // Order matches how the auction actually runs: catalogue the lots, know

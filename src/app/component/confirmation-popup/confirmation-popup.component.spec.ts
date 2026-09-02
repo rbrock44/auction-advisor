@@ -13,28 +13,26 @@ describe('ConfirmationPopupComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
+    imports: [
         MatDialogModule,
-      ],
-      providers: [
+        ConfirmationPopupComponent,
+    ],
+    providers: [
         {
-          provide: MAT_DIALOG_DATA,
-          useValue: {
-            label
-          }
+            provide: MAT_DIALOG_DATA,
+            useValue: {
+                label
+            }
         },
         {
-          provide: MatDialogRef,
-          useValue: {
-            close() {
+            provide: MatDialogRef,
+            useValue: {
+                close() {
+                }
             }
-          }
         }
-      ],
-      declarations: [
-        ConfirmationPopupComponent
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(ConfirmationPopupComponent);
     component = fixture.debugElement.componentInstance;

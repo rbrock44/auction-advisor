@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/co
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, takeUntil} from 'rxjs/operators';
 import {SettingsService} from '../../service/settings.service';
-import {UntypedFormControl, Validators} from '@angular/forms';
+import { UntypedFormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import {ConfirmationPopupComponent} from '../../component/confirmation-popup/confirmation-popup.component';
 import {AlertService} from '../../service/alert.service';
@@ -12,6 +12,9 @@ import {
   RESET_SCORES_MESSAGE,
   RESET_SCORES_SUCCESS_MESSAGE
 } from '../../constants/constants';
+import { MatFormField, MatError } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { YesNoDropdownComponent } from '../../component/yes-no-dropdown/yes-no-dropdown.component';
 
 type SaveStatus = 'idle' | 'saving' | 'saved';
 
@@ -20,7 +23,7 @@ type SaveStatus = 'idle' | 'saving' | 'saved';
     templateUrl: './settings.component.html',
     styleUrls: ['./settings.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatFormField, MatInput, FormsModule, ReactiveFormsModule, MatError, YesNoDropdownComponent]
 })
 export class SettingsComponent implements OnInit, OnDestroy {
   titleControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);

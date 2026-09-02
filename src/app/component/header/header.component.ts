@@ -5,13 +5,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { SettingsService } from '../../service/settings.service';
 import { ConfirmationPopupComponent } from '../confirmation-popup/confirmation-popup.component';
 import { EXPORT_CONFIRM_MESSAGE } from '../../constants/constants';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatIcon]
 })
 export class HeaderComponent {
   constructor(

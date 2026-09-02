@@ -5,7 +5,6 @@ import {AlertService} from '../../service/alert.service';
 import {CommonModule} from '@angular/common';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MaterialModule} from '../../material.module';
 import {ExcelService} from '../../service/excel.service';
 import {
   clickElement,
@@ -26,22 +25,19 @@ describe('AddPersonComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
+    imports: [
         CommonModule,
         NoopAnimationsModule,
         FormsModule,
-        MaterialModule,
-        ReactiveFormsModule
-      ],
-      declarations: [
-        AddPersonComponent,
-      ],
-      providers: [
+        ReactiveFormsModule,
+        AddPersonComponent
+    ],
+    providers: [
         AlertService,
         SettingsService,
         ExcelService
-      ]
-    }).compileComponents();
+    ]
+}).compileComponents();
   }));
 
   beforeEach(() => {

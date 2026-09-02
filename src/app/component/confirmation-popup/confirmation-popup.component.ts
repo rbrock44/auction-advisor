@@ -23,8 +23,7 @@ import {PERFORM_THIS_ACTION} from '../../constants/constants';
     </div>
   `,
     styleUrls: ['./confirmation-popup.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    changeDetection: ChangeDetectionStrategy.Eager
 })
 export class ConfirmationPopupComponent implements OnInit {
   performAction = PERFORM_THIS_ACTION;

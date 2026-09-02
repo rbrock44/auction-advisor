@@ -2,17 +2,18 @@ import {Component, OnInit, ViewChild, ChangeDetectionStrategy} from '@angular/co
 import {Person} from '../../model/person.model';
 import {SettingsService} from '../../service/settings.service';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, MatSortHeader } from '@angular/material/sort';
+import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 import {EditPersonComponent} from '../../component/edit-person/edit-person.component';
 import {EDIT_COLUMN} from '../../constants/constants';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
     selector: 'app-people',
     templateUrl: './people.component.html',
     styleUrls: ['./people.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatIcon, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow]
 })
 export class PeopleComponent implements OnInit {
   dataSource = new MatTableDataSource<Person>();

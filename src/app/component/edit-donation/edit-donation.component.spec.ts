@@ -13,7 +13,6 @@ import {Donation} from '../../model/donation.model';
 import {SettingsService} from '../../service/settings.service';
 import {AlertService} from '../../service/alert.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {MaterialModule} from '../../material.module';
 import {CommonModule} from '@angular/common';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -35,35 +34,32 @@ describe('EditDonationComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
+    imports: [
         CommonModule,
         NoopAnimationsModule,
         FormsModule,
-        MaterialModule,
-        ReactiveFormsModule
-      ],
-      declarations: [
+        ReactiveFormsModule,
         EditDonationComponent
-      ],
-      providers: [
+    ],
+    providers: [
         AlertService,
         SettingsService,
         ExcelService,
         {
-          provide: MAT_DIALOG_DATA,
-          useValue: {
-            donation
-          }
+            provide: MAT_DIALOG_DATA,
+            useValue: {
+                donation
+            }
         },
         {
-          provide: MatDialogRef,
-          useValue: {
-            close() {
+            provide: MatDialogRef,
+            useValue: {
+                close() {
+                }
             }
-          }
         }
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     settingsService = TestBed.inject(SettingsService);
     alertService = TestBed.inject(AlertService);

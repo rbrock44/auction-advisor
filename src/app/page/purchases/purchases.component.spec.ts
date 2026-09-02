@@ -3,7 +3,6 @@ import {PurchasesComponent} from './purchases.component';
 import {CommonModule} from '@angular/common';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MaterialModule} from '../../material.module';
 import {AddPersonComponent} from '../../component/add-person/add-person.component';
 import {AlertService} from '../../service/alert.service';
 import {SettingsService} from '../../service/settings.service';
@@ -26,35 +25,32 @@ describe('PurchasesComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
+    imports: [
         CommonModule,
         NoopAnimationsModule,
         FormsModule,
-        MaterialModule,
-        ReactiveFormsModule
-      ],
-      declarations: [
+        ReactiveFormsModule,
         AddPurchaseComponent,
         AddPersonComponent,
         AddProductComponent,
         PurchasesComponent,
-        EditPurchaseComponent,
-      ],
-      providers: [
+        EditPurchaseComponent
+    ],
+    providers: [
         AlertService,
         SettingsService,
         ExcelService,
         {
-          provide: MatDialogRef,
-          useValue: {
-            close() {
-            },
-            open() {
+            provide: MatDialogRef,
+            useValue: {
+                close() {
+                },
+                open() {
+                }
             }
-          }
         }
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     dialog = TestBed.inject(MatDialog);
     settingService = TestBed.inject(SettingsService);

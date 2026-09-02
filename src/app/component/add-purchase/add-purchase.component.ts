@@ -1,5 +1,5 @@
 import {Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core';
-import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {Purchase} from '../../model/purchase.model';
 import {AlertService} from '../../service/alert.service';
 import {SettingsService} from '../../service/settings.service';
@@ -7,13 +7,17 @@ import {Product} from '../../model/product.model';
 import {Donation} from '../../model/donation.model';
 import {Add} from '../../abstract/add';
 import {clearFormGroup} from '../../constants/constants';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatInput } from '@angular/material/input';
 
 @Component({
     selector: 'app-add-purchase',
     templateUrl: './add-purchase.component.html',
     styleUrls: ['./add-purchase.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatFormField, MatLabel, MatSelect, FormsModule, ReactiveFormsModule, MatOption, MatError, MatInput]
 })
 export class AddPurchaseComponent extends Add implements OnInit {
   // Set when the form is hosted by the add bar, which supplies its own title

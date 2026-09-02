@@ -5,6 +5,7 @@
     // so it is pinned off here to preserve existing behaviour. Enabling it is a
     // separate piece of work.
     "strict": false,
+    "esModuleInterop": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,

@@ -1,18 +1,20 @@
 import {Component, Inject, ChangeDetectionStrategy} from '@angular/core';
-import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {Product} from '../../model/product.model';
 import {SettingsService} from '../../service/settings.service';
 import {AlertService} from '../../service/alert.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {Edit} from '../../abstract/edit';
 import {clearFormGroup} from '../../constants/constants';
+import { MatFormField, MatError } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 
 @Component({
     selector: 'app-edit-product',
     templateUrl: './edit-product.component.html',
     styleUrls: ['./edit-product.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatFormField, MatInput, FormsModule, ReactiveFormsModule, MatError]
 })
 export class EditProductComponent extends Edit {
   product: Product = new Product();

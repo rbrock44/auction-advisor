@@ -1,18 +1,22 @@
 import {Component, Inject, ChangeDetectionStrategy} from '@angular/core';
-import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {AlertService} from '../../service/alert.service';
 import {SettingsService} from '../../service/settings.service';
 import {Donation} from '../../model/donation.model';
 import {Edit} from '../../abstract/edit';
 import {clearFormGroup} from '../../constants/constants';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatInput } from '@angular/material/input';
 
 @Component({
     selector: 'app-edit-donation',
     templateUrl: './edit-donation.component.html',
     styleUrls: ['./edit-donation.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatFormField, MatLabel, MatSelect, FormsModule, ReactiveFormsModule, MatOption, MatError, MatInput]
 })
 export class EditDonationComponent extends Edit {
   donation: Donation = new Donation();

@@ -2,6 +2,11 @@ import {Component, ChangeDetectionStrategy, HostListener, OnDestroy, OnInit} fro
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {SettingsService} from '../../service/settings.service';
+import { MatIcon } from '@angular/material/icon';
+import { AddPersonComponent } from '../add-person/add-person.component';
+import { AddProductComponent } from '../add-product/add-product.component';
+import { AddDonationComponent } from '../add-donation/add-donation.component';
+import { AddPurchaseComponent } from '../add-purchase/add-purchase.component';
 
 export type AddType = 'person' | 'product' | 'donation' | 'purchase';
 
@@ -10,7 +15,7 @@ export type AddType = 'person' | 'product' | 'donation' | 'purchase';
     templateUrl: './add-bar.component.html',
     styleUrls: ['./add-bar.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatIcon, AddPersonComponent, AddProductComponent, AddDonationComponent, AddPurchaseComponent]
 })
 export class AddBarComponent implements OnInit, OnDestroy {
   // Person and Product stand on their own. Donation and Purchase both need a

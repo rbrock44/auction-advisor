@@ -7,7 +7,6 @@ import {AddDonationComponent} from '../add-donation/add-donation.component';
 import {AddPersonComponent} from '../add-person/add-person.component';
 import {AddProductComponent} from '../add-product/add-product.component';
 import {AddPurchaseComponent} from '../add-purchase/add-purchase.component';
-import {MaterialModule} from '../../material.module';
 import {AlertService} from '../../service/alert.service';
 import {SettingsService} from '../../service/settings.service';
 import {ExcelService} from '../../service/excel.service';
@@ -32,26 +31,23 @@ describe('AddBarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
+    imports: [
         CommonModule,
         NoopAnimationsModule,
         FormsModule,
-        MaterialModule,
-        ReactiveFormsModule
-      ],
-      declarations: [
+        ReactiveFormsModule,
         AddBarComponent,
         AddDonationComponent,
         AddPersonComponent,
         AddProductComponent,
         AddPurchaseComponent
-      ],
-      providers: [
+    ],
+    providers: [
         AlertService,
         SettingsService,
         ExcelService
-      ]
-    }).compileComponents();
+    ]
+}).compileComponents();
   }));
 
   beforeEach(() => {

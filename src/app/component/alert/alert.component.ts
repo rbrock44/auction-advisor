@@ -15,8 +15,7 @@ import {AlertService} from '../../service/alert.service';
     }
     `,
     styleUrls: ['./alert.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    changeDetection: ChangeDetectionStrategy.Eager
 })
 export class AlertComponent implements OnInit, OnDestroy {
   @Input() id = 'default-alert';

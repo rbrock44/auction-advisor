@@ -2,17 +2,19 @@ import {Component, Inject, ChangeDetectionStrategy} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {AlertService} from '../../service/alert.service';
 import {SettingsService} from '../../service/settings.service';
-import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {Person} from '../../model/person.model';
 import {Edit} from '../../abstract/edit';
 import {clearFormGroup} from '../../constants/constants';
+import { MatFormField, MatError } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 
 @Component({
     selector: 'app-edit-person',
     templateUrl: './edit-person.component.html',
     styleUrls: ['./edit-person.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatFormField, MatInput, FormsModule, ReactiveFormsModule, MatError]
 })
 export class EditPersonComponent extends Edit {
   person: Person;
