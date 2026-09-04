@@ -56,6 +56,32 @@
       }
     </p>
 
+    <div class="backup">
+      <h2 class="backup__title">Backup</h2>
+      <p class="backup__detail">
+        The auction is kept in this browser only. Download a backup to hold a copy of the night,
+        or restore one to pick it back up here or on another device.
+      </p>
+      <div class="backup__actions">
+        <button data-button-download-backup
+          type="button"
+          (click)="downloadBackup()"
+          class="backup-button">Download Backup
+        </button>
+        <button data-button-restore-backup
+          type="button"
+          (click)="backupFileInput.click()"
+          class="backup-button">Restore From Backup
+        </button>
+        <input data-backup-file-input
+          #backupFileInput
+          type="file"
+          accept="application/json,.json"
+          class="backup__file"
+          (change)="restoreBackup($event)">
+      </div>
+    </div>
+
     <div class="danger">
       <h2 class="danger__title">Reset</h2>
       <p class="danger__detail">

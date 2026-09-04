@@ -73,6 +73,14 @@ export const PERSON_TYPE = 'person';
 export const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 export const EXCEL_EXTENSION = '.xlsx';
 
+export const BACKUP_TYPE = 'application/json;charset=UTF-8';
+export const BACKUP_EXTENSION = '.json';
+
+export const BACKUP_EXPORT_SUCCESS_MESSAGE: string = 'Backup downloaded.';
+export const BACKUP_IMPORT_SUCCESS_MESSAGE: string = 'Auction restored from backup.';
+export const BACKUP_IMPORT_INVALID_MESSAGE: string = 'That file is not an Auction Advisor backup. Nothing was changed.';
+export const BACKUP_IMPORT_UNREADABLE_MESSAGE: string = 'That file could not be read. Nothing was changed.';
+
 export function addedSuccessfully(value: string): string {
   return `${value} added successfully`;
 }

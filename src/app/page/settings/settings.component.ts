@@ -7,6 +7,10 @@ import { MatDialog } from '@angular/material/dialog';
 import {ConfirmationPopupComponent} from '../../component/confirmation-popup/confirmation-popup.component';
 import {AlertService} from '../../service/alert.service';
 import {
+  BACKUP_EXPORT_SUCCESS_MESSAGE,
+  BACKUP_IMPORT_INVALID_MESSAGE,
+  BACKUP_IMPORT_SUCCESS_MESSAGE,
+  BACKUP_IMPORT_UNREADABLE_MESSAGE,
   RESET_EVERYTHING_MESSAGE,
   RESET_EVERYTHING_SUCCESS_MESSAGE,
   RESET_SCORES_MESSAGE,
@@ -69,6 +73,45 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.destroy.next();
     this.destroy.complete();
     this.settingsService.ngOnDestroy();
+  }
+
+  downloadBackup(): void {
+    this.settingsService.exportBackup();
+    this.alertService.success(BACKUP_EXPORT_SUCCESS_MESSAGE);
+  }
+
+  restoreBackup(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file: File = input.files && input.files.length > 0 ? input.files[0] : null;
+
+    if (!file) {
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const restored = this.settingsService.importBackup(reader.result as string);
+
+      if (restored) {
+        this.applySettingsValuesToFormControls();
+        this.status = 'idle';
+        this.alertService.success(BACKUP_IMPORT_SUCCESS_MESSAGE);
+      } else {
+        this.alertService.error(BACKUP_IMPORT_INVALID_MESSAGE);
+      }
+
+      // Clearing the input lets the same file be picked again, which the
+      // browser otherwise treats as no change at all.
+      input.value = '';
+    };
+
+    reader.onerror = () => {
+      this.alertService.error(BACKUP_IMPORT_UNREADABLE_MESSAGE);
+      input.value = '';
+    };
+
+    reader.readAsText(file);
   }
 
   resetEverything(): void {

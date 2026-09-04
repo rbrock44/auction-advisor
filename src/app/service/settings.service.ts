@@ -1,5 +1,6 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import * as _ from 'lodash';
+import * as FileSaver from 'file-saver';
 import {Subject} from 'rxjs';
 import {ExcelService} from './excel.service';
 import {Person} from '../model/person.model';
@@ -9,7 +10,14 @@ import {Purchase} from '../model/purchase.model';
 import {LocalStorageSaveItem} from '../model/local-storage-save-item.model';
 import {DonationDisplay} from '../model/donation-display.model';
 import {PurchaseDisplay} from '../model/purchase-display.model';
-import {COLOR_DEFAULT, TITLE_DEFAULT, Pages} from '../constants/constants';
+import {AuctionBackup, BACKUP_VERSION} from '../model/auction-backup.model';
+import {
+  BACKUP_EXTENSION,
+  BACKUP_TYPE,
+  COLOR_DEFAULT,
+  TITLE_DEFAULT,
+  Pages
+} from '../constants/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -192,6 +200,86 @@ export class SettingsService implements OnDestroy {
       this.purchases,
       this.getPersonInfoById
     );
+  }
+
+  // The whole auction lives in localStorage, which a cleared browser or a
+  // closed private window takes with it. This is the only way a night's
+  // records leave the device they were entered on.
+  public exportBackup(): void {
+    const backup: AuctionBackup = {
+      version: BACKUP_VERSION,
+      exportedAt: new Date().toISOString(),
+      title: this.title,
+      color: this.color,
+      canEdit: this.canEdit,
+      exportHasPopup: this.exportHasPopup,
+      people: this.people,
+      products: this.products,
+      donations: this.donations,
+      purchases: this.purchases
+    };
+
+    const blob: Blob = new Blob([JSON.stringify(backup, null, 2)], {type: BACKUP_TYPE});
+
+    FileSaver.saveAs(blob, this.makeExportTitle('Backup') + '_' + new Date().getTime() + BACKUP_EXTENSION);
+  }
+
+  // Reports failure instead of throwing so the caller can raise the app's own
+  // error alert. A rejected file leaves the running auction exactly as it was.
+  public importBackup(contents: string): boolean {
+    let parsed: unknown;
+
+    try {
+      parsed = JSON.parse(contents);
+    } catch {
+      return false;
+    }
+
+    if (!this.isAuctionBackup(parsed)) {
+      return false;
+    }
+
+    this.title = parsed.title;
+    this.canEdit = parsed.canEdit;
+    this.exportHasPopup = parsed.exportHasPopup;
+    // Rebuilt as model instances, not the raw parsed objects, so behaviour
+    // like Person.name() survives the restore.
+    this.people = parsed.people.map(item => new Person(item));
+    this.products = parsed.products.map(item => new Product(item));
+    this.donations = parsed.donations.map(item => new Donation(item));
+    this.purchases = parsed.purchases.map(item => new Purchase(item));
+
+    this.setColor(parsed.color);
+    this.filterProducts();
+    this.saveToLocalStorage();
+
+    this.peopleSubject.next(this.people);
+    this.productsSubject.next(this.products);
+    this.donationsSubject.next(this.donations);
+    this.purchasesSubject.next(this.purchases);
+
+    return true;
+  }
+
+  // Checked before anything is overwritten: a half-applied backup would be
+  // worse than a refused one.
+  private isAuctionBackup(value: unknown): value is AuctionBackup {
+    if (value === null || typeof value !== 'object') {
+      return false;
+    }
+
+    const candidate = value as Partial<AuctionBackup>;
+
+    return typeof candidate.version === 'number'
+      && candidate.version <= BACKUP_VERSION
+      && typeof candidate.title === 'string'
+      && typeof candidate.color === 'string'
+      && typeof candidate.canEdit === 'boolean'
+      && typeof candidate.exportHasPopup === 'boolean'
+      && Array.isArray(candidate.people)
+      && Array.isArray(candidate.products)
+      && Array.isArray(candidate.donations)
+      && Array.isArray(candidate.purchases);
   }
 
   public edit(item: any): void {
