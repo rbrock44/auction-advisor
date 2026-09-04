@@ -3,7 +3,7 @@ import { Pages } from '../../constants/constants';
 import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { SettingsService } from '../../service/settings.service';
-import { ConfirmationPopupComponent } from '../confirmation-popup/confirmation-popup.component';
+import { ConfirmationPopupComponent, ConfirmationPopupData } from '../confirmation-popup/confirmation-popup.component';
 import { EXPORT_CONFIRM_MESSAGE } from '../../constants/constants';
 import { MatIcon } from '@angular/material/icon';
 
@@ -53,7 +53,7 @@ export class HeaderComponent {
       return;
     }
 
-    this.dialog.open(ConfirmationPopupComponent, {
+    this.dialog.open<ConfirmationPopupComponent, ConfirmationPopupData, boolean>(ConfirmationPopupComponent, {
       data: {
         label: EXPORT_CONFIRM_MESSAGE
       },

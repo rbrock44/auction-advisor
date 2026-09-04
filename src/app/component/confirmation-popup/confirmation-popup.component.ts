@@ -2,6 +2,10 @@ import {Component, Inject, OnInit, ChangeDetectionStrategy} from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {PERFORM_THIS_ACTION} from '../../constants/constants';
 
+export interface ConfirmationPopupData {
+  label: string;
+}
+
 @Component({
     selector: 'app-confirmation-popup',
     template: `
@@ -30,7 +34,7 @@ export class ConfirmationPopupComponent implements OnInit {
   label: string;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: ConfirmationPopupData,
     public dialogRef: MatDialogRef<ConfirmationPopupComponent>
   ) {
     this.dialogRef.disableClose = true;

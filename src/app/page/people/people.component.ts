@@ -4,7 +4,7 @@ import {SettingsService} from '../../service/settings.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
-import {EditPersonComponent} from '../../component/edit-person/edit-person.component';
+import {EditPersonComponent, EditPersonDialogData} from '../../component/edit-person/edit-person.component';
 import {EDIT_COLUMN} from '../../constants/constants';
 import { MatIcon } from '@angular/material/icon';
 
@@ -44,7 +44,7 @@ export class PeopleComponent implements OnInit {
       event.preventDefault();
     }
 
-    this.dialog.open(EditPersonComponent, {
+    this.dialog.open<EditPersonComponent, EditPersonDialogData>(EditPersonComponent, {
       data: {
         person
       }

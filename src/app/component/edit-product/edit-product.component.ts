@@ -9,6 +9,10 @@ import {clearFormGroup} from '../../constants/constants';
 import { MatFormField, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 
+export interface EditProductDialogData {
+  product: Product;
+}
+
 @Component({
     selector: 'app-edit-product',
     templateUrl: './edit-product.component.html',
@@ -22,7 +26,7 @@ export class EditProductComponent extends Edit {
   descriptionControl: UntypedFormControl;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: EditProductDialogData,
     public dialogRef: MatDialogRef<EditProductComponent>,
     public settingsService: SettingsService,
     private alertService: AlertService,

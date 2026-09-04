@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 import {PurchaseDisplay} from '../../model/purchase-display.model';
-import {EditPurchaseComponent} from '../../component/edit-purchase/edit-purchase.component';
+import {EditPurchaseComponent, EditPurchaseDialogData} from '../../component/edit-purchase/edit-purchase.component';
 import {EDIT_COLUMN} from '../../constants/constants';
 import { MatIcon } from '@angular/material/icon';
 
@@ -44,7 +44,7 @@ export class PurchasesComponent implements OnInit {
       event.preventDefault();
     }
 
-    this.dialog.open(EditPurchaseComponent, {
+    this.dialog.open<EditPurchaseComponent, EditPurchaseDialogData>(EditPurchaseComponent, {
       data: {
         purchase
       }

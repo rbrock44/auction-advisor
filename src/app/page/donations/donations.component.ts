@@ -4,7 +4,7 @@ import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 import {SettingsService} from '../../service/settings.service';
 import {DonationDisplay} from '../../model/donation-display.model';
-import {EditDonationComponent} from '../../component/edit-donation/edit-donation.component';
+import {EditDonationComponent, EditDonationDialogData} from '../../component/edit-donation/edit-donation.component';
 import {EDIT_COLUMN} from '../../constants/constants';
 import { MatIcon } from '@angular/material/icon';
 
@@ -44,7 +44,7 @@ export class DonationsComponent implements OnInit {
       event.preventDefault();
     }
 
-    this.dialog.open(EditDonationComponent, {
+    this.dialog.open<EditDonationComponent, EditDonationDialogData>(EditDonationComponent, {
       data: {
         donation
       }

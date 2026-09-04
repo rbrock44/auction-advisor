@@ -12,6 +12,10 @@ import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { MatInput } from '@angular/material/input';
 
+export interface EditPurchaseDialogData {
+  purchase: Purchase;
+}
+
 @Component({
     selector: 'app-edit-purchase',
     templateUrl: './edit-purchase.component.html',
@@ -26,7 +30,7 @@ export class EditPurchaseComponent extends Edit {
   amountControl: UntypedFormControl;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: EditPurchaseDialogData,
     public dialogRef: MatDialogRef<EditPurchaseComponent>,
     public settingsService: SettingsService,
     private alertService: AlertService,

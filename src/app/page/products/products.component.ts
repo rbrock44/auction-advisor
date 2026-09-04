@@ -4,7 +4,7 @@ import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 import {Product} from '../../model/product.model';
 import {SettingsService} from '../../service/settings.service';
-import {EditProductComponent} from '../../component/edit-product/edit-product.component';
+import {EditProductComponent, EditProductDialogData} from '../../component/edit-product/edit-product.component';
 import {EDIT_COLUMN} from '../../constants/constants';
 import { MatIcon } from '@angular/material/icon';
 
@@ -50,7 +50,7 @@ export class ProductsComponent implements OnInit {
       event.preventDefault();
     }
 
-    this.dialog.open(EditProductComponent, {
+    this.dialog.open<EditProductComponent, EditProductDialogData>(EditProductComponent, {
       data: {
         product
       }

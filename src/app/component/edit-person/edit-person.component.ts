@@ -9,6 +9,10 @@ import {clearFormGroup} from '../../constants/constants';
 import { MatFormField, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 
+export interface EditPersonDialogData {
+  person: Person;
+}
+
 @Component({
     selector: 'app-edit-person',
     templateUrl: './edit-person.component.html',
@@ -23,7 +27,7 @@ export class EditPersonComponent extends Edit {
   emailControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: EditPersonDialogData,
     public dialogRef: MatDialogRef<EditPersonComponent>,
     public settingsService: SettingsService,
     private alertService: AlertService,

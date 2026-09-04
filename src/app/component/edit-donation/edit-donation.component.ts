@@ -11,6 +11,10 @@ import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { MatInput } from '@angular/material/input';
 
+export interface EditDonationDialogData {
+  donation: Donation;
+}
+
 @Component({
     selector: 'app-edit-donation',
     templateUrl: './edit-donation.component.html',
@@ -27,7 +31,7 @@ export class EditDonationComponent extends Edit {
   estimatedValueControl: UntypedFormControl = new UntypedFormControl('', [Validators.required, Validators.pattern('^(0|[1-9][0-9]*)$')]);
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: EditDonationDialogData,
     public dialogRef: MatDialogRef<EditDonationComponent>,
     public settingsService: SettingsService,
     private alertService: AlertService,

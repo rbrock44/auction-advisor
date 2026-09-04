@@ -3,8 +3,8 @@ import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, takeUntil} from 'rxjs/operators';
 import {SettingsService} from '../../service/settings.service';
 import { UntypedFormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import {ConfirmationPopupComponent} from '../../component/confirmation-popup/confirmation-popup.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {ConfirmationPopupComponent, ConfirmationPopupData} from '../../component/confirmation-popup/confirmation-popup.component';
 import {AlertService} from '../../service/alert.service';
 import {
   BACKUP_EXPORT_SUCCESS_MESSAGE,
@@ -164,8 +164,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.status = 'saved';
   }
 
-  private getConfirmationPopup(label: string): any {
-    return this.dialog.open(ConfirmationPopupComponent, {
+  private getConfirmationPopup(label: string): MatDialogRef<ConfirmationPopupComponent, boolean> {
+    return this.dialog.open<ConfirmationPopupComponent, ConfirmationPopupData, boolean>(ConfirmationPopupComponent, {
       data: {
         label
       },
