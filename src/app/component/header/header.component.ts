@@ -1,6 +1,4 @@
 import {Component, ChangeDetectionStrategy} from '@angular/core';
-import { Pages } from '../../constants/constants';
-import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { SettingsService } from '../../service/settings.service';
 import { ConfirmationPopupComponent, ConfirmationPopupData } from '../confirmation-popup/confirmation-popup.component';
@@ -16,7 +14,6 @@ import { MatIcon } from '@angular/material/icon';
 })
 export class HeaderComponent {
   constructor(
-    private location: Location,
     private dialog: MatDialog,
     public service: SettingsService
   ) {
@@ -32,15 +29,7 @@ export class HeaderComponent {
   }
 
   show(index: number): void {
-    const urlParam = Pages[index];
-    if (urlParam !== 'Products') {
-      const queryParams = new URLSearchParams()
-      queryParams.set('page', urlParam);
-      this.location.replaceState(`${location.pathname}?${queryParams.toString()}`);
-    } else {
-      this.location.replaceState(`${location.pathname}`);
-    }
-    this.service.setShow(index);
+    this.service.navigateTo(index);
   }
 
   // Export isn't a page — it's an action, so clicking it never changes the

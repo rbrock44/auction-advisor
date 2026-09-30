@@ -1,6 +1,4 @@
 import {Component, ChangeDetectionStrategy} from '@angular/core';
-import {Location} from '@angular/common';
-import {Pages} from '../../constants/constants';
 import {SettingsService} from '../../service/settings.service';
 import { MatIcon } from '@angular/material/icon';
 
@@ -40,7 +38,6 @@ export class ViewBarComponent {
   };
 
   constructor(
-    private location: Location,
     public service: SettingsService
   ) {
   }
@@ -59,14 +56,6 @@ export class ViewBarComponent {
 
   show(type: ViewType): void {
     const index = this.indexes[type];
-    const urlParam = Pages[index];
-    if (urlParam !== 'Products') {
-      const queryParams = new URLSearchParams();
-      queryParams.set('page', urlParam);
-      this.location.replaceState(`${location.pathname}?${queryParams.toString()}`);
-    } else {
-      this.location.replaceState(`${location.pathname}`);
-    }
-    this.service.setShow(index);
+    this.service.navigateTo(index);
   }
 }

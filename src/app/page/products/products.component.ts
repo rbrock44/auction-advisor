@@ -37,12 +37,7 @@ export class ProductsComponent implements OnInit {
       this.dataSource.data = products;
     });
 
-    const queryParams = new URLSearchParams(window.location.search);
-    const pageParam = queryParams.get('page');
-
-    if (pageParam) {
-      this.settingsService.setShowWithUrlParam(pageParam);
-    }
+    this.settingsService.restorePageFromUrl();
   }
 
   openEditDialog(product: Product): void {

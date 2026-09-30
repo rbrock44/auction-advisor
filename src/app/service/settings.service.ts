@@ -2,6 +2,7 @@ import {Injectable, OnDestroy} from '@angular/core';
 import * as _ from 'lodash';
 import * as FileSaver from 'file-saver';
 import {Subject} from 'rxjs';
+import {Location} from '@angular/common';
 import {ExcelService} from './excel.service';
 import {Person} from '../model/person.model';
 import {Donation} from '../model/donation.model';
@@ -52,8 +53,13 @@ export class SettingsService implements OnDestroy {
   // 5th: Settings
   show = [true, false, false, false, false];
 
-  constructor(private excelService: ExcelService) {
+  constructor(
+    private excelService: ExcelService,
+    private location: Location,
+  ) {
     this.readFromLocalStorage();
+    // Browser/mouse back and forward land here; show whichever page the URL now names.
+    this.location.subscribe(() => this.setShow(this.readPageFromUrl() ?? Pages.Products));
   }
 
   ngOnDestroy(): void {
@@ -72,6 +78,46 @@ export class SettingsService implements OnDestroy {
   setShowWithUrlParam(param: string): void {
     const index = Pages[param];
     this.setShow(index);
+  }
+
+  /** Shows a page as a new history entry so browser/mouse back returns to the previous page. */
+  navigateTo(index: number): void {
+    if (this.show[index]) {
+      return;
+    }
+
+    this.setShow(index);
+    this.location.go(this.buildPageUrl(index));
+  }
+
+  /**
+   * Shows the page named in the URL on load. A Products entry is slotted in underneath a deep
+   * link so browser/mouse back lands on Products instead of leaving the site.
+   */
+  restorePageFromUrl(): void {
+    const index = this.readPageFromUrl();
+    if (index === null || index === Pages.Products) {
+      return;
+    }
+
+    this.location.replaceState(this.buildPageUrl(Pages.Products));
+    this.navigateTo(index);
+  }
+
+  private readPageFromUrl(): number | null {
+    const query = this.location.path().split('?')[1] ?? '';
+    const index = Pages[new URLSearchParams(query).get('page') as keyof typeof Pages];
+    return index === undefined ? null : index;
+  }
+
+  private buildPageUrl(index: number): string {
+    if (index === Pages.Products) {
+      return `${location.pathname}`;
+    }
+
+    const queryParams = new URLSearchParams();
+    queryParams.set('page', Pages[index]);
+    return `${location.pathname}?${queryParams.toString()}`;
   }
 
   filterProducts(): void {

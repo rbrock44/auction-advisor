@@ -3,6 +3,9 @@ import {SettingsService} from './settings.service';
 import {ExcelService} from './excel.service';
 import {Person} from '../model/person.model';
 import {Purchase} from '../model/purchase.model';
+import {Pages} from '../constants/constants';
+import {Location} from '@angular/common';
+import {provideLocationMocks} from '@angular/common/testing';
 
 describe('SettingsService', () => {
   let service: SettingsService;
@@ -65,5 +68,48 @@ describe('SettingsService', () => {
       expect(service.people.length).toBe(1);
       expect(service.people[0].firstName).toBe('Janet');
     });
+  });
+});
+
+describe('SettingsService page history', () => {
+  let service: SettingsService;
+  let location: Location;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [SettingsService, ExcelService, provideLocationMocks()]
+    });
+    service = TestBed.inject(SettingsService);
+    location = TestBed.inject(Location);
+  });
+
+  it('should push a history entry when navigating to a page', () => {
+    service.navigateTo(Pages.People);
+    expect(service.show[Pages.People]).toBe(true);
+    expect(location.path()).toContain('page=People');
+  });
+
+  it('should return to the previous page when the browser goes back', () => {
+    service.navigateTo(Pages.People);
+    service.navigateTo(Pages.Donations);
+    location.back();
+    expect(service.show[Pages.People]).toBe(true);
+    expect(service.show[Pages.Donations]).toBe(false);
+  });
+
+  it('should not push a duplicate entry for the page already shown', () => {
+    service.navigateTo(Pages.People);
+    service.navigateTo(Pages.People);
+    location.back();
+    expect(service.show[Pages.Products]).toBe(true);
+  });
+
+  it('should restore a deep-linked page with Products underneath', () => {
+    location.replaceState('/?page=Purchases');
+    service.restorePageFromUrl();
+    expect(service.show[Pages.Purchases]).toBe(true);
+
+    location.back();
+    expect(service.show[Pages.Products]).toBe(true);
   });
 });
