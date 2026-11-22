@@ -60,9 +60,15 @@
       <h2 class="backup__title">Backup</h2>
       <p class="backup__detail">
         The auction is kept in this browser only. Download a backup to hold a copy of the night,
-        or restore one to pick it back up here or on another device.
+        or restore one to pick it back up here or on another device. A share link carries the same
+        backup in the address itself.
       </p>
       <div class="backup__actions">
+        <button data-button-share-auction
+          type="button"
+          (click)="shareAuction()"
+          class="backup-button">Share Auction
+        </button>
         <button data-button-download-backup
           type="button"
           (click)="downloadBackup()"

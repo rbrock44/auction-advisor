@@ -3,6 +3,7 @@ import {SettingsService} from './settings.service';
 import {ExcelService} from './excel.service';
 import {Person} from '../model/person.model';
 import {Purchase} from '../model/purchase.model';
+import {Product} from '../model/product.model';
 import {Pages} from '../constants/constants';
 import {Location} from '@angular/common';
 import {provideLocationMocks} from '@angular/common/testing';
@@ -111,5 +112,62 @@ describe('SettingsService page history', () => {
 
     location.back();
     expect(service.show[Pages.Products]).toBe(true);
+  });
+});
+
+describe('SettingsService share link', () => {
+  let service: SettingsService;
+  let location: Location;
+
+  beforeEach(() => {
+    window.localStorage.clear();
+    TestBed.configureTestingModule({
+      providers: [SettingsService, ExcelService, provideLocationMocks()]
+    });
+    service = TestBed.inject(SettingsService);
+    location = TestBed.inject(Location);
+  });
+
+  afterEach(() => window.localStorage.clear());
+
+  it('should round-trip the auction through a share link', async () => {
+    service.add(new Person({firstName: 'Jane', lastName: 'Doe', email: 'jane@example.com'}));
+    service.add(new Product({name: 'Quilt', description: 'Handmade'}));
+    service.add(new Purchase({purchasedBy: 0, productId: 0, amount: 120}));
+    const url = new URL(await service.buildShareUrl());
+    const value = url.searchParams.get('auction');
+
+    const auction = await service.parseShareValue(value);
+    expect(auction.people[0].firstName).toBe('Jane');
+    expect(auction.products[0].name).toBe('Quilt');
+    expect(auction.purchases[0].amount).toBe(120);
+    expect(auction.title).toBe(service.title);
+  });
+
+  // This jasmine's typings predate toBeRejectedWithError, so the message is checked by hand.
+  async function rejectionMessage(value: string): Promise<string> {
+    try {
+      await service.parseShareValue(value);
+      return '';
+    } catch (error) {
+      return (error as Error).message;
+    }
+  }
+
+  it('should reject a broken share link', async () => {
+    expect(await rejectionMessage('zNotReal')).toMatch(/broken/);
+  });
+
+  it('should reject a link that decodes to something other than an auction', async () => {
+    const value = 'j' + btoa(JSON.stringify({hello: 'world'})).replace(/=+$/, '');
+    expect(await rejectionMessage(value)).toMatch(/broken/);
+  });
+
+  it('should strip the shared auction from the url but keep the page', () => {
+    location.replaceState('/?page=Settings&auction=zabc');
+    expect(service.readSharedAuctionFromUrl()).toBe('zabc');
+    service.clearSharedAuctionFromUrl();
+    expect(location.path()).toBe('/?page=Settings');
+    expect(service.readSharedAuctionFromUrl()).toBeNull();
   });
 });

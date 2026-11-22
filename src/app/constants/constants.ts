@@ -81,6 +81,12 @@ export const BACKUP_IMPORT_SUCCESS_MESSAGE: string = 'Auction restored from back
 export const BACKUP_IMPORT_INVALID_MESSAGE: string = 'That file is not an Auction Advisor backup. Nothing was changed.';
 export const BACKUP_IMPORT_UNREADABLE_MESSAGE: string = 'That file could not be read. Nothing was changed.';
 
+export const SHARE_AUCTION_COPIED_MESSAGE: string = 'Share link copied. Open it on another device to pick up this auction.';
+export const SHARE_AUCTION_FAILED_MESSAGE: string = 'Could not share the auction link.';
+export const SHARE_AUCTION_BROKEN_MESSAGE: string = 'That share link is broken or incomplete. Nothing was changed.';
+export const LOAD_SHARED_AUCTION_MESSAGE: string = 'This link has a shared auction. Loading it will overwrite the auction and settings on this device.';
+export const LOAD_SHARED_AUCTION_SUCCESS_MESSAGE: string = 'Shared auction loaded.';
+
 export function addedSuccessfully(value: string): string {
   return `${value} added successfully`;
 }

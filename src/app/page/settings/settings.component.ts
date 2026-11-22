@@ -14,7 +14,9 @@ import {
   RESET_EVERYTHING_MESSAGE,
   RESET_EVERYTHING_SUCCESS_MESSAGE,
   RESET_SCORES_MESSAGE,
-  RESET_SCORES_SUCCESS_MESSAGE
+  RESET_SCORES_SUCCESS_MESSAGE,
+  SHARE_AUCTION_COPIED_MESSAGE,
+  SHARE_AUCTION_FAILED_MESSAGE
 } from '../../constants/constants';
 import { MatFormField, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -112,6 +114,16 @@ export class SettingsComponent implements OnInit, OnDestroy {
     };
 
     reader.readAsText(file);
+  }
+
+  async shareAuction(): Promise<void> {
+    try {
+      if (await this.settingsService.shareAuctionLink() === 'copied') {
+        this.alertService.success(SHARE_AUCTION_COPIED_MESSAGE);
+      }
+    } catch {
+      this.alertService.error(SHARE_AUCTION_FAILED_MESSAGE);
+    }
   }
 
   resetEverything(): void {

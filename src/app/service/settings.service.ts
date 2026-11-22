@@ -16,9 +16,14 @@ import {
   BACKUP_EXTENSION,
   BACKUP_TYPE,
   COLOR_DEFAULT,
+  SHARE_AUCTION_BROKEN_MESSAGE,
   TITLE_DEFAULT,
   Pages
 } from '../constants/constants';
+
+// Query param that carries a shared auction. Its value starts with a format tag:
+// "z" = deflate-compressed JSON, "j" = plain JSON (browsers without CompressionStream).
+export const SHARE_PARAM = 'auction';
 
 @Injectable({
   providedIn: 'root'
@@ -252,7 +257,15 @@ export class SettingsService implements OnDestroy {
   // closed private window takes with it. This is the only way a night's
   // records leave the device they were entered on.
   public exportBackup(): void {
-    const backup: AuctionBackup = {
+    const backup: AuctionBackup = this.buildBackup();
+
+    const blob: Blob = new Blob([JSON.stringify(backup, null, 2)], {type: BACKUP_TYPE});
+
+    FileSaver.saveAs(blob, this.makeExportTitle('Backup') + '_' + new Date().getTime() + BACKUP_EXTENSION);
+  }
+
+  public buildBackup(): AuctionBackup {
+    return {
       version: BACKUP_VERSION,
       exportedAt: new Date().toISOString(),
       title: this.title,
@@ -264,27 +277,36 @@ export class SettingsService implements OnDestroy {
       donations: this.donations,
       purchases: this.purchases
     };
-
-    const blob: Blob = new Blob([JSON.stringify(backup, null, 2)], {type: BACKUP_TYPE});
-
-    FileSaver.saveAs(blob, this.makeExportTitle('Backup') + '_' + new Date().getTime() + BACKUP_EXTENSION);
   }
 
   // Reports failure instead of throwing so the caller can raise the app's own
   // error alert. A rejected file leaves the running auction exactly as it was.
   public importBackup(contents: string): boolean {
+    const parsed: AuctionBackup | null = this.parseBackup(contents);
+
+    if (!parsed) {
+      return false;
+    }
+
+    this.applyBackup(parsed);
+    return true;
+  }
+
+  public parseBackup(contents: string): AuctionBackup | null {
     let parsed: unknown;
 
     try {
       parsed = JSON.parse(contents);
     } catch {
-      return false;
+      return null;
     }
 
-    if (!this.isAuctionBackup(parsed)) {
-      return false;
-    }
+    return this.isAuctionBackup(parsed) ? parsed : null;
+  }
 
+  // Shared by file restore and share links, so both overwrite
+  // the running auction the same way.
+  public applyBackup(parsed: AuctionBackup): void {
     this.title = parsed.title;
     this.canEdit = parsed.canEdit;
     this.exportHasPopup = parsed.exportHasPopup;
@@ -303,8 +325,6 @@ export class SettingsService implements OnDestroy {
     this.productsSubject.next(this.products);
     this.donationsSubject.next(this.donations);
     this.purchasesSubject.next(this.purchases);
-
-    return true;
   }
 
   // Checked before anything is overwritten: a half-applied backup would be
@@ -327,6 +347,115 @@ export class SettingsService implements OnDestroy {
       && Array.isArray(candidate.donations)
       && Array.isArray(candidate.purchases);
   }
+
+  //#region Share Link
+  // Builds a link holding the whole auction, so it can be picked up on another device. The site
+  // is static, so the state rides in the URL instead of on a server.
+  public async buildShareUrl(auction: AuctionBackup = this.buildBackup()): Promise<string> {
+    const encoded: string = await this.encodeShareValue(JSON.stringify(auction));
+    const params = new URLSearchParams();
+    params.set(SHARE_PARAM, encoded);
+    return `${location.origin}${location.pathname}?${params.toString()}`;
+  }
+
+  /**
+   * Native share sheet on phones (text it, AirDrop it); clipboard copy everywhere else.
+   * Throws if neither works.
+   */
+  public async shareAuctionLink(auction: AuctionBackup = this.buildBackup()): Promise<'shared' | 'copied' | 'cancelled'> {
+    const url: string = await this.buildShareUrl(auction);
+
+    if (navigator.share) {
+      try {
+        await navigator.share({title: auction.title || TITLE_DEFAULT, url});
+        return 'shared';
+      } catch (error) {
+        if ((error as DOMException)?.name === 'AbortError') {
+          return 'cancelled';
+        }
+      }
+    }
+
+    await navigator.clipboard.writeText(url);
+    return 'copied';
+  }
+
+  /** The shared-auction value in the current URL, if this visit came from a share link. */
+  public readSharedAuctionFromUrl(): string | null {
+    const query = this.location.path().split('?')[1] ?? '';
+    return new URLSearchParams(query).get(SHARE_PARAM);
+  }
+
+  /** Drops the shared auction from the URL so a reload or bookmark doesn't offer it again. */
+  public clearSharedAuctionFromUrl(): void {
+    const [path, query = ''] = this.location.path().split('?');
+    const params = new URLSearchParams(query);
+    params.delete(SHARE_PARAM);
+    const rest = params.toString();
+    this.location.replaceState(rest ? `${path || '/'}?${rest}` : (path || '/'));
+  }
+
+  /** Throws with a message fit to show directly if the link doesn't hold an auction. */
+  public async parseShareValue(value: string): Promise<AuctionBackup> {
+    let json: string;
+    try {
+      json = await this.decodeShareValue(value);
+    } catch {
+      throw new Error(SHARE_AUCTION_BROKEN_MESSAGE);
+    }
+
+    const parsed: AuctionBackup | null = this.parseBackup(json);
+    if (!parsed) {
+      throw new Error(SHARE_AUCTION_BROKEN_MESSAGE);
+    }
+    return parsed;
+  }
+
+  private async encodeShareValue(json: string): Promise<string> {
+    const bytes: Uint8Array = new TextEncoder().encode(json);
+    if (typeof CompressionStream === 'undefined') {
+      return 'j' + this.toBase64Url(bytes);
+    }
+    const compressed = await this.pipeBytes(bytes, new CompressionStream('deflate-raw'));
+    return 'z' + this.toBase64Url(compressed);
+  }
+
+  private async decodeShareValue(value: string): Promise<string> {
+    const tag: string = value.charAt(0);
+    const bytes: Uint8Array = this.fromBase64Url(value.slice(1));
+    if (tag === 'j') {
+      return new TextDecoder().decode(bytes);
+    }
+    if (tag === 'z' && typeof DecompressionStream !== 'undefined') {
+      return new TextDecoder().decode(await this.pipeBytes(bytes, new DecompressionStream('deflate-raw')));
+    }
+    throw new Error('Unsupported share format');
+  }
+
+  private async pipeBytes(bytes: Uint8Array, transform: CompressionStream | DecompressionStream): Promise<Uint8Array> {
+    const stream = new Blob([bytes as BlobPart]).stream().pipeThrough(transform);
+    return new Uint8Array(await new Response(stream).arrayBuffer());
+  }
+
+  private toBase64Url(bytes: Uint8Array): string {
+    let binary = '';
+    for (let i = 0; i < bytes.length; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+
+  private fromBase64Url(value: string): Uint8Array {
+    const base64 = value.replace(/-/g, '+').replace(/_/g, '/');
+    const binary = atob(base64 + '='.repeat((4 - base64.length % 4) % 4));
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return bytes;
+  }
+
+  //#endregion
 
   public edit(item: any): void {
     if (item instanceof Purchase) {
