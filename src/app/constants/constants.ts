@@ -1,6 +1,6 @@
 import {UntypedFormGroup} from '@angular/forms';
 
-export const RESET_EVERYTHING_MESSAGE: string = 'This will reset everything to the default settings.';
+export const RESET_EVERYTHING_MESSAGE: string = 'This will reset everything to the default settings. The current auction is saved to History first.';
 export const RESET_SCORES_MESSAGE: string = 'This will reset the scores only.';
 export const APPLY_SETTING_MESSAGE: string = 'Applying settings changes will reset scores.';
 export const RESET_SCORES_SUCCESS_MESSAGE: string = 'Scores reset successfully.';
@@ -87,6 +87,16 @@ export const SHARE_AUCTION_BROKEN_MESSAGE: string = 'That share link is broken o
 export const LOAD_SHARED_AUCTION_MESSAGE: string = 'This link has a shared auction. Loading it will overwrite the auction and settings on this device.';
 export const LOAD_SHARED_AUCTION_SUCCESS_MESSAGE: string = 'Shared auction loaded.';
 
+export const NEW_AUCTION_MESSAGE: string = 'This saves the current auction to History and starts a new one. Settings and people are kept; products, donations, and purchases are cleared.';
+export const NEW_AUCTION_SUCCESS_MESSAGE: string = 'Auction saved to History. New auction started.';
+export const NEW_AUCTION_EMPTY_MESSAGE: string = 'New auction started. Nothing was recorded, so nothing was saved to History.';
+export const RESET_EVERYTHING_SAVED_SUCCESS_MESSAGE: string = 'Auction saved to History, then everything was reset.';
+export const LOAD_HISTORY_AUCTION_MESSAGE: string = 'This replaces the current auction with the saved one. Press New Auction first if you want to keep the current auction.';
+export const LOAD_HISTORY_AUCTION_SUCCESS_MESSAGE: string = 'Saved auction loaded.';
+export const DELETE_HISTORY_AUCTION_MESSAGE: string = 'This permanently deletes the saved auction.';
+export const DELETE_HISTORY_AUCTION_SUCCESS_MESSAGE: string = 'Saved auction deleted.';
+export const EXPORT_HISTORY_SUCCESS_MESSAGE: string = 'All saved auctions exported.';
+
 export function addedSuccessfully(value: string): string {
   return `${value} added successfully`;
 }
@@ -105,5 +115,6 @@ export enum Pages {
  People,
  Purchases,
  Donations,
- Settings
+ Settings,
+ History
 }

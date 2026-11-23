@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import * as FileSaver from 'file-saver';
 import {Subject} from 'rxjs';
 import {Location} from '@angular/common';
-import {ExcelService} from './excel.service';
+import {ExcelService, ExcelSheet} from './excel.service';
 import {Person} from '../model/person.model';
 import {Donation} from '../model/donation.model';
 import {Product} from '../model/product.model';
@@ -12,6 +12,7 @@ import {LocalStorageSaveItem} from '../model/local-storage-save-item.model';
 import {DonationDisplay} from '../model/donation-display.model';
 import {PurchaseDisplay} from '../model/purchase-display.model';
 import {AuctionBackup, BACKUP_VERSION} from '../model/auction-backup.model';
+import {AuctionHistoryEntry, AuctionSummary} from '../model/auction-history.model';
 import {
   BACKUP_EXTENSION,
   BACKUP_TYPE,
@@ -24,6 +25,9 @@ import {
 // Query param that carries a shared auction. Its value starts with a format tag:
 // "z" = deflate-compressed JSON, "j" = plain JSON (browsers without CompressionStream).
 export const SHARE_PARAM = 'auction';
+const HISTORY_KEY = 'history';
+// Oldest auctions drop off past this, so history can't fill up localStorage.
+const HISTORY_LIMIT = 100;
 
 @Injectable({
   providedIn: 'root'
@@ -56,7 +60,8 @@ export class SettingsService implements OnDestroy {
   // 3rd: Purchases
   // 4th: Donations
   // 5th: Settings
-  show = [true, false, false, false, false];
+  // 6th: History
+  show = [true, false, false, false, false, false];
 
   constructor(
     private excelService: ExcelService,
@@ -75,7 +80,7 @@ export class SettingsService implements OnDestroy {
     this.show = this.show.map(() => false);
     this.show[index] = true;
 
-    if (index === Pages.Settings) {
+    if (index === Pages.Settings || index === Pages.History) {
       this.closeOverlaysSubject.next();
     }
   }
@@ -224,7 +229,12 @@ export class SettingsService implements OnDestroy {
   }
 
   resetEverything(): void {
+    // History is an archive of past auctions, not a setting, so it survives a full reset.
+    const history: string = window.localStorage.getItem(HISTORY_KEY);
     window.localStorage.clear();
+    if (history !== null) {
+      window.localStorage.setItem(HISTORY_KEY, history);
+    }
 
     this.title = _.cloneDeep(TITLE_DEFAULT);
     this.setColor(_.cloneDeep(COLOR_DEFAULT));
@@ -304,7 +314,7 @@ export class SettingsService implements OnDestroy {
     return this.isAuctionBackup(parsed) ? parsed : null;
   }
 
-  // Shared by file restore and share links, so both overwrite
+  // Shared by file restore, share links, and History, so all three overwrite
   // the running auction the same way.
   public applyBackup(parsed: AuctionBackup): void {
     this.title = parsed.title;
@@ -347,6 +357,132 @@ export class SettingsService implements OnDestroy {
       && Array.isArray(candidate.donations)
       && Array.isArray(candidate.purchases);
   }
+
+  //#region Auction History
+  /** Saves the current auction to history (if anything was recorded) and starts over with the same settings and people. */
+  public startNewAuction(): boolean {
+    const saved: boolean = this.saveCurrentAuctionToHistory();
+
+    // People tend to come back for the next auction; the lots and what
+    // happened to them belong to this one only.
+    this.products = [];
+    this.donations = [];
+    this.purchases = [];
+    this.filterProducts();
+    this.saveToLocalStorage();
+
+    this.productsSubject.next(this.products);
+    this.donationsSubject.next(this.donations);
+    this.purchasesSubject.next(this.purchases);
+
+    return saved;
+  }
+
+  public saveCurrentAuctionToHistory(): boolean {
+    if (!this.hasAnyRecord()) {
+      return false;
+    }
+
+    const entry: AuctionHistoryEntry = {
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
+      savedAt: new Date().toISOString(),
+      // Round-tripped so later edits to the live arrays can't reach into the saved copy.
+      auction: JSON.parse(JSON.stringify(this.buildBackup()))
+    };
+    this.writeHistory([entry, ...this.getHistory()]);
+    return true;
+  }
+
+  /** Newest first. */
+  public getHistory(): AuctionHistoryEntry[] {
+    const stored: string = window.localStorage.getItem(HISTORY_KEY);
+    if (this.isNullOrUndefined(stored)) {
+      return [];
+    }
+
+    try {
+      const parsed: unknown = JSON.parse(stored);
+      return Array.isArray(parsed)
+        ? parsed.filter((entry: AuctionHistoryEntry) => entry && typeof entry.id === 'string' && this.isAuctionBackup(entry.auction))
+        : [];
+    } catch {
+      return [];
+    }
+  }
+
+  public deleteHistoryEntry(id: string): void {
+    this.writeHistory(this.getHistory().filter(entry => entry.id !== id));
+  }
+
+  public getAuctionSummary(auction: AuctionBackup): AuctionSummary {
+    return {
+      people: auction.people.length,
+      products: auction.products.length,
+      donations: auction.donations.length,
+      purchases: auction.purchases.length,
+      totalRaised: auction.purchases.reduce((total, purchase) => total + (+purchase.amount || 0), 0)
+    };
+  }
+
+  /** Every saved auction in one workbook: a Summary sheet, then one By Product sheet per auction. */
+  public exportHistoryToExcel(): void {
+    const history: AuctionHistoryEntry[] = this.getHistory();
+    const summary: any[] = history.map(entry => {
+      const totals: AuctionSummary = this.getAuctionSummary(entry.auction);
+      return {
+        'Auction': entry.auction.title,
+        'Saved': new Date(entry.savedAt).toLocaleString(),
+        'Total Raised': '$' + totals.totalRaised,
+        'Products': totals.products,
+        'Purchases': totals.purchases,
+        'Donations': totals.donations,
+        'People': totals.people
+      };
+    });
+
+    const sheets: ExcelSheet[] = [
+      {name: 'Summary', rows: summary},
+      ...history.map(entry => ({
+        name: `${entry.auction.title} ${new Date(entry.savedAt).toLocaleDateString()}`,
+        rows: this.excelService.buildByProductRows(
+          entry.auction.products,
+          entry.auction.donations,
+          entry.auction.purchases,
+          this.makePersonInfo(entry.auction.people)
+        )
+      }))
+    ];
+
+    this.excelService.exportAsExcelWorkbook(sheets, this.makeExportTitle('History'));
+  }
+
+  // A saved auction's ids point at its own people, not the running auction's.
+  private makePersonInfo(people: Person[]): (id: number) => string {
+    return (id: number) => {
+      const person: Person = people.find(x => x.id === id);
+      return person ? new Person(person).name() : '';
+    };
+  }
+
+  private hasAnyRecord(): boolean {
+    return this.products.length > 0 || this.donations.length > 0 || this.purchases.length > 0;
+  }
+
+  private writeHistory(history: AuctionHistoryEntry[]): void {
+    let entries: AuctionHistoryEntry[] = history.slice(0, HISTORY_LIMIT);
+    // A full localStorage drops the oldest auctions until the rest fit.
+    while (entries.length > 0) {
+      try {
+        window.localStorage.setItem(HISTORY_KEY, JSON.stringify(entries));
+        return;
+      } catch {
+        entries = entries.slice(0, -1);
+      }
+    }
+    window.localStorage.removeItem(HISTORY_KEY);
+  }
+
+  //#endregion
 
   //#region Share Link
   // Builds a link holding the whole auction, so it can be picked up on another device. The site

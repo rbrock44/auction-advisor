@@ -9,13 +9,14 @@ import { PeopleComponent } from '../people/people.component';
 import { PurchasesComponent } from '../purchases/purchases.component';
 import { DonationsComponent } from '../donations/donations.component';
 import { SettingsComponent } from '../settings/settings.component';
+import { HistoryComponent } from '../history/history.component';
 
 @Component({
     selector: 'app-main',
     templateUrl: './main.component.html',
     styleUrls: ['./main.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [ProductsComponent, PeopleComponent, PurchasesComponent, DonationsComponent, SettingsComponent]
+    imports: [ProductsComponent, PeopleComponent, PurchasesComponent, DonationsComponent, SettingsComponent, HistoryComponent]
 })
 export class MainComponent implements OnInit {
   constructor(

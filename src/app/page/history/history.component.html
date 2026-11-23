@@ -1,0 +1,41 @@
+<section class="page">
+  <div class="page__head">
+    <h1 class="page__title" data-header-title>History</h1>
+    <p class="page__lede">Past auctions saved on this device. Load one to pick it back up, or share it as a link.</p>
+  </div>
+
+  @if (rows.length > 0) {
+    <div class="history-actions">
+      <button data-button-export-all-history type="button" class="history-button" (click)="exportAll()">Export All</button>
+    </div>
+  }
+
+  @if (rows.length === 0) {
+    <p data-history-empty class="history-empty">
+      No saved auctions yet. Press <strong>New Auction</strong> on Settings to save the current auction here.
+    </p>
+  }
+
+  <div data-history-list class="history-list">
+    @for (row of rows; track row.entry.id) {
+      <div data-history-entry class="history-entry">
+        <div class="history-entry__head">
+          <div data-history-title class="history-entry__title">{{ row.entry.auction.title }}</div>
+          <div data-history-date class="history-entry__date">{{ row.entry.savedAt | date:'medium' }}</div>
+        </div>
+        <div data-history-raised class="history-entry__raised">
+          Raised <strong>{{ '$' + row.summary.totalRaised }}</strong>
+        </div>
+        <div class="history-entry__meta">
+          {{ row.summary.products }} products · {{ row.summary.purchases }} purchases
+          · {{ row.summary.donations }} donations · {{ row.summary.people }} people
+        </div>
+        <div class="history-entry__buttons">
+          <button data-button-load-history type="button" class="history-button" (click)="load(row.entry)">Load</button>
+          <button data-button-share-history type="button" class="history-button" (click)="share(row.entry)">Share</button>
+          <button data-button-delete-history type="button" class="history-button history-button--danger" (click)="remove(row.entry)">Delete</button>
+        </div>
+      </div>
+    }
+  </div>
+</section>

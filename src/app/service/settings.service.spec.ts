@@ -171,3 +171,117 @@ describe('SettingsService share link', () => {
     expect(service.readSharedAuctionFromUrl()).toBeNull();
   });
 });
+
+describe('SettingsService auction history', () => {
+  let service: SettingsService;
+
+  beforeEach(() => {
+    window.localStorage.clear();
+    TestBed.configureTestingModule({
+      providers: [SettingsService, ExcelService, provideLocationMocks()]
+    });
+    service = TestBed.inject(SettingsService);
+  });
+
+  afterEach(() => window.localStorage.clear());
+
+  function recordSale(name: string, amount: number): void {
+    service.add(new Product({name, description: 'desc'}));
+    const productId = service.products[service.products.length - 1].id;
+    service.add(new Purchase({purchasedBy: 0, productId, amount}));
+  }
+
+  it('should save the auction to history and clear its records on new auction', () => {
+    service.add(new Person({firstName: 'Jane', lastName: 'Doe', email: 'jane@example.com'}));
+    recordSale('Quilt', 120);
+
+    expect(service.startNewAuction()).toBe(true);
+
+    const history = service.getHistory();
+    expect(history.length).toBe(1);
+    expect(history[0].auction.products[0].name).toBe('Quilt');
+    expect(service.products.length).toBe(0);
+    expect(service.purchases.length).toBe(0);
+    expect(service.donations.length).toBe(0);
+    expect(service.people.length).toBe(1);
+  });
+
+  it('should not save an auction with nothing recorded', () => {
+    service.add(new Person({firstName: 'Jane', lastName: 'Doe', email: 'jane@example.com'}));
+
+    expect(service.startNewAuction()).toBe(false);
+    expect(service.getHistory().length).toBe(0);
+  });
+
+  it('should total what each saved auction raised', () => {
+    recordSale('Quilt', 120);
+    recordSale('Pie', 30);
+
+    const summary = service.getAuctionSummary(service.buildBackup());
+    expect(summary.totalRaised).toBe(150);
+    expect(summary.products).toBe(2);
+    expect(summary.purchases).toBe(2);
+  });
+
+  it('should keep newest first, delete entries, and survive reset everything', () => {
+    recordSale('First', 1);
+    service.startNewAuction();
+    recordSale('Second', 2);
+    service.startNewAuction();
+
+    let history = service.getHistory();
+    expect(history.map(entry => entry.auction.products[0].name)).toEqual(['Second', 'First']);
+
+    service.resetEverything();
+    history = service.getHistory();
+    expect(history.length).toBe(2);
+
+    service.deleteHistoryEntry(history[0].id);
+    expect(service.getHistory().map(entry => entry.auction.products[0].name)).toEqual(['First']);
+  });
+
+  it('should load a saved auction back as model instances', () => {
+    service.add(new Person({firstName: 'Jane', lastName: 'Doe', email: 'jane@example.com'}));
+    recordSale('Quilt', 120);
+    service.startNewAuction();
+
+    service.applyBackup(service.getHistory()[0].auction);
+
+    expect(service.products[0].name).toBe('Quilt');
+    expect(service.people[0].name()).toBe('Jane Doe');
+  });
+});
+
+describe('SettingsService history export', () => {
+  let service: SettingsService;
+  let excel: ExcelService;
+
+  beforeEach(() => {
+    window.localStorage.clear();
+    TestBed.configureTestingModule({
+      providers: [SettingsService, ExcelService, provideLocationMocks()]
+    });
+    service = TestBed.inject(SettingsService);
+    excel = TestBed.inject(ExcelService);
+  });
+
+  afterEach(() => window.localStorage.clear());
+
+  it('should export a summary sheet plus one sheet per saved auction', () => {
+    const spy = spyOn(excel, 'exportAsExcelWorkbook');
+    service.add(new Person({firstName: 'Jane', lastName: 'Doe', email: 'jane@example.com'}));
+    service.add(new Product({name: 'Quilt', description: 'Handmade'}));
+    service.add(new Purchase({purchasedBy: 0, productId: 0, amount: 120}));
+    service.startNewAuction();
+
+    service.exportHistoryToExcel();
+
+    const sheets = spy.calls.mostRecent().args[0];
+    expect(sheets.length).toBe(2);
+    expect(sheets[0].name).toBe('Summary');
+    expect(sheets[0].rows[0]['Total Raised']).toBe('$120');
+    expect(sheets[0].rows[0]['Purchases']).toBe(1);
+    expect(sheets[1].rows[0]['Product Name']).toBe('Quilt');
+    expect(sheets[1].rows[0]['Purchased By']).toBe('Jane Doe');
+  });
+});

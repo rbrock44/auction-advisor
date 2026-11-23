@@ -11,6 +11,15 @@ const TOTALS_SHEET: string = 'Totals By Person';
 const BY_PRODUCT_SHEET: string = 'By Product';
 const BY_PURCHASER_SHEET: string = 'By Purchaser';
 
+export interface ExcelSheet {
+  name: string;
+  rows: any[];
+}
+
+// Excel's own limits on a sheet name.
+const SHEET_NAME_MAX = 31;
+const SHEET_NAME_INVALID = /[\\/?*:[\]]/g;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -35,6 +44,32 @@ export class ExcelService {
     const excelBuffer: any = XLSX.write(workbook, {bookType: 'xlsx', type: 'array'});
 
     this.saveAsExcelFile(excelBuffer, title);
+  }
+
+  /** One workbook, one sheet per entry. Names are cleaned and de-duplicated to satisfy Excel. */
+  public exportAsExcelWorkbook(sheets: ExcelSheet[], title: string): void {
+    const workbook: XLSX.WorkBook = XLSX.utils.book_new();
+    const used = new Set<string>();
+
+    sheets.forEach(sheet => {
+      const name: string = this.uniqueSheetName(sheet.name, used);
+      XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(sheet.rows), name);
+    });
+
+    const excelBuffer: any = XLSX.write(workbook, {bookType: 'xlsx', type: 'array'});
+
+    this.saveAsExcelFile(excelBuffer, title);
+  }
+
+  private uniqueSheetName(raw: string, used: Set<string>): string {
+    const base: string = (raw.replace(SHEET_NAME_INVALID, ' ').trim() || 'Sheet').slice(0, SHEET_NAME_MAX);
+    let name: string = base;
+    for (let n = 2; used.has(name.toLowerCase()); n++) {
+      const suffix = ` (${n})`;
+      name = base.slice(0, SHEET_NAME_MAX - suffix.length) + suffix;
+    }
+    used.add(name.toLowerCase());
+    return name;
   }
 
   private buildTotalsRows(
@@ -82,7 +117,7 @@ export class ExcelService {
     return dataArray;
   }
 
-  private buildByProductRows(
+  public buildByProductRows(
     products: Product[],
     donations: Donation[],
     purchases: Purchase[],

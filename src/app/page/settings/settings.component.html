@@ -57,6 +57,21 @@
     </p>
 
     <div class="backup">
+      <h2 class="backup__title">New Auction</h2>
+      <p class="backup__detail">
+        Saves this auction to History and starts a fresh one. Settings and people carry over;
+        products, donations, and purchases start empty.
+      </p>
+      <div class="backup__actions">
+        <button data-button-new-auction
+          type="button"
+          (click)="newAuction()"
+          class="backup-button">New Auction
+        </button>
+      </div>
+    </div>
+
+    <div class="backup">
       <h2 class="backup__title">Backup</h2>
       <p class="backup__detail">
         The auction is kept in this browser only. Download a backup to hold a copy of the night,
@@ -92,6 +107,7 @@
       <h2 class="danger__title">Reset</h2>
       <p class="danger__detail">
         Deletes every product, person, donation, and purchase, and puts the title back to its default.
+        The current auction is saved to History first.
       </p>
       <button data-button-reset-everything
         (click)="resetEverything()"

@@ -14,6 +14,15 @@
               data-header-export>Export</button>
       <button type="button"
               class="nav-bar-link nav-bar-link--icon"
+              [class.active]="service.show[5]"
+              [attr.aria-current]="service.show[5] ? 'page' : null"
+              (click)="show(5)"
+              aria-label="History"
+              data-history-nav>
+        <mat-icon aria-hidden="true">history</mat-icon>
+      </button>
+      <button type="button"
+              class="nav-bar-link nav-bar-link--icon"
               [class.active]="service.show[4]"
               [attr.aria-current]="service.show[4] ? 'page' : null"
               (click)="show(4)"

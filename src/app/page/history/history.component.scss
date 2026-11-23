@@ -1,0 +1,106 @@
+@import '../../../styles.scss';
+
+.page {
+  @include pageShell();
+}
+
+.page__head {
+  margin-bottom: 28px;
+}
+
+.page__title {
+  @include pageTitle();
+}
+
+.page__lede {
+  @include pageLede();
+}
+
+.history-empty {
+  font-size: 14px;
+  color: #6b665e;
+}
+
+.history-actions {
+  margin-bottom: 20px;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 720px;
+}
+
+.history-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px 20px;
+  border: 1px solid #e3e1db;
+  border-radius: 5px;
+}
+
+.history-entry__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 4px 12px;
+}
+
+.history-entry__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e1c19;
+}
+
+.history-entry__date,
+.history-entry__meta {
+  font-size: 13px;
+  color: #6b665e;
+}
+
+.history-entry__raised {
+  font-size: 14px;
+  color: #1e1c19;
+}
+
+.history-entry__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.history-button {
+  height: 34px;
+  padding: 0 18px;
+  font-size: large;
+  cursor: pointer;
+  color: #1e1c19;
+  background: transparent;
+  border: 1px solid #c9c5bb;
+  border-radius: 3px;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: #9a958a;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--buttonColor);
+    outline-offset: 2px;
+  }
+}
+
+// Deleting is permanent, so it reads like Settings' reset rather than a routine action.
+.history-button--danger {
+  color: #c62f18;
+  border-color: #e2a99f;
+
+  &:hover {
+    background: rgba(198, 47, 24, 0.07);
+    border-color: #c62f18;
+  }
+}

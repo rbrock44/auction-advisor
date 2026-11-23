@@ -11,7 +11,11 @@ import {
   BACKUP_IMPORT_INVALID_MESSAGE,
   BACKUP_IMPORT_SUCCESS_MESSAGE,
   BACKUP_IMPORT_UNREADABLE_MESSAGE,
+  NEW_AUCTION_EMPTY_MESSAGE,
+  NEW_AUCTION_MESSAGE,
+  NEW_AUCTION_SUCCESS_MESSAGE,
   RESET_EVERYTHING_MESSAGE,
+  RESET_EVERYTHING_SAVED_SUCCESS_MESSAGE,
   RESET_EVERYTHING_SUCCESS_MESSAGE,
   RESET_SCORES_MESSAGE,
   RESET_SCORES_SUCCESS_MESSAGE,
@@ -116,6 +120,17 @@ export class SettingsComponent implements OnInit, OnDestroy {
     reader.readAsText(file);
   }
 
+  newAuction(): void {
+    this.getConfirmationPopup(NEW_AUCTION_MESSAGE).afterClosed().subscribe(shouldStart => {
+      if (shouldStart) {
+        const saved: boolean = this.settingsService.startNewAuction();
+        this.alertService.success(saved ? NEW_AUCTION_SUCCESS_MESSAGE : NEW_AUCTION_EMPTY_MESSAGE);
+      } else {
+        this.alertService.actionCancelled();
+      }
+    });
+  }
+
   async shareAuction(): Promise<void> {
     try {
       if (await this.settingsService.shareAuctionLink() === 'copied') {
@@ -131,10 +146,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
     if (dialogRef) {
       dialogRef.afterClosed().subscribe(shouldReset => {
         if (shouldReset) {
+          // Every record is about to be wiped; keep it in History so a mis-tap isn't permanent.
+          const saved: boolean = this.settingsService.saveCurrentAuctionToHistory();
           this.settingsService.resetEverything();
           this.applySettingsValuesToFormControls();
           this.status = 'idle';
-          this.alertService.success(RESET_EVERYTHING_SUCCESS_MESSAGE);
+          this.alertService.success(saved ? RESET_EVERYTHING_SAVED_SUCCESS_MESSAGE : RESET_EVERYTHING_SUCCESS_MESSAGE);
         } else {
           this.alertService.actionCancelled();
         }
