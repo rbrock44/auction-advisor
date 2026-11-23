@@ -53,6 +53,13 @@ describe('HeaderComponent', () => {
     expectElementToContainContent(fixture, EXPORT_BUTTON, 'Export');
   });
 
+  it('should have a share icon button', () => {
+    expectElementPresent(fixture, '[data-share-auction]');
+
+    const button = fixture.nativeElement.querySelector('[data-share-auction]');
+    expect(button.getAttribute('aria-label')).toEqual('Share auction link');
+  });
+
   it('should have a settings icon button', () => {
     expectElementPresent(fixture, '[data-settings-nav]');
 

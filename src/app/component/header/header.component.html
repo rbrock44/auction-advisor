@@ -14,6 +14,14 @@
               data-header-export>Export</button>
       <button type="button"
               class="nav-bar-link nav-bar-link--icon"
+              (click)="shareAuction()"
+              aria-label="Share auction link"
+              title="Share auction link"
+              data-share-auction>
+        <mat-icon aria-hidden="true">share</mat-icon>
+      </button>
+      <button type="button"
+              class="nav-bar-link nav-bar-link--icon"
               [class.active]="service.show[5]"
               [attr.aria-current]="service.show[5] ? 'page' : null"
               (click)="show(5)"

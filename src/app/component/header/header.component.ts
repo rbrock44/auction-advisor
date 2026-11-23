@@ -2,7 +2,8 @@ import {Component, ChangeDetectionStrategy} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SettingsService } from '../../service/settings.service';
 import { ConfirmationPopupComponent, ConfirmationPopupData } from '../confirmation-popup/confirmation-popup.component';
-import { EXPORT_CONFIRM_MESSAGE } from '../../constants/constants';
+import { EXPORT_CONFIRM_MESSAGE, SHARE_AUCTION_COPIED_MESSAGE, SHARE_AUCTION_FAILED_MESSAGE } from '../../constants/constants';
+import { AlertService } from '../../service/alert.service';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
@@ -15,6 +16,7 @@ import { MatIcon } from '@angular/material/icon';
 export class HeaderComponent {
   constructor(
     private dialog: MatDialog,
+    private alertService: AlertService,
     public service: SettingsService
   ) {
   }
@@ -30,6 +32,19 @@ export class HeaderComponent {
 
   show(index: number): void {
     this.service.navigateTo(index);
+  }
+
+  // Like Export, an action rather than a page: it never changes the view.
+  async shareAuction(): Promise<void> {
+    this.service.closeOverlaysSubject.next();
+
+    try {
+      if (await this.service.shareAuctionLink() === 'copied') {
+        this.alertService.success(SHARE_AUCTION_COPIED_MESSAGE);
+      }
+    } catch {
+      this.alertService.error(SHARE_AUCTION_FAILED_MESSAGE);
+    }
   }
 
   // Export isn't a page — it's an action, so clicking it never changes the
